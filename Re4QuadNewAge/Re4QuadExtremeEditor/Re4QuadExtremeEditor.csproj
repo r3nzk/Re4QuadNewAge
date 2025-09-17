@@ -84,289 +84,443 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\Camera\Camera.cs" />
+    <Compile Include="Editor\class\Enums\aLang.cs" />
+    <Compile Include="Editor\class\Enums\ConfigFrationalSymbol.cs" />
+    <Compile Include="Editor\class\Enums\EffectEntryTableID.cs" />
+    <Compile Include="Editor\class\Enums\eLang.cs" />
+    <Compile Include="Editor\class\Enums\EsarFileFormat.cs" />
+    <Compile Include="Editor\class\Enums\GroupType.cs" />
+    <Compile Include="Editor\class\Enums\ItemAuraType.cs" />
+    <Compile Include="Editor\class\Enums\MoveObjCombos.cs" />
+    <Compile Include="Editor\class\Enums\MoveObjType.cs" />
+    <Compile Include="Editor\class\Enums\ObjRotationOrder.cs" />
+    <Compile Include="Editor\class\Enums\QuadCustomPointStatus.cs" />
+    <Compile Include="Editor\class\Enums\Re4Version.cs" />
+    <Compile Include="Editor\class\Enums\RefInteractionType.cs" />
+    <Compile Include="Editor\class\Enums\SpecialFileFormat.cs" />
+    <Compile Include="Editor\class\Enums\SpecialType.cs" />
+    <Compile Include="Editor\class\Enums\TriggerZoneCategory.cs" />
+    <Compile Include="Editor\class\FileManager.cs" />
+    <Compile Include="Editor\class\Files\BaseGroup.cs" />
+    <Compile Include="Editor\class\Files\BaseTriggerZoneGroup.cs" />
+    <Compile Include="Editor\class\Files\ExtraGroup.cs" />
+    <Compile Include="Editor\class\Files\FileEnemyEslGroup.cs" />
+    <Compile Include="Editor\class\Files\FileEtcModelEtsGroup.cs" />
+    <Compile Include="Editor\class\Files\FileQuadCustomGroup.cs" />
+    <Compile Include="Editor\class\Files\FileSpecialGroup.cs" />
+    <Compile Include="Editor\class\Files\File_CAM_Group.cs" />
+    <Compile Include="Editor\class\Files\File_DSE_Group.cs" />
+    <Compile Include="Editor\class\Files\File_EFFBLOB_Group.cs" />
+    <Compile Include="Editor\class\Files\File_EMI_Group.cs" />
+    <Compile Include="Editor\class\Files\File_ESAR_Group.cs" />
+    <Compile Include="Editor\class\Files\File_ESE_Group.cs" />
+    <Compile Include="Editor\class\Files\File_FSE_Group.cs" />
+    <Compile Include="Editor\class\Files\File_LIT_Group.cs" />
+    <Compile Include="Editor\class\Interfaces\IChangeAmountIndexFix.cs" />
+    <Compile Include="Editor\class\Interfaces\IDisplay.cs" />
+    <Compile Include="Editor\class\Interfaces\IInternalID.cs" />
+    <Compile Include="Editor\class\Interfaces\INodeChangeAmount.cs" />
+    <Compile Include="Editor\class\KeysCheck.cs" />
+    <Compile Include="Editor\class\MoveObj.cs" />
+    <Compile Include="Editor\class\MultiSelectionObjects.cs" />
+    <Compile Include="Editor\class\MyProperty\BaseProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\BaseTriggerZoneProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\AllowInMultiSelectAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\CustomCategoryAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\CustomDescriptionAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\CustomDisplayNameAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\DecNegativeNumberAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\DecNumberAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\FloatNumberAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\HexNumberAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomAttribute\NoKeyAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomCollection\GenericCollection.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomCollection\GenericCollectionPropertyDescriptor.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomCollection\GenericTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\ByteArrayTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\DecNumberTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\FloatNumberTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\HexNumberTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\NoneTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\EnemyEnableGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\EnemyIDGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\EtcModelIDGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\HexFloatEnableGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\ItemAuraTypeGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\ItemIDGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\PromptMessageGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\QuadCustomModelIDGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\QuadCustomPointStatusGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\RefObjTypeGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\SpecialTypeGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\ForGridComboBox\SpecialZoneCategoryGridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\GridComboBox.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\MultiSelectUITypeEditor.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\NoneUITypeEditor.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\SelectColorUITypeEditor.cs" />
+    <Compile Include="Editor\class\MyProperty\DynamicTypeDescriptor\CustomComponentModel.cs" />
+    <Compile Include="Editor\class\MyProperty\DynamicTypeDescriptor\DynamicTypeDescriptor.cs" />
+    <Compile Include="Editor\class\MyProperty\EnemyProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\EtcModelProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\GenericProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\MultiSelectProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_DSE_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_EMI_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_ESAR_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_ESE_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_FSE_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_LIT_Entry_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NewAge_LIT_Group_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\NoneProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\QuadCustomProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\SpecialProperty.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table0_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table1_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table2_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table3_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table4_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table6_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_Table9_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_TableEffectEntry_Property.cs" />
+    <Compile Include="Editor\class\MyProperty\_EFF_Property\EFF_TableEffectGroup_Property.cs" />
+    <Compile Include="Editor\class\ObjForListBox.cs" />
+    <Compile Include="Editor\class\ObjMethods\BaseMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\BaseTriggerZoneMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\BaseTriggerZoneMethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\CustomDelegates.cs" />
+    <Compile Include="Editor\class\ObjMethods\EnemyMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\EnemyMethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\EtcModelMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\EtcModelMethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\ExtrasMethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_DSE_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_EFF_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_EMI_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_EMI_MethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_ESAR_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_ESAR_MethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_ESE_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_ESE_MethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_FSE_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_FSE_MethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_LIT_Entry_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_LIT_Entry_MethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_LIT_Group_Methods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NewAge_LIT_Group_MethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\NodeChangeAmountCallbackMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NodeChangeAmountMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NodeDisplayMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\NodeMoveMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\QuadCustomMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\QuadCustomMethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\SpecialMethods.cs" />
+    <Compile Include="Editor\class\ObjMethods\SpecialMethodsForGL.cs" />
+    <Compile Include="Editor\class\ObjMethods\UpdateMethods.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\EnemyNodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\EtcModelNodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\ExtraNodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_DSE_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_EFF_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_EMI_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_ESAR_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_ESE_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_FSE_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_LIT_Entrys_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\NewAge_LIT_Groups_NodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\Object3D.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\QuadCustomNodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\SpecialNodeGroup.cs" />
+    <Compile Include="Editor\class\TreeNodeObj\TreeNodeGroup.cs" />
+    <Compile Include="Editor\Consts.cs" />
+    <Compile Include="Editor\controls\Advertising1Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\controls\Advertising1Control.Designer.cs">
+      <DependentUpon>Advertising1Control.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\controls\Advertising2Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\controls\Advertising2Control.Designer.cs">
+      <DependentUpon>Advertising2Control.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\controls\CameraMoveControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\controls\CameraMoveControl.Designer.cs">
+      <DependentUpon>CameraMoveControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\controls\ObjectMoveControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\controls\ObjectMoveControl.Designer.cs">
+      <DependentUpon>ObjectMoveControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\ControlUtils\FloatBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Editor\DataBase.cs" />
+    <Compile Include="Editor\forms\AddNewObjForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\AddNewObjForm.Designer.cs">
+      <DependentUpon>AddNewObjForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\CameraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\CameraForm.Designer.cs">
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\CreditsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\CreditsForm.Designer.cs">
+      <DependentUpon>CreditsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\MultiSelectEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\MultiSelectEditorForm.Designer.cs">
+      <DependentUpon>MultiSelectEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\SelectRoomForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\SelectRoomForm.Designer.cs">
+      <DependentUpon>SelectRoomForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\forms\SplashScreenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\SplashScreenForm.Designer.cs">
+      <DependentUpon>SplashScreenForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\Globals.cs" />
+    <Compile Include="Editor\JSON\Config\Configs.cs" />
+    <Compile Include="Editor\JSON\Config\ConfigsFile.cs" />
+    <Compile Include="Editor\JSON\Lang\LangFile.cs" />
+    <Compile Include="Editor\JSON\Lang\LangObjForList.cs" />
+    <Compile Include="Editor\JSON\ObjectInfo\ObjectInfo.cs" />
+    <Compile Include="Editor\JSON\ObjectInfo\ObjectInfoList.cs" />
+    <Compile Include="Editor\JSON\ObjectInfo\ObjectInfoListFile.cs" />
+    <Compile Include="Editor\JSON\ObjectModel\ObjectModel.cs" />
+    <Compile Include="Editor\JSON\ObjectModel\ObjectModelFile.cs" />
+    <Compile Include="Editor\JSON\Others\PromptMessageListFile.cs" />
+    <Compile Include="Editor\JSON\QuadCustomInfo\QuadCustomInfo.cs" />
+    <Compile Include="Editor\JSON\QuadCustomInfo\QuadCustomInfoList.cs" />
+    <Compile Include="Editor\JSON\QuadCustomInfo\QuadCustomInfoListFile.cs" />
+    <Compile Include="Editor\JSON\RoomModel\RoomListObj.cs" />
+    <Compile Include="Editor\JSON\RoomModel\RoomListObjFile.cs" />
+    <Compile Include="Editor\JSON\RoomModel\RoomModel.cs" />
+    <Compile Include="Editor\JSON\RoomModel\RoomModelFile.cs" />
+    <Compile Include="Editor\Lang.cs" />
+    <Compile Include="Editor\ListBoxProperty.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadPmdModel.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadPs2BinModel.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadPs2ScenarioSMD.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadPs2Tpl.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadPs4NsPackCustomQuad.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadScenarioSMD.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadTGA.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadUhdBinModel.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadUhdPackCustomQuad.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadUhdR100Custom.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadUhdScenarioSMD.cs" />
+    <Compile Include="Editor\ModelLoaderNewAge\LoadUhdTpl.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Groups\GroupType.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Groups\ModelNodeGroup.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Groups\ScenarioNodeGroup.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Groups\TexturePackNodeGroup.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Groups\TreeNodeGroup.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Itens\NodeItem.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Itens\NodeMatRef.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Itens\NodeModel.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Itens\NodeScenario.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\Itens\NodeTexture.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\ModelNodeLinker.cs" />
+    <Compile Include="Editor\ModelNodeNewAge\ModelNodeOrder.cs" />
+    <Compile Include="Editor\NewTheRender\AppModel3D.cs" />
+    <Compile Include="Editor\NewTheRender\BoundingBoxLimit.cs" />
+    <Compile Include="Editor\NewTheRender\Grid.cs" />
+    <Compile Include="Editor\NewTheRender\ModelGroupConteiner.cs" />
+    <Compile Include="Editor\NewTheRender\ObjModel3D.cs" />
+    <Compile Include="Editor\NewTheRender\RenderAppModel.cs" />
+    <Compile Include="Editor\NewTheRender\RoomInfo.cs" />
+    <Compile Include="Editor\NewTheRender\RoomSelectedObj.cs" />
+    <Compile Include="Editor\NewTheRender\RspFix.cs" />
+    <Compile Include="Editor\NewTheRender\TheRender.cs" />
+    <Compile Include="Editor\Program.cs" />
+    <Compile Include="Editor\Re4ViewerRender\RenderOrder.cs" />
+    <Compile Include="Editor\SplashScreen.cs" />
+    <Compile Include="Editor\Utils.cs" />
+    <Compile Include="Editor\ViewerBase\AttribLocation.cs" />
+    <Compile Include="Editor\ViewerBase\Boundary.cs" />
+    <Compile Include="Editor\ViewerBase\BoundaryCalculation.cs" />
+    <Compile Include="Editor\ViewerBase\GLMeshPart.cs" />
+    <Compile Include="Editor\ViewerBase\ModelGroup.cs" />
+    <Compile Include="Editor\ViewerBase\PreFix.cs" />
+    <Compile Include="Editor\ViewerBase\RenderedObjModel.cs" />
+    <Compile Include="Editor\ViewerBase\Representations.cs" />
+    <Compile Include="Editor\ViewerBase\ResponsibilityContainer.cs" />
+    <Compile Include="Editor\ViewerBase\SmdEntry.cs" />
+    <Compile Include="Editor\ViewerBase\SmxEntry.cs" />
+    <Compile Include="Editor\ViewerBase\TextureRef.cs" />
+    <Compile Include="Editor\ViewerBase\TreatedModel.cs" />
+    <Compile Include="libs\IShader\DataShader.cs" />
+    <Compile Include="libs\IShader\IShader.cs" />
+    <Compile Include="libs\IShader\Shader.cs" />
+    <Compile Include="libs\MultiselectTree\IAltNode.cs" />
+    <Compile Include="libs\MultiselectTree\IFastNode.cs" />
+    <Compile Include="libs\MultiselectTree\MultiselectTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\Compression\DXTxRGTC.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\Constants.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\ExtensionMethods.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\ImageBinary.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.IO\EndianBinaryReader.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.IO\FileFormat.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.IO\ImageFormats\DDS.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.IO\ImageFormats\GNF.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.IO\ImageFormats\ImageFormat.cs" />
+    <Compile Include="libs\ScarletLibrary\Scarlet.IO\MagicNumberAttribute.cs" />
+    <Compile Include="libs\SimpleEndianBinaryIO\EndianBinaryReader.cs" />
+    <Compile Include="libs\SimpleEndianBinaryIO\EndianBinaryWriter.cs" />
+    <Compile Include="libs\SimpleEndianBinaryIO\EndianBitConverter.cs" />
+    <Compile Include="libs\SimpleEndianBinaryIO\Endianness.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Class\Enums\aLang.cs" />
-    <Compile Include="src\Class\Enums\ConfigFrationalSymbol.cs" />
-    <Compile Include="src\Class\Enums\EffectEntryTableID.cs" />
-    <Compile Include="src\Class\Enums\eLang.cs" />
-    <Compile Include="src\Class\Enums\GroupType.cs" />
-    <Compile Include="src\Class\Enums\ItemAuraType.cs" />
-    <Compile Include="src\Class\Enums\ObjRotationOrder.cs" />
-    <Compile Include="src\Class\Enums\MoveObjCombos.cs" />
-    <Compile Include="src\Class\Enums\MoveObjType.cs" />
-    <Compile Include="src\Class\Enums\QuadCustomPointStatus.cs" />
-    <Compile Include="src\Class\Enums\RefInteractionType.cs" />
-    <Compile Include="src\Class\Enums\EsarFileFormat.cs" />
-    <Compile Include="src\Class\Enums\SpecialFileFormat.cs" />
-    <Compile Include="src\Class\Enums\SpecialType.cs" />
-    <Compile Include="src\Class\Enums\TriggerZoneCategory.cs" />
-    <Compile Include="src\Class\FileManager.cs" />
-    <Compile Include="src\Class\Files\BaseGroup.cs" />
-    <Compile Include="src\Class\Files\BaseTriggerZoneGroup.cs" />
-    <Compile Include="src\Class\Files\ExtraGroup.cs" />
-    <Compile Include="src\Class\Files\FileEnemyEslGroup.cs" />
-    <Compile Include="src\Class\Files\FileEtcModelEtsGroup.cs" />
-    <Compile Include="src\Class\Files\FileQuadCustomGroup.cs" />
-    <Compile Include="src\Class\Files\FileSpecialGroup.cs" />
-    <Compile Include="src\Class\Files\File_CAM_Group.cs" />
-    <Compile Include="src\Class\Files\File_DSE_Group.cs" />
-    <Compile Include="src\Class\Files\File_EFFBLOB_Group.cs" />
-    <Compile Include="src\Class\Files\File_EMI_Group.cs" />
-    <Compile Include="src\Class\Files\File_ESAR_Group.cs" />
-    <Compile Include="src\Class\Files\File_ESE_Group.cs" />
-    <Compile Include="src\Class\Files\File_FSE_Group.cs" />
-    <Compile Include="src\Class\Files\File_LIT_Group.cs" />
-    <Compile Include="src\Class\Interfaces\IChangeAmountIndexFix.cs" />
-    <Compile Include="src\Class\Interfaces\IDisplay.cs" />
-    <Compile Include="src\Class\Interfaces\INodeChangeAmount.cs" />
-    <Compile Include="src\Class\Interfaces\IInternalID.cs" />
-    <Compile Include="src\Class\KeysCheck.cs" />
-    <Compile Include="src\Class\MoveObj.cs" />
-    <Compile Include="src\Class\MultiSelectionObjects.cs" />
-    <Compile Include="src\Class\MyProperty\BaseProperty.cs" />
-    <Compile Include="src\Class\MyProperty\BaseTriggerZoneProperty.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\AllowInMultiSelectAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\DecNegativeNumberAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\DecNumberAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\FloatNumberAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\HexNumberAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\NoKeyAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomCollection\GenericCollection.cs" />
-    <Compile Include="src\Class\MyProperty\CustomCollection\GenericCollectionPropertyDescriptor.cs" />
-    <Compile Include="src\Class\MyProperty\CustomCollection\GenericTypeConverter.cs" />
-    <Compile Include="src\Class\MyProperty\CustomTypeConverter\ByteArrayTypeConverter.cs" />
-    <Compile Include="src\Class\MyProperty\CustomTypeConverter\DecNumberTypeConverter.cs" />
-    <Compile Include="src\Class\MyProperty\CustomTypeConverter\NoneTypeConverter.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\EnemyEnableGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\EnemyIDGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomTypeConverter\FloatNumberTypeConverter.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\EtcModelIDGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\PromptMessageGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\QuadCustomModelIDGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\QuadCustomPointStatusGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\RefObjTypeGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\GridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomTypeConverter\HexNumberTypeConverter.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\HexFloatEnableGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\ItemAuraTypeGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\ItemIDGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\MultiSelectUITypeEditor.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\NoneUITypeEditor.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\SpecialTypeGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\ForGridComboBox\SpecialZoneCategoryGridComboBox.cs" />
-    <Compile Include="src\Class\MyProperty\CustomUITypeEditor\SelectColorUITypeEditor.cs" />
-    <Compile Include="src\Class\MyProperty\DynamicTypeDescriptor\CustomComponentModel.cs" />
-    <Compile Include="src\Class\MyProperty\DynamicTypeDescriptor\DynamicTypeDescriptor.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_DSE_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_EMI_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_ESAR_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_ESE_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_FSE_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_LIT_Entry_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NewAge_LIT_Group_Property.cs" />
-    <Compile Include="src\Class\MyProperty\NoneProperty.cs" />
-    <Compile Include="src\Class\MyProperty\QuadCustomProperty.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table4_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table2_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table3_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table1_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_TableEffectEntry_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_TableEffectGroup_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table9_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table6_Property.cs" />
-    <Compile Include="src\Class\MyProperty\_EFF_Property\EFF_Table0_Property.cs" />
-    <Compile Include="src\Class\ObjForListBox.cs" />
-    <Compile Include="src\Class\Enums\Re4Version.cs" />
-    <Compile Include="src\Class\ObjMethods\BaseMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\BaseTriggerZoneMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\BaseTriggerZoneMethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\EnemyMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\EtcModelMethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\EtcModelMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\CustomDelegates.cs" />
-    <Compile Include="src\Class\ObjMethods\EnemyMethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\ExtrasMethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_DSE_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_EFF_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_EMI_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_EMI_MethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_ESAR_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_ESAR_MethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_ESE_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_ESE_MethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_FSE_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_FSE_MethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_LIT_Entry_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_LIT_Entry_MethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_LIT_Group_Methods.cs" />
-    <Compile Include="src\Class\ObjMethods\NewAge_LIT_Group_MethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\NodeChangeAmountCallbackMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\NodeChangeAmountMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\NodeDisplayMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\NodeMoveMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\QuadCustomMethods.cs" />
-    <Compile Include="src\Class\ObjMethods\QuadCustomMethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\SpecialMethodsForGL.cs" />
-    <Compile Include="src\Class\ObjMethods\SpecialMethods.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\CustomCategoryAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\CustomDescriptionAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\CustomAttribute\CustomDisplayNameAttribute.cs" />
-    <Compile Include="src\Class\MyProperty\EnemyProperty.cs" />
-    <Compile Include="src\Class\MyProperty\EtcModelProperty.cs" />
-    <Compile Include="src\Class\MyProperty\GenericProperty.cs" />
-    <Compile Include="src\Class\MyProperty\MultiSelectProperty.cs" />
-    <Compile Include="src\Class\MyProperty\SpecialProperty.cs" />
-    <Compile Include="src\Class\ObjMethods\UpdateMethods.cs" />
-    <Compile Include="src\Class\TreeNodeObj\EnemyNodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\EtcModelNodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\ExtraNodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_EFF_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_LIT_Entrys_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_LIT_Groups_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\Object3D.cs" />
-    <Compile Include="src\Class\TreeNodeObj\QuadCustomNodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\SpecialNodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\TreeNodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_DSE_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_EMI_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_ESAR_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_ESE_NodeGroup.cs" />
-    <Compile Include="src\Class\TreeNodeObj\NewAge_FSE_NodeGroup.cs" />
-    <Compile Include="src\Consts.cs" />
-    <Compile Include="src\Controls\Advertising2Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="src\Controls\Advertising2Control.Designer.cs">
-      <DependentUpon>Advertising2Control.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Controls\Advertising1Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="src\Controls\Advertising1Control.Designer.cs">
-      <DependentUpon>Advertising1Control.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Controls\CameraMoveControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="src\Controls\CameraMoveControl.Designer.cs">
-      <DependentUpon>CameraMoveControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Controls\ObjectMoveControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="src\Controls\ObjectMoveControl.Designer.cs">
-      <DependentUpon>ObjectMoveControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\DataBase.cs" />
-    <Compile Include="src\Forms\AddNewObjForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\AddNewObjForm.Designer.cs">
-      <DependentUpon>AddNewObjForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\CameraForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\CameraForm.Designer.cs">
-      <DependentUpon>CameraForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\CreditsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\CreditsForm.Designer.cs">
-      <DependentUpon>CreditsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\MultiSelectEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\MultiSelectEditorForm.Designer.cs">
-      <DependentUpon>MultiSelectEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\OptionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\OptionsForm.Designer.cs">
-      <DependentUpon>OptionsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\SearchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\SearchForm.Designer.cs">
-      <DependentUpon>SearchForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\SelectRoomForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\SelectRoomForm.Designer.cs">
-      <DependentUpon>SelectRoomForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Forms\SplashScreenForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="src\Forms\SplashScreenForm.Designer.cs">
-      <DependentUpon>SplashScreenForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="src\Globals.cs" />
-    <Compile Include="src\Lang.cs" />
-    <Compile Include="src\ListBoxProperty.cs" />
-    <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\SplashScreen.cs" />
-    <Compile Include="src\Utils.cs" />
+    <Compile Include="Tools\2007\ScenarioSMD2007\SmdExtract.cs" />
+    <Compile Include="Tools\General\DDS_LIB\DDSReaderSharp.cs" />
+    <Compile Include="Tools\General\EFF_FILE\Extract.cs" />
+    <Compile Include="Tools\General\EFF_FILE\Join.cs" />
+    <Compile Include="Tools\General\EFF_FILE\Separate.cs" />
+    <Compile Include="Tools\General\LoadSMX\LoadSMX.cs" />
+    <Compile Include="Tools\General\PMD_LIB\PMD.cs" />
+    <Compile Include="Tools\General\PMD_LIB\PmdDecoder.cs" />
+    <Compile Include="Tools\General\SMX\SMX.cs" />
+    <Compile Include="Tools\General\SMX\SMXextract.cs" />
+    <Compile Include="Tools\General\TGA_LIB\TGASharpLib.cs" />
+    <Compile Include="Tools\PS2\Ps2ScenarioSMD\Ps2ScenarioExtract.cs" />
+    <Compile Include="Tools\PS2\PS2_BIN\BINdecoder.cs" />
+    <Compile Include="Tools\PS2\PS2_BIN\MaterialPart.cs" />
+    <Compile Include="Tools\PS2\PS2_BIN\PS2BIN.cs" />
+    <Compile Include="Tools\PS2\PS2_TPL\SimpleBitmap.cs" />
+    <Compile Include="Tools\PS2\PS2_TPL\TplExtractHeaders.cs" />
+    <Compile Include="Tools\PS2\PS2_TPL\TplImage.cs" />
+    <Compile Include="Tools\PS2\PS2_TPL\TplImageHeader.cs" />
+    <Compile Include="Tools\UHD\UhdScenarioSMD\UhdSmdExtract.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\CONSTs.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\HeaderExtension.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\MaterialPart.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdBIN.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdBinDecoder.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdTPL.cs" />
+    <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdTplDecoder.cs" />
+    <EmbeddedResource Include="Editor\controls\Advertising1Control.resx">
+      <DependentUpon>Advertising1Control.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\controls\Advertising2Control.resx">
+      <DependentUpon>Advertising2Control.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\controls\CameraMoveControl.resx">
+      <DependentUpon>CameraMoveControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\controls\ObjectMoveControl.resx">
+      <DependentUpon>ObjectMoveControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\AddNewObjForm.resx">
+      <DependentUpon>AddNewObjForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\CameraForm.resx">
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\CreditsForm.resx">
+      <DependentUpon>CreditsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\MultiSelectEditorForm.resx">
+      <DependentUpon>MultiSelectEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\SelectRoomForm.resx">
+      <DependentUpon>SelectRoomForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\SplashScreenForm.resx">
+      <DependentUpon>SplashScreenForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="src\Controls\Advertising2Control.resx">
-      <DependentUpon>Advertising2Control.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Controls\Advertising1Control.resx">
-      <DependentUpon>Advertising1Control.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Controls\CameraMoveControl.resx">
-      <DependentUpon>CameraMoveControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Controls\ObjectMoveControl.resx">
-      <DependentUpon>ObjectMoveControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\AddNewObjForm.resx">
-      <DependentUpon>AddNewObjForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\CameraForm.resx">
-      <DependentUpon>CameraForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\CreditsForm.resx">
-      <DependentUpon>CreditsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\MultiSelectEditorForm.resx">
-      <DependentUpon>MultiSelectEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\OptionsForm.resx">
-      <DependentUpon>OptionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\SearchForm.resx">
-      <DependentUpon>SearchForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\SelectRoomForm.resx">
-      <DependentUpon>SelectRoomForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\Forms\SplashScreenForm.resx">
-      <DependentUpon>SplashScreenForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <None Include="Editor\Camera\Camera.projitems" />
+    <None Include="Editor\Camera\CameraNewAge.shproj" />
+    <None Include="Editor\ControlUtils\ControlUtils.projitems" />
+    <None Include="Editor\ControlUtils\ControlUtils.shproj" />
+    <None Include="Editor\JSON\JSON.projitems" />
+    <None Include="Editor\JSON\JSON.shproj" />
+    <None Include="Editor\ModelLoaderNewAge\ModelLoaderNewAge.projitems" />
+    <None Include="Editor\ModelLoaderNewAge\ModelLoaderNewAge.shproj" />
+    <None Include="Editor\ModelNodeNewAge\ModelNodeNewAge.projitems" />
+    <None Include="Editor\ModelNodeNewAge\ModelNodeNewAge.shproj" />
+    <None Include="Editor\NewTheRender\NewAgeTheRender.shproj" />
+    <None Include="Editor\NewTheRender\NewTheRender.projitems" />
+    <None Include="Editor\Re4ViewerRender\Re4ViewerRender.projitems" />
+    <None Include="Editor\Re4ViewerRender\Re4ViewerRender.shproj" />
+    <None Include="Editor\ViewerBase\ViewerBase.projitems" />
+    <None Include="Editor\ViewerBase\ViewerBase.shproj" />
+    <None Include="libs\IShader\IShader.projitems" />
+    <None Include="libs\IShader\IShader.shproj" />
+    <None Include="libs\MultiselectTree\MultiselectTree.projitems" />
+    <None Include="libs\MultiselectTree\MultiselectTree.shproj" />
+    <None Include="libs\ScarletLibrary\LICENSE.md" />
+    <None Include="libs\ScarletLibrary\ScarletLibrary.projitems" />
+    <None Include="libs\ScarletLibrary\ScarletLibrary.shproj" />
+    <None Include="libs\SimpleEndianBinaryIO\LICENSE.md" />
+    <None Include="libs\SimpleEndianBinaryIO\SimpleEndianBinaryIO.projitems" />
+    <None Include="libs\SimpleEndianBinaryIO\SimpleEndianBinaryIO.shproj" />
+    <None Include="libs\SimpleEndianBinaryIO\version.md" />
+    <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\.signature.p7s" />
+    <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\LICENSE.md" />
+    <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\Newtonsoft.Json.13.0.3.nupkg" />
+    <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\README.md" />
+    <None Include="libs\ThirdParty\OpenTK.3.3.3\.signature.p7s" />
+    <None Include="libs\ThirdParty\OpenTK.3.3.3\content\OpenTK.dll.config" />
+    <None Include="libs\ThirdParty\OpenTK.3.3.3\OpenTK.3.3.3.nupkg" />
+    <None Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\.signature.p7s" />
+    <None Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\OpenTK.GLControl.3.3.3.nupkg" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -411,12 +565,61 @@
     <None Include="Resources\Shader\RoomShaderVert.vert" />
     <None Include="Resources\Shader\TriggerZoneShaderFrag.frag" />
     <None Include="Resources\Shader\TriggerZoneShaderVert.vert" />
+    <None Include="Tools\2007\ScenarioSMD2007\ScenarioSMD2007.projitems" />
+    <None Include="Tools\2007\ScenarioSMD2007\ScenarioSMD2007.shproj" />
+    <None Include="Tools\General\DDS_LIB\DDS_LIB.projitems" />
+    <None Include="Tools\General\DDS_LIB\DDS_LIB.shproj" />
+    <None Include="Tools\General\EFF_FILE\EFF_FILE.projitems" />
+    <None Include="Tools\General\EFF_FILE\EFF_FILE.shproj" />
+    <None Include="Tools\General\LoadSMX\LoadSMX.projitems" />
+    <None Include="Tools\General\LoadSMX\LoadSMX.shproj" />
+    <None Include="Tools\General\PMD_LIB\PMD_LIB.projitems" />
+    <None Include="Tools\General\PMD_LIB\PMD_LIB.shproj" />
+    <None Include="Tools\General\SMX\SMX.projitems" />
+    <None Include="Tools\General\SMX\SMX.shproj" />
+    <None Include="Tools\General\TGA_LIB\TGA_LIB.projitems" />
+    <None Include="Tools\General\TGA_LIB\TGA_LIB.shproj" />
+    <None Include="Tools\PS2\Ps2ScenarioSMD\Ps2ScenarioSMD.projitems" />
+    <None Include="Tools\PS2\Ps2ScenarioSMD\Ps2ScenarioSMD.shproj" />
+    <None Include="Tools\PS2\PS2_BIN\PS2_BIN.projitems" />
+    <None Include="Tools\PS2\PS2_BIN\PS2_BIN.shproj" />
+    <None Include="Tools\PS2\PS2_TPL\PS2_TPL.projitems" />
+    <None Include="Tools\PS2\PS2_TPL\PS2_TPL.shproj" />
+    <None Include="Tools\UHD\UhdScenarioSMD\UhdScenarioSMD.projitems" />
+    <None Include="Tools\UHD\UhdScenarioSMD\UhdScenarioSMD.shproj" />
+    <None Include="Tools\UHD\UHD_BIN_TPL\UHD_BIN_TPL.projitems" />
+    <None Include="Tools\UHD\UHD_BIN_TPL\UHD_BIN_TPL.shproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net20\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net20\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net35\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net35\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net40\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net40\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net6.0\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net6.0\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\netstandard1.0\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\netstandard1.0\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\netstandard1.3\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\netstandard1.3\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\netstandard2.0\Newtonsoft.Json.dll" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\netstandard2.0\Newtonsoft.Json.xml" />
+    <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\packageIcon.png" />
+    <Content Include="libs\ThirdParty\OpenTK.3.3.3\lib\net20\OpenTK.dll" />
+    <Content Include="libs\ThirdParty\OpenTK.3.3.3\lib\net20\OpenTK.pdb" />
+    <Content Include="libs\ThirdParty\OpenTK.3.3.3\lib\net20\OpenTK.xml" />
+    <Content Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.dll" />
+    <Content Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.pdb" />
+    <Content Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.xml" />
+    <Content Include="Tools\General\DDS_LIB\Credit.txt" />
+    <Content Include="Tools\General\TGA_LIB\Credit.txt" />
     <None Include="Resources\ImgGL\WhiteTexture.png" />
     <None Include="Resources\ImgGL\Transparent.png" />
     <None Include="Resources\ImgGL\NoTexture.png" />
@@ -430,29 +633,6 @@
     <None Include="Resources\ImgControl\HorizontalYelow.png" />
     <None Include="Resources\ImgControl\HorizontalDisable.png" />
   </ItemGroup>
-  <Import Project="..\PMD_LIB\PMD_LIB.projitems" Label="Shared" />
-  <Import Project="..\TGA_LIB\TGA_LIB.projitems" Label="Shared" />
-  <Import Project="..\JSON\JSON.projitems" Label="Shared" />
-  <Import Project="..\MultiselectTree\MultiselectTree.projitems" Label="Shared" />
-  <Import Project="..\Camera\Camera.projitems" Label="Shared" />
-  <Import Project="..\DDS_LIB\DDS_LIB.projitems" Label="Shared" />
-  <Import Project="..\PS2_BIN\PS2_BIN.projitems" Label="Shared" />
-  <Import Project="..\PS2_TPL\PS2_TPL.projitems" Label="Shared" />
-  <Import Project="..\Ps2ScenarioSMD\Ps2ScenarioSMD.projitems" Label="Shared" />
-  <Import Project="..\ScenarioSMD2007\ScenarioSMD2007.projitems" Label="Shared" />
-  <Import Project="..\SMX\SMX.projitems" Label="Shared" />
-  <Import Project="..\UHD_BIN_TPL\UHD_BIN_TPL.projitems" Label="Shared" />
-  <Import Project="..\UhdScenarioSMD\UhdScenarioSMD.projitems" Label="Shared" />
-  <Import Project="..\ViewerBase\ViewerBase.projitems" Label="Shared" />
-  <Import Project="..\LoadSMX\LoadSMX.projitems" Label="Shared" />
-  <Import Project="..\ModelLoaderNewAge\ModelLoaderNewAge.projitems" Label="Shared" />
-  <Import Project="..\ModelNodeNewAge\ModelNodeNewAge.projitems" Label="Shared" />
-  <Import Project="..\IShader\IShader.projitems" Label="Shared" />
-  <Import Project="..\NewTheRender\NewTheRender.projitems" Label="Shared" />
-  <Import Project="..\Re4ViewerRender\Re4ViewerRender.projitems" Label="Shared" />
-  <Import Project="..\ControlUtils\ControlUtils.projitems" Label="Shared" />
-  <Import Project="..\ScarletLibrary\ScarletLibrary.projitems" Label="Shared" />
-  <Import Project="..\SimpleEndianBinaryIO\SimpleEndianBinaryIO.projitems" Label="Shared" />
-  <Import Project="..\EFF_FILE\EFF_FILE.projitems" Label="Shared" />
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
