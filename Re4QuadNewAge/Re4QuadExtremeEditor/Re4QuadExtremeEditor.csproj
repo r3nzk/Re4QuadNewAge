@@ -386,6 +386,7 @@
     <Compile Include="Editor\ViewerBase\SmxEntry.cs" />
     <Compile Include="Editor\ViewerBase\TextureRef.cs" />
     <Compile Include="Editor\ViewerBase\TreatedModel.cs" />
+    <Compile Include="libs\DDS_LIB\DDSReaderSharp.cs" />
     <Compile Include="libs\IShader\DataShader.cs" />
     <Compile Include="libs\IShader\IShader.cs" />
     <Compile Include="libs\IShader\Shader.cs" />
@@ -394,6 +395,8 @@
     <Compile Include="libs\MultiselectTree\MultiselectTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="libs\PMD_LIB\PMD.cs" />
+    <Compile Include="libs\PMD_LIB\PmdDecoder.cs" />
     <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\Compression\DXTxRGTC.cs" />
     <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\Constants.cs" />
     <Compile Include="libs\ScarletLibrary\Scarlet.Drawing\ExtensionMethods.cs" />
@@ -408,6 +411,7 @@
     <Compile Include="libs\SimpleEndianBinaryIO\EndianBinaryWriter.cs" />
     <Compile Include="libs\SimpleEndianBinaryIO\EndianBitConverter.cs" />
     <Compile Include="libs\SimpleEndianBinaryIO\Endianness.cs" />
+    <Compile Include="libs\TGA_LIB\TGASharpLib.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -415,16 +419,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\2007\ScenarioSMD2007\SmdExtract.cs" />
-    <Compile Include="Tools\General\DDS_LIB\DDSReaderSharp.cs" />
     <Compile Include="Tools\General\EFF_FILE\Extract.cs" />
     <Compile Include="Tools\General\EFF_FILE\Join.cs" />
     <Compile Include="Tools\General\EFF_FILE\Separate.cs" />
     <Compile Include="Tools\General\LoadSMX\LoadSMX.cs" />
-    <Compile Include="Tools\General\PMD_LIB\PMD.cs" />
-    <Compile Include="Tools\General\PMD_LIB\PmdDecoder.cs" />
     <Compile Include="Tools\General\SMX\SMX.cs" />
     <Compile Include="Tools\General\SMX\SMXextract.cs" />
-    <Compile Include="Tools\General\TGA_LIB\TGASharpLib.cs" />
     <Compile Include="Tools\PS2\Ps2ScenarioSMD\Ps2ScenarioExtract.cs" />
     <Compile Include="Tools\PS2\PS2_BIN\BINdecoder.cs" />
     <Compile Include="Tools\PS2\PS2_BIN\MaterialPart.cs" />
@@ -501,10 +501,14 @@
     <None Include="Editor\Re4ViewerRender\Re4ViewerRender.shproj" />
     <None Include="Editor\ViewerBase\ViewerBase.projitems" />
     <None Include="Editor\ViewerBase\ViewerBase.shproj" />
+    <None Include="libs\DDS_LIB\DDS_LIB.projitems" />
+    <None Include="libs\DDS_LIB\DDS_LIB.shproj" />
     <None Include="libs\IShader\IShader.projitems" />
     <None Include="libs\IShader\IShader.shproj" />
     <None Include="libs\MultiselectTree\MultiselectTree.projitems" />
     <None Include="libs\MultiselectTree\MultiselectTree.shproj" />
+    <None Include="libs\PMD_LIB\PMD_LIB.projitems" />
+    <None Include="libs\PMD_LIB\PMD_LIB.shproj" />
     <None Include="libs\ScarletLibrary\LICENSE.md" />
     <None Include="libs\ScarletLibrary\ScarletLibrary.projitems" />
     <None Include="libs\ScarletLibrary\ScarletLibrary.shproj" />
@@ -512,6 +516,8 @@
     <None Include="libs\SimpleEndianBinaryIO\SimpleEndianBinaryIO.projitems" />
     <None Include="libs\SimpleEndianBinaryIO\SimpleEndianBinaryIO.shproj" />
     <None Include="libs\SimpleEndianBinaryIO\version.md" />
+    <None Include="libs\TGA_LIB\TGA_LIB.projitems" />
+    <None Include="libs\TGA_LIB\TGA_LIB.shproj" />
     <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\.signature.p7s" />
     <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\LICENSE.md" />
     <None Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\Newtonsoft.Json.13.0.3.nupkg" />
@@ -567,18 +573,12 @@
     <None Include="Resources\Shader\TriggerZoneShaderVert.vert" />
     <None Include="Tools\2007\ScenarioSMD2007\ScenarioSMD2007.projitems" />
     <None Include="Tools\2007\ScenarioSMD2007\ScenarioSMD2007.shproj" />
-    <None Include="Tools\General\DDS_LIB\DDS_LIB.projitems" />
-    <None Include="Tools\General\DDS_LIB\DDS_LIB.shproj" />
     <None Include="Tools\General\EFF_FILE\EFF_FILE.projitems" />
     <None Include="Tools\General\EFF_FILE\EFF_FILE.shproj" />
     <None Include="Tools\General\LoadSMX\LoadSMX.projitems" />
     <None Include="Tools\General\LoadSMX\LoadSMX.shproj" />
-    <None Include="Tools\General\PMD_LIB\PMD_LIB.projitems" />
-    <None Include="Tools\General\PMD_LIB\PMD_LIB.shproj" />
     <None Include="Tools\General\SMX\SMX.projitems" />
     <None Include="Tools\General\SMX\SMX.shproj" />
-    <None Include="Tools\General\TGA_LIB\TGA_LIB.projitems" />
-    <None Include="Tools\General\TGA_LIB\TGA_LIB.shproj" />
     <None Include="Tools\PS2\Ps2ScenarioSMD\Ps2ScenarioSMD.projitems" />
     <None Include="Tools\PS2\Ps2ScenarioSMD\Ps2ScenarioSMD.shproj" />
     <None Include="Tools\PS2\PS2_BIN\PS2_BIN.projitems" />
@@ -595,6 +595,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="libs\DDS_LIB\Credit.txt" />
+    <Content Include="libs\TGA_LIB\Credit.txt" />
     <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net20\Newtonsoft.Json.dll" />
     <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net20\Newtonsoft.Json.xml" />
     <Content Include="libs\ThirdParty\Newtonsoft.Json.13.0.3\lib\net35\Newtonsoft.Json.dll" />
@@ -618,8 +620,6 @@
     <Content Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.dll" />
     <Content Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.pdb" />
     <Content Include="libs\ThirdParty\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.xml" />
-    <Content Include="Tools\General\DDS_LIB\Credit.txt" />
-    <Content Include="Tools\General\TGA_LIB\Credit.txt" />
     <None Include="Resources\ImgGL\WhiteTexture.png" />
     <None Include="Resources\ImgGL\Transparent.png" />
     <None Include="Resources\ImgGL\NoTexture.png" />
