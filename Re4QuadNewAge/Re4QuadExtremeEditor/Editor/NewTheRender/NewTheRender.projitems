@@ -12,7 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BoundingBoxLimit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Grid.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ModelGroupConteiner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ModelGroupContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjModel3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderAppModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoomInfo.cs" />

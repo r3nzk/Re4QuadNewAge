@@ -1,29 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using NsCamera;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Re4QuadExtremeEditor.Editor;
 using Re4QuadExtremeEditor.Editor.Class;
-using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
-using Re4QuadExtremeEditor.Editor.Forms;
 using Re4QuadExtremeEditor.Editor.Class.Enums;
+using Re4QuadExtremeEditor.Editor.Class.Files;
 using Re4QuadExtremeEditor.Editor.Class.MyProperty;
+using Re4QuadExtremeEditor.Editor.Class.MyProperty._EFF_Property;
 using Re4QuadExtremeEditor.Editor.Class.MyProperty.CustomAttribute;
 using Re4QuadExtremeEditor.Editor.Class.ObjMethods;
-using Re4QuadExtremeEditor.Editor.Class.Files;
 using Re4QuadExtremeEditor.Editor.Class.Shaders;
+using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
 using Re4QuadExtremeEditor.Editor.Controls;
-using Re4QuadExtremeEditor.Editor.Class.MyProperty._EFF_Property;
-using NsCamera;
-using System.IO;
+using Re4QuadExtremeEditor.Editor.Forms;
 using SimpleEndianBinaryIO;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace Re4QuadExtremeEditor
@@ -31,19 +32,17 @@ namespace Re4QuadExtremeEditor
     public partial class MainForm : Form
     {
         GLControl glControl;
-        readonly Timer myTimer = new Timer();
+        readonly System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
 
         CameraMoveControl cameraMove;
         ObjectMoveControl objectMove;
-        Advertising1Control advertising1Control;
-        Advertising2Control advertising2Control;
 
         #region Camera // variaveis para a camera
         Camera camera = new Camera();
         Matrix4 camMtx = Matrix4.Identity;
         Matrix4 ProjMatrix;
         // movimentação da camera
-        bool isShiftDown = false, isControlDown = false, isSpaceDown = false;
+        bool isShiftDown = false, isControlDown = false, isQDown = false, isEDown = false;
         bool isMouseDown = false, isMouseMove = false;
         bool isWDown = false, isSDown = false, isADown = false, isDDown = false;
         //movimentação camera no glControl
@@ -61,8 +60,6 @@ namespace Re4QuadExtremeEditor
 
         public MainForm()
         {
-            SplashScreen.StartSplashScreen();
-
             InitializeComponent();
             propertyGridObjs.SelectedItemWithFocusBackColor = Color.FromArgb(0x70, 0xBB, 0xDB);
             propertyGridObjs.SelectedItemWithFocusForeColor = Color.Black;
@@ -70,7 +67,7 @@ namespace Re4QuadExtremeEditor
             treeViewObjs.Font = Globals.TreeNodeFontText;
 
             propertyGridObjs.SelectedObject = none;
-            DataBase.SelectedNodes = treeViewObjs.SelectedNodes; // vinculo de referencia entra as listas
+            DataBase.SelectedNodes = treeViewObjs.SelectedNodes;
 
             glControl = new OpenTK.GLControl();
             glControl.Dock = DockStyle.Fill;
@@ -92,39 +89,23 @@ namespace Re4QuadExtremeEditor
 
             camera.getSelectedObject = getSelectedObject;
 
+            buildTreeView();
+
             cameraMove = new CameraMoveControl(ref camera, UpdateGL, UpdateCameraMatrix);
             cameraMove.Location = new Point(splitContainerRight.Panel2.Width - cameraMove.Width, 0);
             cameraMove.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
             cameraMove.Name = "cameraMove";
             cameraMove.TabIndex = 998;
             cameraMove.TabStop = false;
-           
+
             objectMove = new ObjectMoveControl(ref camera, UpdateGL, UpdateCameraMatrix, UpdatePropertyGrid, UpdateTreeViewObjs);
             objectMove.Location = new Point(0, 0);
             objectMove.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
             objectMove.Name = "objectMove";
             objectMove.TabIndex = 995;
             objectMove.TabStop = false;
-           
-            advertising1Control = new Advertising1Control();
-            advertising1Control.Location = new Point(0, 0);
-            advertising1Control.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            advertising1Control.Name = "advertising1Control";
-            advertising1Control.TabIndex = 997;
-            advertising1Control.TabStop = false;
-            advertising1Control.Hide();
-
-            advertising2Control = new Advertising2Control();
-            advertising2Control.Location = new Point(0, 0);
-            advertising2Control.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            advertising2Control.Name = "advertising2Control";
-            advertising2Control.TabIndex = 996;
-            advertising2Control.TabStop = false;
-            advertising2Control.Hide();
 
             splitContainerRight.Panel2.Controls.Add(cameraMove);
-            splitContainerRight.Panel2.Controls.Add(advertising1Control);
-            splitContainerRight.Panel2.Controls.Add(advertising2Control);
             splitContainerRight.Panel2.Controls.Add(objectMove);
             enable_splitContainerRight_Panel2_Resize = true;
 
@@ -137,28 +118,27 @@ namespace Re4QuadExtremeEditor
             camMtx = camera.GetViewMatrix();
             ProjMatrix = ReturnNewProjMatrix();
 
-            // todos os metodos listados abaixos, tem que seguir a sequencia abaixo, se não dara erro.
+            updateMethods = new UpdateMethods();
+            updateMethods.UpdateGL = UpdateGL;
+            updateMethods.UpdatePropertyGrid = UpdatePropertyGrid;
+            updateMethods.UpdateTreeViewObjs = UpdateTreeViewObjs;
+            updateMethods.UpdateMoveObjSelection = objectMove.UpdateSelection;
+            updateMethods.UpdateOrbitCamera = UpdateOrbitCamera;
 
-            Lang.StartAttributeTexts();
-            Lang.StartTexts();
-
-            Editor.JSON.Configs.StartLoadConfigs();
-            Utils.StartReloadDirectoryDic();
-            Utils.StartLoadObjsInfoLists();
-            Utils.StartLoadPromptMessageList();
-            Utils.StartLoadLangFile();
-            Utils.StartEnemyExtraSegmentList();
-            Utils.StartSetListBoxsProperty();
-            Utils.StartSetListBoxsPropertybjsInfoLists();
-            if (Lang.LoadedTranslation) 
-            { 
-                StartUpdateTranslation();
-                cameraMove.StartUpdateTranslation();
-                objectMove.StartUpdateTranslation();
+            if (Globals.BackupConfigs.UseDarkTheme)
+            {
+                DarkTheme();
             }
 
-            Utils.StartCreateNodes();
-            Utils.StartExtraGroup();
+            if (Globals.BackupConfigs.UseInvertedMouseButtons)
+            {
+                MouseButtonsLeft = MouseButtons.Right;
+                MouseButtonsRight = MouseButtons.Left;
+            }
+        }
+
+        private void buildTreeView()
+        {
             treeViewObjs.Nodes.Add(DataBase.NodeESL);
             treeViewObjs.Nodes.Add(DataBase.NodeETS);
             treeViewObjs.Nodes.Add(DataBase.NodeITA);
@@ -181,31 +161,7 @@ namespace Re4QuadExtremeEditor
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table6);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table7_Effect_0);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table8_Effect_1);
-            treeViewObjs.Nodes.Add(DataBase.NodeEFF_EffectEntry);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table9);
-
-            updateMethods = new UpdateMethods();
-            updateMethods.UpdateGL = UpdateGL;
-            updateMethods.UpdatePropertyGrid = UpdatePropertyGrid;
-            updateMethods.UpdateTreeViewObjs = UpdateTreeViewObjs;
-            updateMethods.UpdateMoveObjSelection = objectMove.UpdateSelection;
-            updateMethods.UpdateOrbitCamera = UpdateOrbitCamera;
-
-            if (Globals.BackupConfigs.UseDarkerGrayTheme)
-            {
-                DarkerGrayTheme();
-            }
-
-            if (Globals.BackupConfigs.UseInvertedMouseButtons)
-            {
-                MouseButtonsLeft = MouseButtons.Right; //botão para movimentação camera
-                MouseButtonsRight = MouseButtons.Left; // botão para selecionar objeto
-            }
-
-            //apenas para testes, cria um arquivo para tradução
-            //Editor.JSON.LangFile.WriteToLangFile("SourceLang.json");
-            //int finish = 0;
-
         }
 
         #region GlControl Events
@@ -233,6 +189,7 @@ namespace Re4QuadExtremeEditor
             camera.resetMouseStuff();
             isMouseDown = false;
             isMouseMove = false;
+            Cursor.Show();
         }
 
         private void GlControl_MouseUp(object sender, MouseEventArgs e)
@@ -242,8 +199,9 @@ namespace Re4QuadExtremeEditor
                 camera.resetMouseStuff();
                 isMouseDown = false;
                 isMouseMove = false;
+                Cursor.Show();
                 camera.SaveCameraPosition();
-                if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isSpaceDown)
+                if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isQDown && !isEDown)
                 {
                     myTimer.Enabled = false;
                 }
@@ -259,6 +217,7 @@ namespace Re4QuadExtremeEditor
                 isMouseMove = true;
                 camera.SaveCameraPosition();
                 myTimer.Enabled = true;
+                Cursor.Hide();
             }       
             if (e.Button == MouseButtonsRight)
             {
@@ -445,12 +404,14 @@ namespace Re4QuadExtremeEditor
             isSDown = false;
             isADown = false;
             isDDown = false;
-            isSpaceDown = false;
+            isQDown = false;
+            isEDown = false;
             isShiftDown = false;
             isControlDown = false;
             isMouseDown = false;
             isMouseMove = false;
             myTimer.Enabled = false;
+            Cursor.Show();
         }
 
         private void GlControl_KeyUp(object sender, KeyEventArgs e)
@@ -463,9 +424,10 @@ namespace Re4QuadExtremeEditor
                 case Keys.S: isSDown = false; break;
                 case Keys.A: isADown = false; break;
                 case Keys.D: isDDown = false; break;
-                case Keys.Space: isSpaceDown = false; break;
+                case Keys.Q: isQDown = false; break;
+                case Keys.E: isEDown = false; break;
             }
-            if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isSpaceDown)
+            if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isEDown && !isQDown)
             {
                 myTimer.Enabled = false;
             }
@@ -498,8 +460,12 @@ namespace Re4QuadExtremeEditor
                     isDDown = true;
                     myTimer.Enabled = true;
                     break;
-                case Keys.Space:
-                    isSpaceDown = true;
+                case Keys.Q:
+                    isQDown = true;
+                    myTimer.Enabled = true;
+                    break;
+                case Keys.E:
+                    isEDown = true;
                     myTimer.Enabled = true;
                     break;
             }
@@ -522,34 +488,23 @@ namespace Re4QuadExtremeEditor
         {
             if (!isControlDown && camera.CamMode == Camera.CameraMode.FLY)
             {
+                //directional movement 3d viewport shortcut
                 if (isWDown)
-                {
                     camera.updateCameraToFront();
-                }
                 if (isSDown)
-                {
                     camera.updateCameraToBack();
-                }
                 if (isDDown)
-                {
                     camera.updateCameraToRight();
-                }
                 if (isADown)
-                {
                     camera.updateCameraToLeft();
-                }
 
-                if (isShiftDown)
-                {
+                //Up and Down 3d viewport shortcut
+                if (isQDown)
                     camera.updateCameraToDown();
-                }
-
-                if (isSpaceDown)
-                {
+                if (isEDown)
                     camera.updateCameraToUp();
-                }
 
-                if (isWDown || isSDown || isDDown || isADown || isShiftDown || isSpaceDown || isMouseMove)
+                if (isWDown || isSDown || isDDown || isADown || isShiftDown || isEDown || isQDown || isMouseMove)
                 {
                     camMtx = camera.GetViewMatrix();
                     glControl.Invalidate();
@@ -577,7 +532,7 @@ namespace Re4QuadExtremeEditor
                     || Globals.OpenGLVersion.StartsWith("3.2")
                     )
                 {
-                    SplashScreen.Conteiner?.Close?.Invoke();
+                    SplashScreen.Container?.Close?.Invoke();
                     this.TopMost = true;
                     MessageBox.Show(
                         "Error: You have an outdated version of OpenGL, which is not supported by this program." +
@@ -593,7 +548,7 @@ namespace Re4QuadExtremeEditor
             }
             catch (Exception ex)
             {
-                SplashScreen.Conteiner?.Close?.Invoke();
+                SplashScreen.Container?.Close?.Invoke();
                 this.TopMost = true;
                 MessageBox.Show(
                       "Error: " +
@@ -608,6 +563,8 @@ namespace Re4QuadExtremeEditor
 
             if (theAppLoadedWell)
             {
+                SplashScreen.Container?.SetProgress(110);
+
                 GL.Viewport(0, 0, glControl.Width, glControl.Height);
                 GL.ClearColor(Globals.SkyColor);
 
@@ -620,10 +577,14 @@ namespace Re4QuadExtremeEditor
 
                 glControl.SwapBuffers();
 
-                SplashScreen.Conteiner?.Close?.Invoke();
-                // faz a janela ficar no topo
+                SplashScreen.Container?.Close?.Invoke();
+                // make window go to top temporarely
                 this.TopMost = true;
                 this.TopMost = false;
+
+                //force maximize
+                if (Globals.BackupConfigs.MaximizeEditorOnStartup)
+                this.WindowState = FormWindowState.Maximized;
             }
 
         }
@@ -5019,8 +4980,12 @@ namespace Re4QuadExtremeEditor
             }
         }
 
-        #endregion
+        private void splitContainerRight_Panel1_Paint(object sender, PaintEventArgs e)
+        {
 
+        }
+
+        #endregion
 
         #region MainForm events/ metodos
 
@@ -5032,70 +4997,52 @@ namespace Re4QuadExtremeEditor
             {
                 int painel2Width = splitContainerRight.Panel2.Width;
                 int quite = painel2Width / 2;
-
-                int adWidth = advertising1Control.Width;
-                int adquite = adWidth / 2;
-
-                int ad2Width = advertising2Control.Width;
-                int ad2quite = ad2Width / 2;
-
-                if (painel2Width > 670 + advertising2Control.Width)
-                {
-                    int posX = quite - ad2quite;
-                    if (posX < 426)
-                    {
-                        posX = 426;
-                    }
-                    advertising1Control.Hide();
-                    advertising1Control.Location = new Point(painel2Width, advertising1Control.Location.Y);
-                    advertising2Control.Location = new Point(posX, advertising2Control.Location.Y);
-                    advertising2Control.Show();
-                }
-                else if (painel2Width > 670 + advertising1Control.Width)
-                {
-                    int posX = painel2Width - cameraMove.Width - advertising1Control.Width;
-
-                    advertising2Control.Hide();
-                    advertising2Control.Location = new Point(painel2Width, advertising2Control.Location.Y);
-                    advertising1Control.Location = new Point(posX, advertising1Control.Location.Y);
-                    advertising1Control.Show();
-                }
-                else
-                {
-                    advertising1Control.Hide();
-                    advertising2Control.Hide();
-                    advertising1Control.Location = new Point(painel2Width, advertising1Control.Location.Y);
-                    advertising2Control.Location = new Point(painel2Width, advertising2Control.Location.Y);
-                }
             }
         }
 
-        private void DarkerGrayTheme()
+        private void DarkTheme()
         {
-            //fundo
-            treeViewObjs.BackColor = Color.LightGray;
-            propertyGridObjs.HelpBackColor = Color.LightGray;
-            propertyGridObjs.HelpBorderColor = Color.LightGray;
-            propertyGridObjs.ViewBackColor = Color.LightGray;
-            splitContainerRight.Panel2.BackColor = Color.LightGray;
-            splitContainerRight.Panel1.BackColor = Color.LightGray;
-            cameraMove.BackColor = Color.LightGray;
-            objectMove.BackColor = Color.LightGray;
+            var backgroundColor = ColorTranslator.FromHtml("#1a1a1a");
+            var textColor = Color.Gainsboro; //major texts
+            var splitterColor = Color.FromArgb(45, 45, 48); // divisor
+            var menuBackgroundColor = ColorTranslator.FromHtml("#0a0a0a");
+            var darkerTextColor = ColorTranslator.FromHtml("#a1a1a1");
 
-            // bordas
-            propertyGridObjs.ViewBorderColor = Color.Silver;
-            propertyGridObjs.LineColor = Color.Silver;
-            propertyGridObjs.BackColor = Color.Silver;
-            splitContainerRight.BackColor = Color.Silver;
-            splitContainerLeft.BackColor = Color.Silver;
-            splitContainerMain.BackColor = Color.Silver;
-            propertyGridObjs.CategorySplitterColor = Color.Silver;
+            // treeView
+            treeViewObjs.BackColor = backgroundColor;
+            treeViewObjs.ForeColor = textColor;
+            Globals.NodeColorEntry = textColor;
 
-            //meu
-            menuStripMenu.BackColor = Color.DarkGray;
+            // PropertyGrid
+            propertyGridObjs.ViewBackColor = backgroundColor;
+            propertyGridObjs.ViewForeColor = textColor;
+            propertyGridObjs.LineColor = splitterColor;
+            propertyGridObjs.CategorySplitterColor = splitterColor;
+            propertyGridObjs.HelpBackColor = backgroundColor;
+            propertyGridObjs.HelpForeColor = textColor;
+            propertyGridObjs.HelpBorderColor = splitterColor;
+            propertyGridObjs.ViewBorderColor = splitterColor;
+            propertyGridObjs.BackColor = backgroundColor;
+            // Selected item
+            propertyGridObjs.SelectedItemWithFocusForeColor = textColor;
+            // Property Grid
+            try { propertyGridObjs.CategoryForeColor = darkerTextColor; } catch { } //category title
+            try { propertyGridObjs.DisabledItemForeColor = Color.Silver; } catch { } //content title
 
-            advertising1Control.SetDarkerGrayTheme();
-            advertising2Control.SetDarkerGrayTheme();
+            // Containers & splitters
+            splitContainerRight.Panel1.BackColor = backgroundColor;
+            splitContainerRight.BackColor = splitterColor;
+            splitContainerLeft.BackColor = splitterColor;
+            splitContainerMain.BackColor = splitterColor;
+
+            // Controls
+            //splitContainerRight.Panel2.BackColor = backgroundColor;
+            //cameraMove.BackColor = backgroundColor;
+            //objectMove.BackColor = backgroundColor;
+
+            //MenuStrip (topbar)
+            menuStripMenu.BackColor = menuBackgroundColor;
+            menuStripMenu.ForeColor = textColor;
         }
 
         private void StartUpdateTranslation()

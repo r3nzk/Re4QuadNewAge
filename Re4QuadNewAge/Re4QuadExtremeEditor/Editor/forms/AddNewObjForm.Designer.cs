@@ -42,17 +42,17 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelTypeInfo
             // 
             this.labelTypeInfo.AutoSize = true;
-            this.labelTypeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTypeInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTypeInfo.Location = new System.Drawing.Point(11, 7);
             this.labelTypeInfo.Name = "labelTypeInfo";
-            this.labelTypeInfo.Size = new System.Drawing.Size(267, 16);
+            this.labelTypeInfo.Size = new System.Drawing.Size(266, 16);
             this.labelTypeInfo.TabIndex = 0;
             this.labelTypeInfo.Text = "Select the type of object to be added:";
             // 
             // comboBoxType
             // 
             this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxType.Font = new System.Drawing.Font("Courier New", 9F);
+            this.comboBoxType.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.comboBoxType.FormattingEnabled = true;
             this.comboBoxType.Location = new System.Drawing.Point(10, 28);
             this.comboBoxType.Name = "comboBoxType";
@@ -61,7 +61,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             // numericUpDownAmount
             // 
-            this.numericUpDownAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownAmount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDownAmount.Location = new System.Drawing.Point(10, 57);
             this.numericUpDownAmount.Minimum = new decimal(new int[] {
             1,
@@ -80,17 +80,17 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelAmountInfo
             // 
             this.labelAmountInfo.AutoSize = true;
-            this.labelAmountInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAmountInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelAmountInfo.Location = new System.Drawing.Point(77, 60);
             this.labelAmountInfo.Name = "labelAmountInfo";
-            this.labelAmountInfo.Size = new System.Drawing.Size(164, 16);
+            this.labelAmountInfo.Size = new System.Drawing.Size(163, 16);
             this.labelAmountInfo.TabIndex = 3;
             this.labelAmountInfo.Text = "<- Amount to be added";
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCancel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCancel.Location = new System.Drawing.Point(552, 57);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(90, 23);
@@ -102,7 +102,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOK.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonOK.Location = new System.Drawing.Point(456, 57);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(90, 23);

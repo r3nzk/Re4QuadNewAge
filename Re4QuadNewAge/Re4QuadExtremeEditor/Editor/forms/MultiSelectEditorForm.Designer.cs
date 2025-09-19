@@ -60,7 +60,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.comboBoxPropertyList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxPropertyList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxPropertyList.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxPropertyList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxPropertyList.FormattingEnabled = true;
             this.comboBoxPropertyList.Location = new System.Drawing.Point(11, 26);
             this.comboBoxPropertyList.Name = "comboBoxPropertyList";
@@ -71,7 +71,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelChoiseText
             // 
             this.labelChoiseText.AutoSize = true;
-            this.labelChoiseText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelChoiseText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelChoiseText.Location = new System.Drawing.Point(8, 8);
             this.labelChoiseText.Name = "labelChoiseText";
             this.labelChoiseText.Size = new System.Drawing.Size(219, 15);
@@ -81,7 +81,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelPropertyDescriptionText
             // 
             this.labelPropertyDescriptionText.AutoSize = true;
-            this.labelPropertyDescriptionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPropertyDescriptionText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPropertyDescriptionText.Location = new System.Drawing.Point(8, 53);
             this.labelPropertyDescriptionText.Name = "labelPropertyDescriptionText";
             this.labelPropertyDescriptionText.Size = new System.Drawing.Size(139, 15);
@@ -95,7 +95,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxDescription.BackColor = System.Drawing.SystemColors.Control;
             this.textBoxDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDescription.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxDescription.HideSelection = false;
             this.textBoxDescription.Location = new System.Drawing.Point(11, 71);
             this.textBoxDescription.Multiline = true;
@@ -109,7 +109,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.checkBoxHexadecimal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxHexadecimal.AutoSize = true;
-            this.checkBoxHexadecimal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxHexadecimal.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxHexadecimal.Location = new System.Drawing.Point(11, 226);
             this.checkBoxHexadecimal.Name = "checkBoxHexadecimal";
             this.checkBoxHexadecimal.Size = new System.Drawing.Size(172, 17);
@@ -124,7 +124,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxHexadecimal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxHexadecimal.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxHexadecimal.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxHexadecimal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxHexadecimal.Location = new System.Drawing.Point(11, 249);
             this.textBoxHexadecimal.Name = "textBoxHexadecimal";
             this.textBoxHexadecimal.Size = new System.Drawing.Size(762, 21);
@@ -138,7 +138,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.checkBoxDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxDecimal.AutoSize = true;
-            this.checkBoxDecimal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDecimal.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxDecimal.Location = new System.Drawing.Point(11, 276);
             this.checkBoxDecimal.Name = "checkBoxDecimal";
             this.checkBoxDecimal.Size = new System.Drawing.Size(145, 17);
@@ -163,7 +163,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.numericUpDownSumValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDownSumValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numericUpDownSumValue.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownSumValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDownSumValue.Location = new System.Drawing.Point(10, 48);
             this.numericUpDownSumValue.Name = "numericUpDownSumValue";
             this.numericUpDownSumValue.Size = new System.Drawing.Size(364, 21);
@@ -172,7 +172,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelValueSumText
             // 
             this.labelValueSumText.AutoSize = true;
-            this.labelValueSumText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelValueSumText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelValueSumText.Location = new System.Drawing.Point(6, 26);
             this.labelValueSumText.Name = "labelValueSumText";
             this.labelValueSumText.Size = new System.Drawing.Size(127, 15);
@@ -183,7 +183,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.checkBoxProgressiveSum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxProgressiveSum.AutoSize = true;
-            this.checkBoxProgressiveSum.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxProgressiveSum.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxProgressiveSum.Location = new System.Drawing.Point(11, 325);
             this.checkBoxProgressiveSum.Name = "checkBoxProgressiveSum";
             this.checkBoxProgressiveSum.Size = new System.Drawing.Size(126, 17);
@@ -197,7 +197,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.numericUpDownDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDownDecimal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numericUpDownDecimal.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownDecimal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDownDecimal.Location = new System.Drawing.Point(11, 300);
             this.numericUpDownDecimal.Name = "numericUpDownDecimal";
             this.numericUpDownDecimal.Size = new System.Drawing.Size(762, 21);
@@ -208,7 +208,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonClose.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonClose.Location = new System.Drawing.Point(593, 426);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(180, 23);
@@ -220,7 +220,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // buttonSetValue
             // 
             this.buttonSetValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonSetValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSetValue.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSetValue.Location = new System.Drawing.Point(9, 426);
             this.buttonSetValue.Name = "buttonSetValue";
             this.buttonSetValue.Size = new System.Drawing.Size(180, 23);
@@ -233,7 +233,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.checkBoxCurrentValuePlusValueToAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxCurrentValuePlusValueToAdd.AutoSize = true;
-            this.checkBoxCurrentValuePlusValueToAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxCurrentValuePlusValueToAdd.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxCurrentValuePlusValueToAdd.Location = new System.Drawing.Point(395, 326);
             this.checkBoxCurrentValuePlusValueToAdd.Name = "checkBoxCurrentValuePlusValueToAdd";
             this.checkBoxCurrentValuePlusValueToAdd.Size = new System.Drawing.Size(204, 17);
@@ -258,7 +258,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.numericUpDownValueToAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.numericUpDownValueToAdd.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numericUpDownValueToAdd.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDownValueToAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numericUpDownValueToAdd.Location = new System.Drawing.Point(10, 48);
             this.numericUpDownValueToAdd.Name = "numericUpDownValueToAdd";
             this.numericUpDownValueToAdd.Size = new System.Drawing.Size(364, 21);
@@ -267,7 +267,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelValueSumText2
             // 
             this.labelValueSumText2.AutoSize = true;
-            this.labelValueSumText2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelValueSumText2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelValueSumText2.Location = new System.Drawing.Point(6, 26);
             this.labelValueSumText2.Name = "labelValueSumText2";
             this.labelValueSumText2.Size = new System.Drawing.Size(127, 15);

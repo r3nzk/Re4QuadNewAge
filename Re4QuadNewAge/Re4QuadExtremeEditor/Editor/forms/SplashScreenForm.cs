@@ -1,66 +1,72 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Re4QuadExtremeEditor.Editor.Forms
 {
     public partial class SplashScreenForm : Form
     {
-        private SplashScreenConteiner conteiner;
+        private SplashScreenContainer container;
 
         private bool BlockClose = true;
 
-        public SplashScreenForm(SplashScreenConteiner conteiner)
+        public SplashScreenForm(SplashScreenContainer container)
         {
-            conteiner.Close = CloseForm;
-            conteiner.ReleasedToClose = ReleasedToClose;
-            this.conteiner = conteiner;
+            this.container = container;
+            this.container.Close = CloseForm;
+            this.container.ReleasedToClose = ReleasedToClose;
+            this.container.SetStatusText = SetStatusText;
+            this.container.SetProgress = SetProgressBarValue;
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
-        private void ReleasedToClose() 
-        {
-            if (conteiner.FormIsClosed == false)
+        private void SetStatusText(string text){
+            if (splashLoadingLabel.InvokeRequired){
+                splashLoadingLabel.Invoke(new Action<string>(SetStatusText), text);
+            }
+            else{
+                splashLoadingLabel.Text = text;
+            }
+        }
+
+        private void SetProgressBarValue(int value){
+            if (splashLoadingBar.InvokeRequired)
             {
+                splashLoadingBar.Invoke(new Action<int>(SetProgressBarValue), value);
+            }
+            else
+            {
+                splashLoadingBar.Value = value;
+            }
+        }
+
+        private void ReleasedToClose(){
+            if (container.FormIsClosed == false){
                 this.Invoke(new Action(InvokedReleasedToClose));
             }
         }
 
-        private void InvokedReleasedToClose() 
-        {
+        private void InvokedReleasedToClose(){
             BlockClose = false;
         }
 
-        private void CloseForm() 
-        {
-            if (conteiner.FormIsClosed == false)
-            {
+        private void CloseForm(){
+            if (container.FormIsClosed == false){
                 this.Invoke(new Action(InvokedCloseForm));
             }
         }
 
-        private void InvokedCloseForm() 
-        {
+        private void InvokedCloseForm(){
             BlockClose = false;
             Close();
         }
 
-        private void SplashScreenForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            conteiner.FormIsClosed = true;
+        private void SplashScreenForm_FormClosed(object sender, FormClosedEventArgs e){
+            container.FormIsClosed = true;
         }
 
-        private void SplashScreenForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (BlockClose)
-            {
+        private void SplashScreenForm_FormClosing(object sender, FormClosingEventArgs e){
+            if (BlockClose){
                 e.Cancel = true;
             }
         }
@@ -72,24 +78,9 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             try { System.Diagnostics.Process.Start("explorer.exe", url); } catch (Exception) { }
         }
 
-        private void linkLabelJaderLinkBlog_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void SplashScreenForm_Load(object sender, EventArgs e)
         {
-            To("https://jaderlink.blogspot.com/");
-        }
 
-        private void linkLabelJaderLinkGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            To("https://github.com/JADERLINK");
-        }
-
-        private void linkLabelYoutubeJaderLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            To("https://www.youtube.com/@JADERLINK");
-        }
-
-        private void linkLabelDonate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            To("https://jaderlink.github.io/Donate/");
         }
     }
 }

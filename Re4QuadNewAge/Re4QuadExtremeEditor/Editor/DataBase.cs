@@ -23,11 +23,11 @@ namespace Re4QuadExtremeEditor.Editor
         public static RoomSelectedObj SelectedRoom = null;
     
         // os grupos de objetos presentes no programa
-        public static ModelGroupConteiner EnemiesModels; // modelos dos inimigos
-        public static ModelGroupConteiner ItemsModels; // modelos dos itens
-        public static ModelGroupConteiner EtcModels; // modelos da pasta "etcmodel"
-        public static ModelGroupConteiner InternalModels; // modelos proprios para o programa
-        public static ModelGroupConteiner QuadCustomModels; // QuadCustom File
+        public static ModelGroupContainer EnemiesModels; // modelos dos inimigos
+        public static ModelGroupContainer ItemsModels; // modelos dos itens
+        public static ModelGroupContainer EtcModels; // modelos da pasta "etcmodel"
+        public static ModelGroupContainer InternalModels; // modelos proprios para o programa
+        public static ModelGroupContainer QuadCustomModels; // QuadCustom File
 
 
         // Dicionarios com os ids dos objetos no jogo

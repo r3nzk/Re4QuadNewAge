@@ -27,7 +27,7 @@ namespace Re4QuadExtremeEditor.Editor
         {
             ViewerBase.TextureRef.LoadTextureLinear = NewAgeTheRender.ObjModel3D.LoadTextureLinear;
 
-            DataBase.ItemsModels = new NewAgeTheRender.ModelGroupConteiner(Consts.ItemsModelGroupName);
+            DataBase.ItemsModels = new NewAgeTheRender.ModelGroupContainer(Consts.ItemsModelGroupName);
             var ItemsObjModelJsonPaths = DataBase.ItemsIDs.List
                 .Where(x => x.Value.ObjectModel != null && x.Value.ObjectModel.Length > 0)
                 .Select(x => Path.Combine(AppContext.BaseDirectory, Consts.ItemsDirectory, DataBase.ItemsIDs.Folder, x.Value.ObjectModel))
@@ -35,7 +35,7 @@ namespace Re4QuadExtremeEditor.Editor
             DataBase.ItemsModels.AddModelObjects(ItemsObjModelJsonPaths);
 
 
-            DataBase.EtcModels = new NewAgeTheRender.ModelGroupConteiner(Consts.EtcModelGroupName);
+            DataBase.EtcModels = new NewAgeTheRender.ModelGroupContainer(Consts.EtcModelGroupName);
             var EtcModelsObjModelJsonPaths = DataBase.EtcModelIDs.List
                .Where(x => x.Value.ObjectModel != null && x.Value.ObjectModel.Length > 0)
                .Select(x => Path.Combine(AppContext.BaseDirectory, Consts.EtcModelsDirectory, DataBase.EtcModelIDs.Folder, x.Value.ObjectModel))
@@ -43,7 +43,7 @@ namespace Re4QuadExtremeEditor.Editor
             DataBase.EtcModels.AddModelObjects(EtcModelsObjModelJsonPaths);
 
 
-            DataBase.EnemiesModels = new NewAgeTheRender.ModelGroupConteiner(Consts.EnemiesModelGroupName);
+            DataBase.EnemiesModels = new NewAgeTheRender.ModelGroupContainer(Consts.EnemiesModelGroupName);
             var EnemiesObjModelJsonPaths = DataBase.EnemiesIDs.List
               .Where(x => x.Value.ObjectModel != null && x.Value.ObjectModel.Length > 0)
               .Select(x => Path.Combine(AppContext.BaseDirectory, Consts.EnemiesDirectory, DataBase.EnemiesIDs.Folder, x.Value.ObjectModel))
@@ -51,7 +51,7 @@ namespace Re4QuadExtremeEditor.Editor
             DataBase.EnemiesModels.AddModelObjects(EnemiesObjModelJsonPaths);
 
 
-            DataBase.QuadCustomModels = new NewAgeTheRender.ModelGroupConteiner(Consts.QuadCustomModelGroupName);
+            DataBase.QuadCustomModels = new NewAgeTheRender.ModelGroupContainer(Consts.QuadCustomModelGroupName);
             var QuadCustomObjModelJsonPaths = DataBase.QuadCustomIDs.List
                 .Where(x => x.Value.ObjectModel != null && x.Value.ObjectModel.Length > 0)
                 .Select(x => Path.Combine(AppContext.BaseDirectory, Consts.QuadCustomDirectory, DataBase.QuadCustomIDs.Folder, x.Value.ObjectModel))
@@ -60,7 +60,7 @@ namespace Re4QuadExtremeEditor.Editor
 
 
 
-            DataBase.InternalModels = new NewAgeTheRender.ModelGroupConteiner(Consts.InternalModelGroupName);
+            DataBase.InternalModels = new NewAgeTheRender.ModelGroupContainer(Consts.InternalModelGroupName);
             var InternalObjModelJsonPaths = (new List<string> {
             Consts.ModelKeyAshleyPoint,
             Consts.ModelKeyGrappleGunPoint,

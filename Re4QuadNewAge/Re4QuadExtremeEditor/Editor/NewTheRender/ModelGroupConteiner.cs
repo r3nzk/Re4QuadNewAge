@@ -9,7 +9,7 @@ using ViewerBase;
 
 namespace NewAgeTheRender
 {
-    public class ModelGroupConteiner
+    public class ModelGroupContainer
     {
         public string ModelGroupName { get; }
 
@@ -18,7 +18,7 @@ namespace NewAgeTheRender
         private ModelNodeGroup mng;
         private TexturePackNodeGroup tpng;
 
-        public ModelGroupConteiner(string ModelGroupName)
+        public ModelGroupContainer(string ModelGroupName)
         {
             modelGroup = new ModelGroup();
             mng = new ModelNodeGroup();

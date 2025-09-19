@@ -40,8 +40,9 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             entry["ItemRotationCalculationDivider"] = config.ItemRotationCalculationDivider;
             entry["ItemRotationCalculationMultiplier"] = config.ItemRotationCalculationMultiplier;
             entry["ItemRotationOrder"] = (int)config.ItemRotationOrder;
-            entry["UseDarkerGrayTheme"] = config.UseDarkerGrayTheme;
+            entry["UseDarkTheme"] = config.UseDarkTheme;
             entry["UseInvertedMouseButtons"] = config.UseInvertedMouseButtons;
+            entry["MaximizeEditorOnStartup"] = config.MaximizeEditorOnStartup;
             entry["LoadLangTranslation"] = config.LoadLangTranslation;
             entry["LangJsonFile"] = config.LangJsonFile;
 
@@ -226,11 +227,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                         config.ItemRotationOrder = (Class.Enums.ObjRotationOrder)value;
                     }
 
-                    if (oConfigs["UseDarkerGrayTheme"] != null)
+                    if (oConfigs["UseDarkTheme"] != null)
                     {
                         try
                         {
-                            config.UseDarkerGrayTheme = bool.Parse(oConfigs["UseDarkerGrayTheme"].ToString());
+                            config.UseDarkTheme = bool.Parse(oConfigs["UseDarkTheme"].ToString());
                         }
                         catch (Exception)
                         {
@@ -242,6 +243,17 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                         try
                         {
                             config.UseInvertedMouseButtons = bool.Parse(oConfigs["UseInvertedMouseButtons"].ToString());
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+
+                    if (oConfigs["MaximizeEditorOnStartup"] != null)
+                    {
+                        try
+                        {
+                            config.MaximizeEditorOnStartup = bool.Parse(oConfigs["MaximizeEditorOnStartup"].ToString());
                         }
                         catch (Exception)
                         {

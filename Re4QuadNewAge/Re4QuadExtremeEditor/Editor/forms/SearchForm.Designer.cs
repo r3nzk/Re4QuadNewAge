@@ -42,7 +42,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxCont.BackColor = System.Drawing.SystemColors.Control;
             this.listBoxCont.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBoxCont.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxCont.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxCont.FormattingEnabled = true;
             this.listBoxCont.ItemHeight = 15;
             this.listBoxCont.Location = new System.Drawing.Point(2, 30);
@@ -60,7 +60,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxSearch.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxSearch.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxSearch.Location = new System.Drawing.Point(2, 3);
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(664, 21);
@@ -72,7 +72,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // checkBoxFilterMode
             // 
             this.checkBoxFilterMode.AutoSize = true;
-            this.checkBoxFilterMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxFilterMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxFilterMode.Location = new System.Drawing.Point(670, 5);
             this.checkBoxFilterMode.Name = "checkBoxFilterMode";
             this.checkBoxFilterMode.Size = new System.Drawing.Size(99, 19);

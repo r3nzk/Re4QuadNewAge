@@ -252,6 +252,8 @@ namespace Re4QuadExtremeEditor
             this.toolStripMenuItemHideTable7_EFF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemHideTable8_EFF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemHideTable9_EFF = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparatorSubMenuEffect2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemDisableGroupPositionEFF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparatorView2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemNodeDisplayNameInHex = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparatorView3 = new System.Windows.Forms.ToolStripSeparator();
@@ -302,8 +304,6 @@ namespace Re4QuadExtremeEditor
             this.openFileDialogCAM = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogEFFBLOB = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialogEFFBLOBBIG = new System.Windows.Forms.SaveFileDialog();
-            this.toolStripMenuItemDisableGroupPositionEFF = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparatorSubMenuEffect2 = new System.Windows.Forms.ToolStripSeparator();
             this.treeViewObjs = new NsMultiselectTreeView.MultiselectTreeView();
             this.menuStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).BeginInit();
@@ -1305,7 +1305,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemSaveConverterITA.Enabled = false;
             this.toolStripMenuItemSaveConverterITA.Name = "toolStripMenuItemSaveConverterITA";
-            this.toolStripMenuItemSaveConverterITA.Size = new System.Drawing.Size(339, 22);
+            this.toolStripMenuItemSaveConverterITA.Size = new System.Drawing.Size(340, 22);
             this.toolStripMenuItemSaveConverterITA.Text = "Save As Itens ITA File, Convert To...";
             this.toolStripMenuItemSaveConverterITA.Click += new System.EventHandler(this.toolStripMenuItemSaveConverterITA_Click);
             // 
@@ -1313,7 +1313,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemSaveConverterAEV.Enabled = false;
             this.toolStripMenuItemSaveConverterAEV.Name = "toolStripMenuItemSaveConverterAEV";
-            this.toolStripMenuItemSaveConverterAEV.Size = new System.Drawing.Size(339, 22);
+            this.toolStripMenuItemSaveConverterAEV.Size = new System.Drawing.Size(340, 22);
             this.toolStripMenuItemSaveConverterAEV.Text = "Save As Events AEV File, Convert To...";
             this.toolStripMenuItemSaveConverterAEV.Click += new System.EventHandler(this.toolStripMenuItemSaveConverterAEV_Click);
             // 
@@ -1321,7 +1321,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemSaveConverterETS.Enabled = false;
             this.toolStripMenuItemSaveConverterETS.Name = "toolStripMenuItemSaveConverterETS";
-            this.toolStripMenuItemSaveConverterETS.Size = new System.Drawing.Size(339, 22);
+            this.toolStripMenuItemSaveConverterETS.Size = new System.Drawing.Size(340, 22);
             this.toolStripMenuItemSaveConverterETS.Text = "Save As EtcModel ETS File, Convert To ...";
             this.toolStripMenuItemSaveConverterETS.Click += new System.EventHandler(this.toolStripMenuItemSaveConverterETS_Click);
             // 
@@ -1329,7 +1329,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemSaveConverterEMI.Enabled = false;
             this.toolStripMenuItemSaveConverterEMI.Name = "toolStripMenuItemSaveConverterEMI";
-            this.toolStripMenuItemSaveConverterEMI.Size = new System.Drawing.Size(339, 22);
+            this.toolStripMenuItemSaveConverterEMI.Size = new System.Drawing.Size(340, 22);
             this.toolStripMenuItemSaveConverterEMI.Text = "Save As Interaction Point EMI File, Convert To ...";
             this.toolStripMenuItemSaveConverterEMI.Click += new System.EventHandler(this.toolStripMenuItemSaveConverterEMI_Click);
             // 
@@ -1337,7 +1337,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemSaveConverterESE.Enabled = false;
             this.toolStripMenuItemSaveConverterESE.Name = "toolStripMenuItemSaveConverterESE";
-            this.toolStripMenuItemSaveConverterESE.Size = new System.Drawing.Size(339, 22);
+            this.toolStripMenuItemSaveConverterESE.Size = new System.Drawing.Size(340, 22);
             this.toolStripMenuItemSaveConverterESE.Text = "Save As Environment Sound ESE File, Convert To ...";
             this.toolStripMenuItemSaveConverterESE.Click += new System.EventHandler(this.toolStripMenuItemSaveConverterESE_Click);
             // 
@@ -1360,7 +1360,7 @@ namespace Re4QuadExtremeEditor
             this.toolStripSeparatorClear2,
             this.toolStripMenuItemClearQuadCustom});
             this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
-            this.toolStripMenuItemClear.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemClear.Size = new System.Drawing.Size(160, 22);
             this.toolStripMenuItemClear.Text = "Clear";
             this.toolStripMenuItemClear.DropDownOpening += new System.EventHandler(this.toolStripMenuItemClear_DropDownOpening);
             // 
@@ -1989,7 +1989,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemHideSpecialTriggerZone.Name = "toolStripMenuItemHideSpecialTriggerZone";
             this.toolStripMenuItemHideSpecialTriggerZone.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D8)));
-            this.toolStripMenuItemHideSpecialTriggerZone.Size = new System.Drawing.Size(298, 22);
+            this.toolStripMenuItemHideSpecialTriggerZone.Size = new System.Drawing.Size(296, 22);
             this.toolStripMenuItemHideSpecialTriggerZone.Text = "Hide Special Trigger Zone";
             this.toolStripMenuItemHideSpecialTriggerZone.Click += new System.EventHandler(this.toolStripMenuItemHideSpecialTriggerZone_Click);
             // 
@@ -1998,7 +1998,7 @@ namespace Re4QuadExtremeEditor
             this.toolStripMenuItemHideExtraObjs.Name = "toolStripMenuItemHideExtraObjs";
             this.toolStripMenuItemHideExtraObjs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D8)));
-            this.toolStripMenuItemHideExtraObjs.Size = new System.Drawing.Size(298, 22);
+            this.toolStripMenuItemHideExtraObjs.Size = new System.Drawing.Size(296, 22);
             this.toolStripMenuItemHideExtraObjs.Text = "Hide Extra Objects";
             this.toolStripMenuItemHideExtraObjs.Click += new System.EventHandler(this.toolStripMenuItemHideExtraObjs_Click);
             // 
@@ -2006,7 +2006,7 @@ namespace Re4QuadExtremeEditor
             // 
             this.toolStripMenuItemHideOnlyWarpDoor.Name = "toolStripMenuItemHideOnlyWarpDoor";
             this.toolStripMenuItemHideOnlyWarpDoor.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D9)));
-            this.toolStripMenuItemHideOnlyWarpDoor.Size = new System.Drawing.Size(298, 22);
+            this.toolStripMenuItemHideOnlyWarpDoor.Size = new System.Drawing.Size(296, 22);
             this.toolStripMenuItemHideOnlyWarpDoor.Text = "Hide Only Warp Door";
             this.toolStripMenuItemHideOnlyWarpDoor.Click += new System.EventHandler(this.toolStripMenuItemHideOnlyWarpDoor_Click);
             // 
@@ -2015,20 +2015,20 @@ namespace Re4QuadExtremeEditor
             this.toolStripMenuItemHideExtraExceptWarpDoor.Name = "toolStripMenuItemHideExtraExceptWarpDoor";
             this.toolStripMenuItemHideExtraExceptWarpDoor.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D9)));
-            this.toolStripMenuItemHideExtraExceptWarpDoor.Size = new System.Drawing.Size(298, 22);
+            this.toolStripMenuItemHideExtraExceptWarpDoor.Size = new System.Drawing.Size(296, 22);
             this.toolStripMenuItemHideExtraExceptWarpDoor.Text = "Hide Extra Except Warp Door";
             this.toolStripMenuItemHideExtraExceptWarpDoor.Click += new System.EventHandler(this.toolStripMenuItemHideExtraExceptWarpDoor_Click);
             // 
             // toolStripSeparatorSubMenuSpecial
             // 
             this.toolStripSeparatorSubMenuSpecial.Name = "toolStripSeparatorSubMenuSpecial";
-            this.toolStripSeparatorSubMenuSpecial.Size = new System.Drawing.Size(295, 6);
+            this.toolStripSeparatorSubMenuSpecial.Size = new System.Drawing.Size(293, 6);
             // 
             // toolStripMenuItemUseMoreSpecialColors
             // 
             this.toolStripMenuItemUseMoreSpecialColors.Name = "toolStripMenuItemUseMoreSpecialColors";
             this.toolStripMenuItemUseMoreSpecialColors.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemtilde)));
-            this.toolStripMenuItemUseMoreSpecialColors.Size = new System.Drawing.Size(298, 22);
+            this.toolStripMenuItemUseMoreSpecialColors.Size = new System.Drawing.Size(296, 22);
             this.toolStripMenuItemUseMoreSpecialColors.Text = "Use More Special Colors";
             this.toolStripMenuItemUseMoreSpecialColors.Click += new System.EventHandler(this.toolStripMenuItemUseMoreSpecialColors_Click);
             // 
@@ -2217,6 +2217,20 @@ namespace Re4QuadExtremeEditor
             this.toolStripMenuItemHideTable9_EFF.Size = new System.Drawing.Size(283, 22);
             this.toolStripMenuItemHideTable9_EFF.Text = "Hide Table9";
             this.toolStripMenuItemHideTable9_EFF.Click += new System.EventHandler(this.toolStripMenuItemHideTable9_EFF_Click);
+            // 
+            // toolStripSeparatorSubMenuEffect2
+            // 
+            this.toolStripSeparatorSubMenuEffect2.Name = "toolStripSeparatorSubMenuEffect2";
+            this.toolStripSeparatorSubMenuEffect2.Size = new System.Drawing.Size(280, 6);
+            // 
+            // toolStripMenuItemDisableGroupPositionEFF
+            // 
+            this.toolStripMenuItemDisableGroupPositionEFF.Name = "toolStripMenuItemDisableGroupPositionEFF";
+            this.toolStripMenuItemDisableGroupPositionEFF.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
+            | System.Windows.Forms.Keys.D6)));
+            this.toolStripMenuItemDisableGroupPositionEFF.Size = new System.Drawing.Size(283, 22);
+            this.toolStripMenuItemDisableGroupPositionEFF.Text = "Disable Group Position";
+            this.toolStripMenuItemDisableGroupPositionEFF.Click += new System.EventHandler(this.toolStripMenuItemDisableGroupPositionEFF_Click);
             // 
             // toolStripSeparatorView2
             // 
@@ -2548,7 +2562,7 @@ namespace Re4QuadExtremeEditor
             this.propertyGridObjs.CommandsActiveLinkColor = System.Drawing.Color.DarkRed;
             this.propertyGridObjs.CommandsLinkColor = System.Drawing.Color.MidnightBlue;
             this.propertyGridObjs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGridObjs.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.propertyGridObjs.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.propertyGridObjs.HelpBorderColor = System.Drawing.SystemColors.Control;
             this.propertyGridObjs.LineColor = System.Drawing.SystemColors.ControlLight;
             this.propertyGridObjs.Location = new System.Drawing.Point(0, 0);
@@ -2645,20 +2659,6 @@ namespace Re4QuadExtremeEditor
             this.saveFileDialogEFFBLOBBIG.Title = "Save Effect EFFBLOBBIG File";
             this.saveFileDialogEFFBLOBBIG.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogEFFBLOBBIG_FileOk);
             // 
-            // toolStripMenuItemDisableGroupPositionEFF
-            // 
-            this.toolStripMenuItemDisableGroupPositionEFF.Name = "toolStripMenuItemDisableGroupPositionEFF";
-            this.toolStripMenuItemDisableGroupPositionEFF.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.D6)));
-            this.toolStripMenuItemDisableGroupPositionEFF.Size = new System.Drawing.Size(283, 22);
-            this.toolStripMenuItemDisableGroupPositionEFF.Text = "Disable Group Position";
-            this.toolStripMenuItemDisableGroupPositionEFF.Click += new System.EventHandler(this.toolStripMenuItemDisableGroupPositionEFF_Click);
-            // 
-            // toolStripSeparatorSubMenuEffect2
-            // 
-            this.toolStripSeparatorSubMenuEffect2.Name = "toolStripSeparatorSubMenuEffect2";
-            this.toolStripSeparatorSubMenuEffect2.Size = new System.Drawing.Size(280, 6);
-            // 
             // treeViewObjs
             // 
             this.treeViewObjs.BackColor = System.Drawing.SystemColors.Control;
@@ -2688,7 +2688,7 @@ namespace Re4QuadExtremeEditor
             this.MinimumSize = new System.Drawing.Size(900, 538);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RE4 QUAD EXTREME EDITOR [NEW AGE] | V.1.2.4 | YOUTUBE.COM/@JADERLINK";
+            this.Text = "RE4QuadX";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);

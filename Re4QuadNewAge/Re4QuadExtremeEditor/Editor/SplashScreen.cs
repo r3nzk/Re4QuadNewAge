@@ -10,30 +10,27 @@ namespace Re4QuadExtremeEditor.Editor
 {
     public static class SplashScreen
     {
-        public static SplashScreenConteiner Conteiner { get; set; }
+        public static SplashScreenContainer Container { get; set; }
         private static void SplashScreenShow()
         {
-            Application.Run(new SplashScreenForm(Conteiner));
+            Application.Run(new SplashScreenForm(Container));
         }
 
         public static void StartSplashScreen()
         {
-            Conteiner = new SplashScreenConteiner();
+            Container = new SplashScreenContainer();
             System.Threading.Thread threadSplashScreen = new System.Threading.Thread(SplashScreenShow);
             threadSplashScreen.SetApartmentState(System.Threading.ApartmentState.STA);
             threadSplashScreen.Start();
         }
     }
 
-    public class SplashScreenConteiner
+    public class SplashScreenContainer
     {
-        public Action Close { get; set; }
-        public Action ReleasedToClose { get; set; }
-        public bool FormIsClosed { get; set; }
-
-        public SplashScreenConteiner() 
-        {
-            FormIsClosed = false;
-        }
+        public Action Close;
+        public Action ReleasedToClose;
+        public bool FormIsClosed = false;
+        public Action<int> SetProgress;
+        public Action<string> SetStatusText;
     }
 }

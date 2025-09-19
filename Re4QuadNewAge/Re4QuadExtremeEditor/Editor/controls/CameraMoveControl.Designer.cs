@@ -46,7 +46,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // 
             // labelCamModeText
             // 
-            this.labelCamModeText.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCamModeText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCamModeText.Location = new System.Drawing.Point(128, 51);
             this.labelCamModeText.Name = "labelCamModeText";
             this.labelCamModeText.Size = new System.Drawing.Size(119, 13);
@@ -78,7 +78,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // labelCamSpeedPercentage
             // 
             this.labelCamSpeedPercentage.AutoSize = true;
-            this.labelCamSpeedPercentage.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCamSpeedPercentage.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelCamSpeedPercentage.Location = new System.Drawing.Point(120, 5);
             this.labelCamSpeedPercentage.Name = "labelCamSpeedPercentage";
             this.labelCamSpeedPercentage.Size = new System.Drawing.Size(112, 14);
@@ -102,7 +102,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // 
             // labelMoveCamText
             // 
-            this.labelMoveCamText.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelMoveCamText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelMoveCamText.Location = new System.Drawing.Point(0, 102);
             this.labelMoveCamText.Name = "labelMoveCamText";
             this.labelMoveCamText.Size = new System.Drawing.Size(121, 18);
@@ -140,7 +140,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // 
             // buttonGrid
             // 
-            this.buttonGrid.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonGrid.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonGrid.Location = new System.Drawing.Point(126, 93);
             this.buttonGrid.Name = "buttonGrid";
             this.buttonGrid.Size = new System.Drawing.Size(65, 22);
@@ -153,7 +153,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // textBoxGridSize
             // 
             this.textBoxGridSize.BackColor = System.Drawing.SystemColors.Control;
-            this.textBoxGridSize.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxGridSize.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxGridSize.Location = new System.Drawing.Point(200, 94);
             this.textBoxGridSize.MaxLength = 4;
             this.textBoxGridSize.Name = "textBoxGridSize";

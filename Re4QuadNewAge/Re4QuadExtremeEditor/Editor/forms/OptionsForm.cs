@@ -140,8 +140,9 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             numericUpDownMultiplier.Value = (decimal)Globals.ItemRotationCalculationMultiplier;
             comboBoxItemRotationOrder.SelectedIndex = (int)Globals.ItemRotationOrder;
 
-            checkBoxUseDarkerGrayTheme.Checked = Globals.BackupConfigs.UseDarkerGrayTheme;
+            checkBoxUseDarkTheme.Checked = Globals.BackupConfigs.UseDarkTheme;
             checkBoxUseInvertedMouseButtons.Checked = Globals.BackupConfigs.UseInvertedMouseButtons;
+            checkBoxMaximizeEditorOnStartup.Checked = Globals.BackupConfigs.MaximizeEditorOnStartup;
 
             EnableRadioButtons = true;
 
@@ -241,8 +242,9 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Globals.BackupConfigs.ItemRotationCalculationMultiplier = Globals.ItemRotationCalculationMultiplier;
             Globals.BackupConfigs.ItemRotationOrder = Globals.ItemRotationOrder;
 
-            Globals.BackupConfigs.UseDarkerGrayTheme = checkBoxUseDarkerGrayTheme.Checked;
+            Globals.BackupConfigs.UseDarkTheme = checkBoxUseDarkTheme.Checked;
             Globals.BackupConfigs.UseInvertedMouseButtons = checkBoxUseInvertedMouseButtons.Checked;
+            Globals.BackupConfigs.MaximizeEditorOnStartup = checkBoxMaximizeEditorOnStartup.Checked;
 
             if (comboBoxLanguage.SelectedIndex <= 0)
             {
@@ -654,20 +656,20 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             radioButtonOnlyAcceptPeriod.Text = Lang.GetText(eLang.radioButtonOnlyAcceptPeriod);
             radioButtonOutputComma.Text = Lang.GetText(eLang.radioButtonOutputComma);
             radioButtonOutputPeriod.Text = Lang.GetText(eLang.radioButtonOutputPeriod);
-            tabPageDiretory.Text = Lang.GetText(eLang.tabPageDiretory);
-            tabPageOthers.Text = Lang.GetText(eLang.tabPageOthers);
+            tabPageSetup.Text = Lang.GetText(eLang.tabPageDiretory);
+            tabPageAdvanced.Text = Lang.GetText(eLang.tabPageOthers);
             tabPageLists.Text = Lang.GetText(eLang.tabPageLists);
             groupBoxLists.Text = Lang.GetText(eLang.groupBoxLists);
             labelEnemies.Text = Lang.GetText(eLang.labelEnemies);
             labelEtcModels.Text = Lang.GetText(eLang.labelEtcModels);
             labelItems.Text = Lang.GetText(eLang.labelItems);
             labelQuadCustom.Text = Lang.GetText(eLang.labelQuadCustom);
-            groupBoxTheme.Text = Lang.GetText(eLang.groupBoxTheme);
             labelThemeWarning.Text = Lang.GetText(eLang.labelThemeWarning);
-            checkBoxUseDarkerGrayTheme.Text = Lang.GetText(eLang.checkBoxUseDarkerGrayTheme);
+            checkBoxUseDarkTheme.Text = Lang.GetText(eLang.checkBoxUseDarkTheme);
             groupBoxInvertedMouseButtons.Text = Lang.GetText(eLang.groupBoxInvertedMouseButtons);
             labelInvertedMouseButtonsWarning.Text = Lang.GetText(eLang.labelInvertedMouseButtonsWarning);
             checkBoxUseInvertedMouseButtons.Text = Lang.GetText(eLang.checkBoxUseInvertedMouseButtons);
+            checkBoxMaximizeEditorOnStartup.Text = Lang.GetText(eLang.checkBoxMaximizeEditorOnStartup);
 
 
             labelDirectoryXFILE.Text = "XFILE " + Lang.GetText(eLang.labelOptionsDirectory);
@@ -678,6 +680,11 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             labelDirectoryCustom1.Text = "Custom1 " + Lang.GetText(eLang.labelOptionsDirectory);
             labelDirectoryCustom2.Text = "Custom2 " + Lang.GetText(eLang.labelOptionsDirectory);
             labelDirectoryCustom3.Text = "Custom3 " + Lang.GetText(eLang.labelOptionsDirectory);
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

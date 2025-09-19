@@ -1,6 +1,11 @@
-﻿using System;
+﻿using Re4QuadExtremeEditor.Editor;
+using Re4QuadExtremeEditor.Editor.Class.Enums;
+using Re4QuadExtremeEditor.Editor.Forms;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,21 +19,76 @@ namespace Re4QuadExtremeEditor
         [STAThread]
         static void Main()
         {
-            // Configurar manipuladores globais de exceção
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
+            SplashScreen.StartSplashScreen();
+            Thread.Sleep(100);
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             try
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
+                // A list of loading tasks to be completed.
+                Action[] loadingTasks = new Action[]
+                {
+                    // Language and UI texts
+                    () => {
+                        Editor.Lang.StartAttributeTexts();
+                        Editor.Lang.StartTexts();
+                        //show text after loading cause... yeah, no langoutput without loading
+                        SplashScreen.Container?.SetStatusText(Lang.GetText(eLang.LoadingSplashLang));
+                    },
+                    // Configurations
+                    () => {
+                        SplashScreen.Container?.SetStatusText(Lang.GetText(eLang.LoadingSplashConfig));
+                        Editor.JSON.Configs.StartLoadConfigs();
+                    },
+                    // Utility data and lists
+                    () => {
+                        SplashScreen.Container?.SetStatusText(Lang.GetText(eLang.LoadingSplashUtility));
+                        Editor.Utils.StartReloadDirectoryDic();
+                        Editor.Utils.StartLoadObjsInfoLists();
+                        Editor.Utils.StartLoadPromptMessageList();
+                        Editor.Utils.StartLoadLangFile();
+                        Editor.Utils.StartEnemyExtraSegmentList();
+                    },
+                    // Setting up UI properties
+                    () => {
+                        SplashScreen.Container?.SetStatusText(Lang.GetText(eLang.LoadingSplashUI));
+                        Editor.Utils.StartSetListBoxsProperty();
+                        Editor.Utils.StartSetListBoxsPropertybjsInfoLists();
+                    },
+                    // Tree view nodes
+                    () => {
+                        SplashScreen.Container?.SetStatusText(Lang.GetText(eLang.LoadingSplashTreeView));
+                        Editor.Utils.StartCreateNodes();
+                        Editor.Utils.StartExtraGroup();
+                    },
+                    // Final check (mainform load), this is set and we wait for mainform to finish loading (mainly open gl rendering loading)
+                    () => {
+                        SplashScreen.Container?.SetStatusText(Lang.GetText(eLang.LoadingSplashGraphics));
+                    }
+                };
+
+                // Execute each task and update the progress bar.
+                for (int i = 0; i < loadingTasks.Length; i++)
+                {
+                    loadingTasks[i].Invoke();
+                    int progress = (int)((float)(i + 1) / loadingTasks.Length * 100);
+                    SplashScreen.Container?.SetProgress(progress);
+                    Thread.Sleep(100); //progress delay for each loading part, to avoid issues in lower end devices.
+                }
+
                 Application.Run(new MainForm());
             }
-            catch {}
-            // Não tem como capturar a System.ObjectDisposedException
-            // Essa Exception é gerada quando o openGL é de uma versão não suportada pelo programa
-            // O try catch impede do windows gerar um "CrashDumps"
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred during loading: {ex.Message}", "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                SplashScreen.Container?.Close?.Invoke();
+            }
         }
 
         // Manipulador para exceções de thread UI

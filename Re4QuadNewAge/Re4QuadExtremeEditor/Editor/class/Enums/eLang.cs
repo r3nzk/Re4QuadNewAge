@@ -22,6 +22,14 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
         MessageBoxFormClosingTitle,
         MessageBoxFormClosingDialog,
 
+        // splash screen labels
+        LoadingSplashLang,
+        LoadingSplashConfig,
+        LoadingSplashUtility,
+        LoadingSplashUI,
+        LoadingSplashTreeView,
+        LoadingSplashGraphics,
+
         // nodes names
         NodeESL,
         NodeETS,
@@ -566,10 +574,11 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
         labelQuadCustom,
         groupBoxTheme,
         labelThemeWarning,
-        checkBoxUseDarkerGrayTheme,
+        checkBoxUseDarkTheme,
         groupBoxInvertedMouseButtons,
         labelInvertedMouseButtonsWarning,
         checkBoxUseInvertedMouseButtons,
+        checkBoxMaximizeEditorOnStartup,
 
 
         //SearchForm

@@ -1165,6 +1165,14 @@ namespace Re4QuadExtremeEditor.Editor
             Text.Add(eLang.MessageBoxFormClosingTitle, "Warning:");
             Text.Add(eLang.MessageBoxFormClosingDialog, "Any unsaved changes will be lost.\r\nWould you really like to close the program?");
 
+            // splash screen
+            Text.Add(eLang.LoadingSplashLang, "Loading language files...");
+            Text.Add(eLang.LoadingSplashConfig, "Loading JSON configs...");
+            Text.Add(eLang.LoadingSplashUtility, "Getting lists and other utilities...");
+            Text.Add(eLang.LoadingSplashUI, "Setting up UI components...");
+            Text.Add(eLang.LoadingSplashTreeView, "Building hierarchy...");
+            Text.Add(eLang.LoadingSplashGraphics, "Initializing OpenGL...");
+
             // nodes names
             Text.Add(eLang.NodeESL, "Enemies (ESL)");
             Text.Add(eLang.NodeETS, "EtcModels (ETS)");
@@ -1724,10 +1732,11 @@ namespace Re4QuadExtremeEditor.Editor
             Text.Add(eLang.labelQuadCustom, "QuadCustom");
             Text.Add(eLang.groupBoxTheme, "Theme");
             Text.Add(eLang.labelThemeWarning, "Theme changes only take effect after program restart");
-            Text.Add(eLang.checkBoxUseDarkerGrayTheme, "Use Darker Gray Theme");
-            Text.Add(eLang.groupBoxInvertedMouseButtons, "Inverted Mouse Buttons");
+            Text.Add(eLang.checkBoxUseDarkTheme, "Dark Theme");
+            Text.Add(eLang.groupBoxInvertedMouseButtons, "Swap Mouse Buttons");
             Text.Add(eLang.labelInvertedMouseButtonsWarning, "Changes only take effect after restarting the program");
             Text.Add(eLang.checkBoxUseInvertedMouseButtons, "Use inverted Mouse Buttons in the 3d viewer");
+            Text.Add(eLang.checkBoxMaximizeEditorOnStartup, "Maximize Editor Window at Startup");
 
             //SearchForm
             Text.Add(eLang.SearchForm, "Search");

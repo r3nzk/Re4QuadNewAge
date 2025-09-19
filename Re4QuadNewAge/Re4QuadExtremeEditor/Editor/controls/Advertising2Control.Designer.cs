@@ -36,7 +36,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // 
             this.labelYoutube.BackColor = System.Drawing.Color.Transparent;
             this.labelYoutube.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelYoutube.Font = new System.Drawing.Font("Courier New", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelYoutube.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelYoutube.ForeColor = System.Drawing.Color.DarkGray;
             this.labelYoutube.Location = new System.Drawing.Point(0, 0);
             this.labelYoutube.Name = "labelYoutube";

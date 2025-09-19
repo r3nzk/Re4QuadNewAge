@@ -231,7 +231,7 @@ namespace Re4QuadExtremeEditor.Editor
 
         // treenode fonts
         public static Font TreeNodeFontText = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
-        public static Font TreeNodeFontHex = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Bold);
+        public static Font TreeNodeFontHex = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
 
         //OpenGLVersion
         public static string OpenGLVersion = "";

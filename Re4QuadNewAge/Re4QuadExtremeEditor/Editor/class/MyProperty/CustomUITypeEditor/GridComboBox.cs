@@ -37,7 +37,7 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty.CustomUITypeEditor
 			// Properties
 			_listBox.BorderStyle = BorderStyle.None;
 			_listBox.BackColor = System.Drawing.SystemColors.Control;
-			_listBox.Font = new System.Drawing.Font("Courier New", 8.25f);
+			_listBox.Font = new System.Drawing.Font("Segoe UI", 8.25f);
 			_listBox.DrawMode = DrawMode.OwnerDrawFixed;
 			_listBox.HorizontalScrollbar = true;
 

@@ -44,7 +44,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.comboBoxRoomList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxRoomList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxRoomList.Font = new System.Drawing.Font("Courier New", 9F);
+            this.comboBoxRoomList.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.comboBoxRoomList.FormattingEnabled = true;
             this.comboBoxRoomList.Location = new System.Drawing.Point(6, 70);
             this.comboBoxRoomList.Name = "comboBoxRoomList";
@@ -55,7 +55,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // buttonLoad
             // 
             this.buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonLoad.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonLoad.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLoad.Location = new System.Drawing.Point(566, 100);
             this.buttonLoad.Name = "buttonLoad";
             this.buttonLoad.Size = new System.Drawing.Size(85, 23);
@@ -67,7 +67,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCancel.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonCancel.Location = new System.Drawing.Point(657, 100);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(85, 23);
@@ -79,7 +79,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelInfo
             // 
             this.labelInfo.AutoSize = true;
-            this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelInfo.Location = new System.Drawing.Point(6, 103);
             this.labelInfo.Name = "labelInfo";
             this.labelInfo.Size = new System.Drawing.Size(323, 15);
@@ -89,7 +89,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelText1
             // 
             this.labelText1.AutoSize = true;
-            this.labelText1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelText1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelText1.Location = new System.Drawing.Point(6, 3);
             this.labelText1.Name = "labelText1";
             this.labelText1.Size = new System.Drawing.Size(90, 15);
@@ -99,7 +99,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // labelText2
             // 
             this.labelText2.AutoSize = true;
-            this.labelText2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelText2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelText2.Location = new System.Drawing.Point(6, 50);
             this.labelText2.Name = "labelText2";
             this.labelText2.Size = new System.Drawing.Size(105, 15);
@@ -111,7 +111,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.comboBoxMainList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxMainList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxMainList.Font = new System.Drawing.Font("Courier New", 9F);
+            this.comboBoxMainList.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.comboBoxMainList.FormattingEnabled = true;
             this.comboBoxMainList.Location = new System.Drawing.Point(6, 23);
             this.comboBoxMainList.Name = "comboBoxMainList";

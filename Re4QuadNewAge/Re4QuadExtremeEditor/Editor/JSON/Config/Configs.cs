@@ -44,10 +44,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
         public float ItemRotationCalculationDivider { get; set; }
 
         //theme
-        public bool UseDarkerGrayTheme { get; set; }
+        public bool UseDarkTheme { get; set; }
 
-        // botao do mouse invertido
+        //editor
         public bool UseInvertedMouseButtons { get; set; }
+        public bool MaximizeEditorOnStartup { get; set; }
 
         // lang
         public bool LoadLangTranslation { get; set; }
@@ -87,8 +88,9 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             configs.ItemRotationCalculationMultiplier = 1;
             configs.ItemRotationCalculationDivider = 1;
 
-            configs.UseDarkerGrayTheme = false;
+            configs.UseDarkTheme = true; //dark theme enabled by default
             configs.UseInvertedMouseButtons = false;
+            configs.MaximizeEditorOnStartup = true;
             configs.LoadLangTranslation = false;
             configs.LangJsonFile = "";
             return configs;

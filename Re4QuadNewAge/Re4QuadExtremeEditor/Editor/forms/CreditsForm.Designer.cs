@@ -44,8 +44,12 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.labelDavidSM64 = new System.Windows.Forms.Label();
             this.labelQuad64 = new System.Windows.Forms.Label();
             this.groupBoxAPIs = new System.Windows.Forms.GroupBox();
+            this.linkLabelLicenceScarlet = new System.Windows.Forms.LinkLabel();
             this.linkLabelLicenseJsonNET = new System.Windows.Forms.LinkLabel();
+            this.linkLabelScarletGitHub = new System.Windows.Forms.LinkLabel();
             this.linkLabelLicenseDDS = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelScarlet = new System.Windows.Forms.Label();
             this.linkLabelSiteJsonNET = new System.Windows.Forms.LinkLabel();
             this.linkLabelDdsGitLab = new System.Windows.Forms.LinkLabel();
             this.labelJsonNET = new System.Windows.Forms.Label();
@@ -113,6 +117,13 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.linkLabelLordVincBlog = new System.Windows.Forms.LinkLabel();
             this.labelTranslate = new System.Windows.Forms.Label();
             this.tabPageJaderlinkTools = new System.Windows.Forms.TabPage();
+            this.linkLabel_RE4_EFF_BLOB_RUST = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_RE4_EFF_SPLIT_TOOL = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_RE4_2007_GCA_TOOL = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_RE4_FIX_TOOL = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_RE4_CNS_TOOL = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_RE4_PS4NS_PACK_TOOL = new System.Windows.Forms.LinkLabel();
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER = new System.Windows.Forms.LinkLabel();
             this.linkLabel_JADERLINK_MODEL_VIEWER = new System.Windows.Forms.LinkLabel();
             this.linkLabel_RE4_2007_MODEL_VIEWER = new System.Windows.Forms.LinkLabel();
             this.linkLabel_RE4_UHD_MODEL_VIEWER = new System.Windows.Forms.LinkLabel();
@@ -132,17 +143,6 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.linkLabel_RE4_2007_PMD_TOOL = new System.Windows.Forms.LinkLabel();
             this.linkLabel_RE4_2007_SCENARIO_SMD_TOOL = new System.Windows.Forms.LinkLabel();
             this.linkLabel_RE4_SMX_TOOL = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_PS4NS_PACK_TOOL = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_CNS_TOOL = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_FIX_TOOL = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_2007_GCA_TOOL = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_EFF_SPLIT_TOOL = new System.Windows.Forms.LinkLabel();
-            this.linkLabel_RE4_EFF_BLOB_RUST = new System.Windows.Forms.LinkLabel();
-            this.linkLabelLicenceScarlet = new System.Windows.Forms.LinkLabel();
-            this.linkLabelScarletGitHub = new System.Windows.Forms.LinkLabel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.labelScarlet = new System.Windows.Forms.Label();
             this.groupBoxProjectLinks.SuspendLayout();
             this.groupBoxAuthor.SuspendLayout();
             this.groupBoxAPIs.SuspendLayout();
@@ -159,7 +159,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.groupBoxProjectLinks.Controls.Add(this.linkLabelDonate);
             this.groupBoxProjectLinks.Controls.Add(this.linkLabelProjectGitHub);
-            this.groupBoxProjectLinks.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxProjectLinks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxProjectLinks.Location = new System.Drawing.Point(6, 6);
             this.groupBoxProjectLinks.Name = "groupBoxProjectLinks";
             this.groupBoxProjectLinks.Size = new System.Drawing.Size(717, 45);
@@ -171,7 +171,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.linkLabelDonate.ActiveLinkColor = System.Drawing.Color.Black;
             this.linkLabelDonate.AutoSize = true;
-            this.linkLabelDonate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabelDonate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabelDonate.LinkColor = System.Drawing.Color.Navy;
             this.linkLabelDonate.Location = new System.Drawing.Point(286, 17);
             this.linkLabelDonate.Name = "linkLabelDonate";
@@ -185,7 +185,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             this.linkLabelProjectGitHub.ActiveLinkColor = System.Drawing.Color.Black;
             this.linkLabelProjectGitHub.AutoSize = true;
-            this.linkLabelProjectGitHub.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabelProjectGitHub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabelProjectGitHub.LinkColor = System.Drawing.Color.Navy;
             this.linkLabelProjectGitHub.Location = new System.Drawing.Point(10, 17);
             this.linkLabelProjectGitHub.Name = "linkLabelProjectGitHub";
@@ -202,7 +202,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.groupBoxAuthor.Controls.Add(this.linkLabelJaderLinkGitHub);
             this.groupBoxAuthor.Controls.Add(this.labelMainAuthor);
             this.groupBoxAuthor.Controls.Add(this.linkLabelJaderLinkBlog);
-            this.groupBoxAuthor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxAuthor.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBoxAuthor.Location = new System.Drawing.Point(6, 54);
             this.groupBoxAuthor.Name = "groupBoxAuthor";
             this.groupBoxAuthor.Size = new System.Drawing.Size(302, 132);
@@ -350,6 +350,20 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.groupBoxAPIs.TabStop = false;
             this.groupBoxAPIs.Text = "API\'s";
             // 
+            // linkLabelLicenceScarlet
+            // 
+            this.linkLabelLicenceScarlet.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabelLicenceScarlet.AutoSize = true;
+            this.linkLabelLicenceScarlet.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabelLicenceScarlet.Location = new System.Drawing.Point(6, 305);
+            this.linkLabelLicenceScarlet.Name = "linkLabelLicenceScarlet";
+            this.linkLabelLicenceScarlet.Size = new System.Drawing.Size(277, 30);
+            this.linkLabelLicenceScarlet.TabIndex = 16;
+            this.linkLabelLicenceScarlet.TabStop = true;
+            this.linkLabelLicenceScarlet.Text = "License:  MIT License - Copyright (c) 2016\r\n xdaniel (Daniel R.) / DigitalZero Do" +
+    "main";
+            this.linkLabelLicenceScarlet.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLicenceScarlet_LinkClicked);
+            // 
             // linkLabelLicenseJsonNET
             // 
             this.linkLabelLicenseJsonNET.ActiveLinkColor = System.Drawing.Color.Black;
@@ -363,6 +377,19 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.linkLabelLicenseJsonNET.Text = "License : The MIT License (MIT) - Copyright (c) 2007 \r\nJames Newton-King";
             this.linkLabelLicenseJsonNET.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLicenseJsonNET_LinkClicked);
             // 
+            // linkLabelScarletGitHub
+            // 
+            this.linkLabelScarletGitHub.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabelScarletGitHub.AutoSize = true;
+            this.linkLabelScarletGitHub.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabelScarletGitHub.Location = new System.Drawing.Point(6, 288);
+            this.linkLabelScarletGitHub.Name = "linkLabelScarletGitHub";
+            this.linkLabelScarletGitHub.Size = new System.Drawing.Size(98, 15);
+            this.linkLabelScarletGitHub.TabIndex = 15;
+            this.linkLabelScarletGitHub.TabStop = true;
+            this.linkLabelScarletGitHub.Text = "Github Project";
+            this.linkLabelScarletGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelScarletGitHub_LinkClicked);
+            // 
             // linkLabelLicenseDDS
             // 
             this.linkLabelLicenseDDS.ActiveLinkColor = System.Drawing.Color.Black;
@@ -375,6 +402,25 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.linkLabelLicenseDDS.TabStop = true;
             this.linkLabelLicenseDDS.Text = "License:  MIT License - Copyright (c) 2017 DDSReaderSharp";
             this.linkLabelLicenseDDS.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLicenseDDS_LinkClicked);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 269);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(288, 15);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "By: xdaniel (Daniel R.) / DigitalZero Domain";
+            // 
+            // labelScarlet
+            // 
+            this.labelScarlet.AutoSize = true;
+            this.labelScarlet.ForeColor = System.Drawing.Color.Teal;
+            this.labelScarlet.Location = new System.Drawing.Point(5, 252);
+            this.labelScarlet.Name = "labelScarlet";
+            this.labelScarlet.Size = new System.Drawing.Size(182, 15);
+            this.labelScarlet.TabIndex = 13;
+            this.labelScarlet.Text = "Scarlet (In code) [GNF LIB]:";
             // 
             // linkLabelSiteJsonNET
             // 
@@ -1215,6 +1261,96 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.tabPageJaderlinkTools.TabIndex = 2;
             this.tabPageJaderlinkTools.Text = "JADERLINK TOOLS";
             // 
+            // linkLabel_RE4_EFF_BLOB_RUST
+            // 
+            this.linkLabel_RE4_EFF_BLOB_RUST.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_EFF_BLOB_RUST.AutoSize = true;
+            this.linkLabel_RE4_EFF_BLOB_RUST.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_EFF_BLOB_RUST.Location = new System.Drawing.Point(6, 348);
+            this.linkLabel_RE4_EFF_BLOB_RUST.Name = "linkLabel_RE4_EFF_BLOB_RUST";
+            this.linkLabel_RE4_EFF_BLOB_RUST.Size = new System.Drawing.Size(156, 15);
+            this.linkLabel_RE4_EFF_BLOB_RUST.TabIndex = 23;
+            this.linkLabel_RE4_EFF_BLOB_RUST.TabStop = true;
+            this.linkLabel_RE4_EFF_BLOB_RUST.Text = "RE4_EFF_BLOB_RUST";
+            this.linkLabel_RE4_EFF_BLOB_RUST.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_EFF_BLOB_RUST_LinkClicked);
+            // 
+            // linkLabel_RE4_EFF_SPLIT_TOOL
+            // 
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.AutoSize = true;
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.Location = new System.Drawing.Point(6, 333);
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.Name = "linkLabel_RE4_EFF_SPLIT_TOOL";
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.Size = new System.Drawing.Size(157, 15);
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.TabIndex = 22;
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.TabStop = true;
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.Text = "RE4_EFF_SPLIT_TOOL";
+            this.linkLabel_RE4_EFF_SPLIT_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_EFF_SPLIT_TOOL_LinkClicked);
+            // 
+            // linkLabel_RE4_2007_GCA_TOOL
+            // 
+            this.linkLabel_RE4_2007_GCA_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_2007_GCA_TOOL.AutoSize = true;
+            this.linkLabel_RE4_2007_GCA_TOOL.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_2007_GCA_TOOL.Location = new System.Drawing.Point(6, 318);
+            this.linkLabel_RE4_2007_GCA_TOOL.Name = "linkLabel_RE4_2007_GCA_TOOL";
+            this.linkLabel_RE4_2007_GCA_TOOL.Size = new System.Drawing.Size(144, 15);
+            this.linkLabel_RE4_2007_GCA_TOOL.TabIndex = 21;
+            this.linkLabel_RE4_2007_GCA_TOOL.TabStop = true;
+            this.linkLabel_RE4_2007_GCA_TOOL.Text = "RE4-2007-GCA-TOOL";
+            this.linkLabel_RE4_2007_GCA_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_2007_GCA_TOOL_LinkClicked);
+            // 
+            // linkLabel_RE4_FIX_TOOL
+            // 
+            this.linkLabel_RE4_FIX_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_FIX_TOOL.AutoSize = true;
+            this.linkLabel_RE4_FIX_TOOL.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_FIX_TOOL.Location = new System.Drawing.Point(6, 303);
+            this.linkLabel_RE4_FIX_TOOL.Name = "linkLabel_RE4_FIX_TOOL";
+            this.linkLabel_RE4_FIX_TOOL.Size = new System.Drawing.Size(101, 15);
+            this.linkLabel_RE4_FIX_TOOL.TabIndex = 20;
+            this.linkLabel_RE4_FIX_TOOL.TabStop = true;
+            this.linkLabel_RE4_FIX_TOOL.Text = "RE4-FIX-TOOL";
+            // 
+            // linkLabel_RE4_CNS_TOOL
+            // 
+            this.linkLabel_RE4_CNS_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_CNS_TOOL.AutoSize = true;
+            this.linkLabel_RE4_CNS_TOOL.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_CNS_TOOL.Location = new System.Drawing.Point(6, 288);
+            this.linkLabel_RE4_CNS_TOOL.Name = "linkLabel_RE4_CNS_TOOL";
+            this.linkLabel_RE4_CNS_TOOL.Size = new System.Drawing.Size(108, 15);
+            this.linkLabel_RE4_CNS_TOOL.TabIndex = 19;
+            this.linkLabel_RE4_CNS_TOOL.TabStop = true;
+            this.linkLabel_RE4_CNS_TOOL.Text = "RE4-CNS-TOOL";
+            this.linkLabel_RE4_CNS_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_CNS_TOOL_LinkClicked);
+            // 
+            // linkLabel_RE4_PS4NS_PACK_TOOL
+            // 
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.AutoSize = true;
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.Location = new System.Drawing.Point(6, 198);
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.Name = "linkLabel_RE4_PS4NS_PACK_TOOL";
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.Size = new System.Drawing.Size(165, 15);
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.TabIndex = 13;
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.TabStop = true;
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.Text = "RE4-PS4NS-PACK-TOOL";
+            this.linkLabel_RE4_PS4NS_PACK_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_PS4NS_PACK_TOOL_LinkClicked);
+            // 
+            // linkLabel_RE4_PS4NS_MODEL_VIEWER
+            // 
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.ActiveLinkColor = System.Drawing.Color.Black;
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.AutoSize = true;
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.LinkColor = System.Drawing.Color.Navy;
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Location = new System.Drawing.Point(6, 63);
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Name = "linkLabel_RE4_PS4NS_MODEL_VIEWER";
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Size = new System.Drawing.Size(204, 15);
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.TabIndex = 4;
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.TabStop = true;
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Text = "RE4_PS4NS_MODEL_VIEWER";
+            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_PS4NS_MODEL_VIEWER_LinkClicked);
+            // 
             // linkLabel_JADERLINK_MODEL_VIEWER
             // 
             this.linkLabel_JADERLINK_MODEL_VIEWER.ActiveLinkColor = System.Drawing.Color.Black;
@@ -1462,142 +1598,6 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.linkLabel_RE4_SMX_TOOL.Text = "RE4-SMX-TOOL";
             this.linkLabel_RE4_SMX_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_SMX_TOOL_LinkClicked);
             // 
-            // linkLabel_RE4_PS4NS_MODEL_VIEWER
-            // 
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.AutoSize = true;
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Location = new System.Drawing.Point(6, 63);
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Name = "linkLabel_RE4_PS4NS_MODEL_VIEWER";
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Size = new System.Drawing.Size(204, 15);
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.TabIndex = 4;
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.TabStop = true;
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.Text = "RE4_PS4NS_MODEL_VIEWER";
-            this.linkLabel_RE4_PS4NS_MODEL_VIEWER.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_PS4NS_MODEL_VIEWER_LinkClicked);
-            // 
-            // linkLabel_RE4_PS4NS_PACK_TOOL
-            // 
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.AutoSize = true;
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.Location = new System.Drawing.Point(6, 198);
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.Name = "linkLabel_RE4_PS4NS_PACK_TOOL";
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.Size = new System.Drawing.Size(165, 15);
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.TabIndex = 13;
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.TabStop = true;
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.Text = "RE4-PS4NS-PACK-TOOL";
-            this.linkLabel_RE4_PS4NS_PACK_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_PS4NS_PACK_TOOL_LinkClicked);
-            // 
-            // linkLabel_RE4_CNS_TOOL
-            // 
-            this.linkLabel_RE4_CNS_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_CNS_TOOL.AutoSize = true;
-            this.linkLabel_RE4_CNS_TOOL.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_CNS_TOOL.Location = new System.Drawing.Point(6, 288);
-            this.linkLabel_RE4_CNS_TOOL.Name = "linkLabel_RE4_CNS_TOOL";
-            this.linkLabel_RE4_CNS_TOOL.Size = new System.Drawing.Size(108, 15);
-            this.linkLabel_RE4_CNS_TOOL.TabIndex = 19;
-            this.linkLabel_RE4_CNS_TOOL.TabStop = true;
-            this.linkLabel_RE4_CNS_TOOL.Text = "RE4-CNS-TOOL";
-            this.linkLabel_RE4_CNS_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_CNS_TOOL_LinkClicked);
-            // 
-            // linkLabel_RE4_FIX_TOOL
-            // 
-            this.linkLabel_RE4_FIX_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_FIX_TOOL.AutoSize = true;
-            this.linkLabel_RE4_FIX_TOOL.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_FIX_TOOL.Location = new System.Drawing.Point(6, 303);
-            this.linkLabel_RE4_FIX_TOOL.Name = "linkLabel_RE4_FIX_TOOL";
-            this.linkLabel_RE4_FIX_TOOL.Size = new System.Drawing.Size(101, 15);
-            this.linkLabel_RE4_FIX_TOOL.TabIndex = 20;
-            this.linkLabel_RE4_FIX_TOOL.TabStop = true;
-            this.linkLabel_RE4_FIX_TOOL.Text = "RE4-FIX-TOOL";
-            // 
-            // linkLabel_RE4_2007_GCA_TOOL
-            // 
-            this.linkLabel_RE4_2007_GCA_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_2007_GCA_TOOL.AutoSize = true;
-            this.linkLabel_RE4_2007_GCA_TOOL.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_2007_GCA_TOOL.Location = new System.Drawing.Point(6, 318);
-            this.linkLabel_RE4_2007_GCA_TOOL.Name = "linkLabel_RE4_2007_GCA_TOOL";
-            this.linkLabel_RE4_2007_GCA_TOOL.Size = new System.Drawing.Size(144, 15);
-            this.linkLabel_RE4_2007_GCA_TOOL.TabIndex = 21;
-            this.linkLabel_RE4_2007_GCA_TOOL.TabStop = true;
-            this.linkLabel_RE4_2007_GCA_TOOL.Text = "RE4-2007-GCA-TOOL";
-            this.linkLabel_RE4_2007_GCA_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_2007_GCA_TOOL_LinkClicked);
-            // 
-            // linkLabel_RE4_EFF_SPLIT_TOOL
-            // 
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.AutoSize = true;
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.Location = new System.Drawing.Point(6, 333);
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.Name = "linkLabel_RE4_EFF_SPLIT_TOOL";
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.Size = new System.Drawing.Size(157, 15);
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.TabIndex = 22;
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.TabStop = true;
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.Text = "RE4_EFF_SPLIT_TOOL";
-            this.linkLabel_RE4_EFF_SPLIT_TOOL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_EFF_SPLIT_TOOL_LinkClicked);
-            // 
-            // linkLabel_RE4_EFF_BLOB_RUST
-            // 
-            this.linkLabel_RE4_EFF_BLOB_RUST.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabel_RE4_EFF_BLOB_RUST.AutoSize = true;
-            this.linkLabel_RE4_EFF_BLOB_RUST.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabel_RE4_EFF_BLOB_RUST.Location = new System.Drawing.Point(6, 348);
-            this.linkLabel_RE4_EFF_BLOB_RUST.Name = "linkLabel_RE4_EFF_BLOB_RUST";
-            this.linkLabel_RE4_EFF_BLOB_RUST.Size = new System.Drawing.Size(156, 15);
-            this.linkLabel_RE4_EFF_BLOB_RUST.TabIndex = 23;
-            this.linkLabel_RE4_EFF_BLOB_RUST.TabStop = true;
-            this.linkLabel_RE4_EFF_BLOB_RUST.Text = "RE4_EFF_BLOB_RUST";
-            this.linkLabel_RE4_EFF_BLOB_RUST.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_RE4_EFF_BLOB_RUST_LinkClicked);
-            // 
-            // linkLabelLicenceScarlet
-            // 
-            this.linkLabelLicenceScarlet.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabelLicenceScarlet.AutoSize = true;
-            this.linkLabelLicenceScarlet.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabelLicenceScarlet.Location = new System.Drawing.Point(6, 305);
-            this.linkLabelLicenceScarlet.Name = "linkLabelLicenceScarlet";
-            this.linkLabelLicenceScarlet.Size = new System.Drawing.Size(277, 30);
-            this.linkLabelLicenceScarlet.TabIndex = 16;
-            this.linkLabelLicenceScarlet.TabStop = true;
-            this.linkLabelLicenceScarlet.Text = "License:  MIT License - Copyright (c) 2016\r\n xdaniel (Daniel R.) / DigitalZero Do" +
-    "main";
-            this.linkLabelLicenceScarlet.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelLicenceScarlet_LinkClicked);
-            // 
-            // linkLabelScarletGitHub
-            // 
-            this.linkLabelScarletGitHub.ActiveLinkColor = System.Drawing.Color.Black;
-            this.linkLabelScarletGitHub.AutoSize = true;
-            this.linkLabelScarletGitHub.LinkColor = System.Drawing.Color.Navy;
-            this.linkLabelScarletGitHub.Location = new System.Drawing.Point(6, 288);
-            this.linkLabelScarletGitHub.Name = "linkLabelScarletGitHub";
-            this.linkLabelScarletGitHub.Size = new System.Drawing.Size(98, 15);
-            this.linkLabelScarletGitHub.TabIndex = 15;
-            this.linkLabelScarletGitHub.TabStop = true;
-            this.linkLabelScarletGitHub.Text = "Github Project";
-            this.linkLabelScarletGitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelScarletGitHub_LinkClicked);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 269);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(288, 15);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "By: xdaniel (Daniel R.) / DigitalZero Domain";
-            // 
-            // labelScarlet
-            // 
-            this.labelScarlet.AutoSize = true;
-            this.labelScarlet.ForeColor = System.Drawing.Color.Teal;
-            this.labelScarlet.Location = new System.Drawing.Point(5, 252);
-            this.labelScarlet.Name = "labelScarlet";
-            this.labelScarlet.Size = new System.Drawing.Size(182, 15);
-            this.labelScarlet.TabIndex = 13;
-            this.labelScarlet.Text = "Scarlet (In code) [GNF LIB]:";
-            // 
             // CreditsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1605,7 +1605,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.ClientSize = new System.Drawing.Size(738, 606);
             this.Controls.Add(this.buttonCLOSE);
             this.Controls.Add(this.tabControlCredits);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

@@ -153,7 +153,7 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // labelObjSpeed
             // 
             this.labelObjSpeed.BackColor = System.Drawing.Color.Transparent;
-            this.labelObjSpeed.Font = new System.Drawing.Font("Courier New", 8F);
+            this.labelObjSpeed.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.labelObjSpeed.Location = new System.Drawing.Point(239, 17);
             this.labelObjSpeed.Name = "labelObjSpeed";
             this.labelObjSpeed.Size = new System.Drawing.Size(155, 14);
