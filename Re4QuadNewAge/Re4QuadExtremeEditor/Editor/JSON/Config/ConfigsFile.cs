@@ -43,6 +43,7 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             entry["UseDarkTheme"] = config.UseDarkTheme;
             entry["UseInvertedMouseButtons"] = config.UseInvertedMouseButtons;
             entry["MaximizeEditorOnStartup"] = config.MaximizeEditorOnStartup;
+            entry["PropertyGrid_HideBloatElements"] = config.PropertyGrid_HideBloatElements;
             entry["LoadLangTranslation"] = config.LoadLangTranslation;
             entry["LangJsonFile"] = config.LangJsonFile;
 
@@ -254,6 +255,17 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                         try
                         {
                             config.MaximizeEditorOnStartup = bool.Parse(oConfigs["MaximizeEditorOnStartup"].ToString());
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+
+                    if (oConfigs["PropertyGrid_HideBloatElements"] != null)
+                    {
+                        try
+                        {
+                            config.PropertyGrid_HideBloatElements = bool.Parse(oConfigs["PropertyGrid_HideBloatElements"].ToString());
                         }
                         catch (Exception)
                         {

@@ -8,6 +8,10 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
 {
     public enum aLang : uint
     {      
+        //general attribute names
+        Position_Name,
+        Angle_Name,
+
         // ListBox values
         ListBoxEnable,
         ListBoxDisable,
@@ -129,12 +133,14 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
         ESL_HX0A_Byte_Description,
         ESL_HX0B_Byte_Name,
         ESL_HX0B_Byte_Description,
+        ESL_Position_Description,
         ESL_PositionX_Short_Name,
         ESL_PositionX_Short_Description,
         ESL_PositionY_Short_Name,
         ESL_PositionY_Short_Description,
         ESL_PositionZ_Short_Name,
         ESL_PositionZ_Short_Description,
+        ESL_Angle_Description,
         ESL_AngleX_Short_Name,
         ESL_AngleX_Short_Description,
         ESL_AngleY_Short_Name,

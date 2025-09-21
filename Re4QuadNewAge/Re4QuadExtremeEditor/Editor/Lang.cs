@@ -84,6 +84,11 @@ namespace Re4QuadExtremeEditor.Editor
         /// </summary>
         public static void StartAttributeTexts()
         {
+            //general attributes
+            AttributeText.Add(aLang.Angle_Name, "Rotation");
+            AttributeText.Add(aLang.Position_Name, "Position");
+
+
             // float number
             AttributeText.Add(aLang.ListBoxFloatTypeEnable, "Use Hex Float");
             AttributeText.Add(aLang.ListBoxFloatTypeDisable, "Use Dec Float");
@@ -197,12 +202,14 @@ namespace Re4QuadExtremeEditor.Editor
             AttributeText.Add(aLang.ESL_HX0A_Byte_Description, "Offset[0x0A]  \r\nTAG: ESL_HX0A  \r\n\r\n###############"); //
             AttributeText.Add(aLang.ESL_HX0B_Byte_Name, "Unknown 0x0B [Hex] (Byte)");
             AttributeText.Add(aLang.ESL_HX0B_Byte_Description, "Offset[0x0B]  \r\nTAG: ESL_HX0B  \r\n\r\n###############"); //
+            AttributeText.Add(aLang.ESL_Position_Description, "Offset[0x0D][0x0C] - Offset[0x0F][0x0E] - Offset[0x11][0x10]  \r\nTAG: ESL_POSITION.X/Y/Z  \r\n\r\n###############"); //
             AttributeText.Add(aLang.ESL_PositionX_Short_Name, "Position.X [Dec] (Short)");
             AttributeText.Add(aLang.ESL_PositionX_Short_Description, "Offset[0x0D][0x0C]  \r\nTAG: ESL_POSITION.X  \r\n\r\n###############"); //
             AttributeText.Add(aLang.ESL_PositionY_Short_Name, "Position.Y [Dec] (Short)");
             AttributeText.Add(aLang.ESL_PositionY_Short_Description, "Offset[0x0F][0x0E]  \r\nTAG: ESL_POSITION.Y  \r\n\r\n###############"); //
             AttributeText.Add(aLang.ESL_PositionZ_Short_Name, "Position.Z [Dec] (Short)");
             AttributeText.Add(aLang.ESL_PositionZ_Short_Description, "Offset[0x11][0x10]  \r\nTAG: ESL_POSITION.Z  \r\n\r\n###############"); //
+            AttributeText.Add(aLang.ESL_Angle_Description, "Offset[0x13][0x12] - Offset[0x0F][0x0E] - Offset[0x17][0x16]  \r\nTAG: ESL_ALGLE.X/Y/Z  \r\n\r\n###############"); //
             AttributeText.Add(aLang.ESL_AngleX_Short_Name, "Rotation.X [Dec] (Short)");
             AttributeText.Add(aLang.ESL_AngleX_Short_Description, "Offset[0x13][0x12]  \r\nTAG: ESL_ALGLE.X  \r\n\r\n###############"); //
             AttributeText.Add(aLang.ESL_AngleY_Short_Name, "Rotation.Y [Dec] (Short)");

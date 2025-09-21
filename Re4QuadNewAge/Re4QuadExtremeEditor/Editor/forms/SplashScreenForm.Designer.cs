@@ -68,6 +68,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.splashLoadingBar.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.splashLoadingBar.ForeColor = System.Drawing.Color.Lime;
             this.splashLoadingBar.Location = new System.Drawing.Point(0, 476);
+            this.splashLoadingBar.Margin = new System.Windows.Forms.Padding(0);
             this.splashLoadingBar.Maximum = 110;
             this.splashLoadingBar.Name = "splashLoadingBar";
             this.splashLoadingBar.Size = new System.Drawing.Size(671, 10);

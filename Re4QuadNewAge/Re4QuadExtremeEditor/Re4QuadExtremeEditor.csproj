@@ -91,6 +91,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -148,6 +149,8 @@
     <Compile Include="Editor\class\MyProperty\BaseProperty.cs" />
     <Compile Include="Editor\class\MyProperty\BaseTriggerZoneProperty.cs" />
     <Compile Include="Editor\class\MyProperty\CustomAttribute\AllowInMultiSelectAttribute.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\Vector3sTypeConverter.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\CheckBoxUITypeEditor.cs" />
     <Compile Include="Editor\class\MyProperty\CustomAttribute\CustomCategoryAttribute.cs" />
     <Compile Include="Editor\class\MyProperty\CustomAttribute\CustomDescriptionAttribute.cs" />
     <Compile Include="Editor\class\MyProperty\CustomAttribute\CustomDisplayNameAttribute.cs" />
@@ -180,8 +183,10 @@
     <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\MultiSelectUITypeEditor.cs" />
     <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\NoneUITypeEditor.cs" />
     <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\SelectColorUITypeEditor.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomTypeConverter\Vector3s.cs" />
     <Compile Include="Editor\class\MyProperty\DynamicTypeDescriptor\CustomComponentModel.cs" />
     <Compile Include="Editor\class\MyProperty\DynamicTypeDescriptor\DynamicTypeDescriptor.cs" />
+    <Compile Include="Editor\class\MyProperty\DynamicTypeDescriptor\FilteredPropertyGridProvider.cs" />
     <Compile Include="Editor\class\MyProperty\EnemyProperty.cs" />
     <Compile Include="Editor\class\MyProperty\EtcModelProperty.cs" />
     <Compile Include="Editor\class\MyProperty\GenericProperty.cs" />
@@ -254,24 +259,13 @@
     <Compile Include="Editor\class\TreeNodeObj\SpecialNodeGroup.cs" />
     <Compile Include="Editor\class\TreeNodeObj\TreeNodeGroup.cs" />
     <Compile Include="Editor\Consts.cs" />
-    <Compile Include="Editor\controls\Advertising1Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Editor\controls\Advertising1Control.Designer.cs">
-      <DependentUpon>Advertising1Control.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\controls\Advertising2Control.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Editor\controls\Advertising2Control.Designer.cs">
-      <DependentUpon>Advertising2Control.cs</DependentUpon>
-    </Compile>
     <Compile Include="Editor\controls\CameraMoveControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Editor\controls\CameraMoveControl.Designer.cs">
       <DependentUpon>CameraMoveControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\controls\Navigation.cs" />
     <Compile Include="Editor\controls\ObjectMoveControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -300,6 +294,7 @@
     <Compile Include="Editor\forms\CreditsForm.Designer.cs">
       <DependentUpon>CreditsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\forms\Custom\CustomComponents.cs" />
     <Compile Include="Editor\forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -462,12 +457,6 @@
     <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdBinDecoder.cs" />
     <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdTPL.cs" />
     <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdTplDecoder.cs" />
-    <EmbeddedResource Include="Editor\controls\Advertising1Control.resx">
-      <DependentUpon>Advertising1Control.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editor\controls\Advertising2Control.resx">
-      <DependentUpon>Advertising2Control.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Editor\controls\CameraMoveControl.resx">
       <DependentUpon>CameraMoveControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -617,6 +606,11 @@
   <ItemGroup>
     <None Include="Resources\quad_splash_0.png" />
     <None Include="Assets\img\quad_splash.png" />
+    <None Include="Assets\img\play_yellow.png" />
+    <None Include="Assets\img\search_dark.png" />
+    <None Include="Assets\img\detail_dark.png" />
+    <None Include="Assets\img\add.png" />
+    <None Include="Assets\img\dots.png" />
     <Content Include="icon.ico" />
     <Content Include="libs\DDS_LIB\Credit.txt" />
     <Content Include="libs\TGA_LIB\Credit.txt" />

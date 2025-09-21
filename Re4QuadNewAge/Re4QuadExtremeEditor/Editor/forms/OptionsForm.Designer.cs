@@ -50,30 +50,33 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.label8 = new System.Windows.Forms.Label();
             this.selectedVersionDropdown = new System.Windows.Forms.ComboBox();
             this.groupBoxDirectory = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.directoryTabMain = new System.Windows.Forms.TabPage();
             this.buttonDirectoryPS4NSRE4 = new System.Windows.Forms.Button();
-            this.textBoxDirectoryPS4NSRE4 = new System.Windows.Forms.TextBox();
-            this.labelDirectoryPS4NSRE4 = new System.Windows.Forms.Label();
-            this.buttonDirectoryCustom3 = new System.Windows.Forms.Button();
-            this.buttonDirectoryCustom2 = new System.Windows.Forms.Button();
-            this.buttonDirectoryCustom1 = new System.Windows.Forms.Button();
-            this.textBoxDirectoryCustom3 = new System.Windows.Forms.TextBox();
-            this.labelDirectoryCustom3 = new System.Windows.Forms.Label();
-            this.textBoxDirectoryCustom2 = new System.Windows.Forms.TextBox();
-            this.labelDirectoryCustom2 = new System.Windows.Forms.Label();
-            this.textBoxDirectoryCustom1 = new System.Windows.Forms.TextBox();
-            this.labelDirectoryCustom1 = new System.Windows.Forms.Label();
-            this.buttonDirectoryUHDRE4 = new System.Windows.Forms.Button();
-            this.textBoxDirectoryUHDRE4 = new System.Windows.Forms.TextBox();
-            this.labelDirectoryPS2RE4 = new System.Windows.Forms.Label();
-            this.buttonDirectoryPS2RE4 = new System.Windows.Forms.Button();
-            this.textBoxDirectoryPS2RE4 = new System.Windows.Forms.TextBox();
-            this.labelDirectoryUHDRE4 = new System.Windows.Forms.Label();
-            this.buttonDirectory2007RE4 = new System.Windows.Forms.Button();
-            this.textBoxDirectory2007RE4 = new System.Windows.Forms.TextBox();
-            this.labelDirectory2007RE4 = new System.Windows.Forms.Label();
-            this.buttonDiretoryXFILE = new System.Windows.Forms.Button();
-            this.textBoxDiretoryXFILE = new System.Windows.Forms.TextBox();
             this.labelDirectoryXFILE = new System.Windows.Forms.Label();
+            this.textBoxDirectoryPS4NSRE4 = new System.Windows.Forms.TextBox();
+            this.textBoxDiretoryXFILE = new System.Windows.Forms.TextBox();
+            this.labelDirectoryPS4NSRE4 = new System.Windows.Forms.Label();
+            this.buttonDiretoryXFILE = new System.Windows.Forms.Button();
+            this.labelDirectory2007RE4 = new System.Windows.Forms.Label();
+            this.textBoxDirectory2007RE4 = new System.Windows.Forms.TextBox();
+            this.buttonDirectory2007RE4 = new System.Windows.Forms.Button();
+            this.labelDirectoryUHDRE4 = new System.Windows.Forms.Label();
+            this.textBoxDirectoryPS2RE4 = new System.Windows.Forms.TextBox();
+            this.buttonDirectoryPS2RE4 = new System.Windows.Forms.Button();
+            this.labelDirectoryPS2RE4 = new System.Windows.Forms.Label();
+            this.textBoxDirectoryUHDRE4 = new System.Windows.Forms.TextBox();
+            this.buttonDirectoryUHDRE4 = new System.Windows.Forms.Button();
+            this.directoryTabCustom = new System.Windows.Forms.TabPage();
+            this.buttonDirectoryCustom3 = new System.Windows.Forms.Button();
+            this.labelDirectoryCustom1 = new System.Windows.Forms.Label();
+            this.buttonDirectoryCustom2 = new System.Windows.Forms.Button();
+            this.textBoxDirectoryCustom1 = new System.Windows.Forms.TextBox();
+            this.buttonDirectoryCustom1 = new System.Windows.Forms.Button();
+            this.labelDirectoryCustom2 = new System.Windows.Forms.Label();
+            this.textBoxDirectoryCustom3 = new System.Windows.Forms.TextBox();
+            this.textBoxDirectoryCustom2 = new System.Windows.Forms.TextBox();
+            this.labelDirectoryCustom3 = new System.Windows.Forms.Label();
             this.tabPageLists = new System.Windows.Forms.TabPage();
             this.groupBoxLists = new System.Windows.Forms.GroupBox();
             this.comboBoxQuadCustom = new System.Windows.Forms.ComboBox();
@@ -114,9 +117,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.checkBoxForceReloadModels = new System.Windows.Forms.CheckBox();
             this.folderBrowserDialogDiretory = new System.Windows.Forms.FolderBrowserDialog();
             this.colorDialogColors = new System.Windows.Forms.ColorDialog();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.directoryTabMain = new System.Windows.Forms.TabPage();
-            this.directoryTabCustom = new System.Windows.Forms.TabPage();
+            this.PropertyGrid_HideBloatElementsButton = new System.Windows.Forms.CheckBox();
             this.tabControlConfigs.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.groupBoxInvertedMouseButtons.SuspendLayout();
@@ -126,6 +127,9 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.tabPageSetup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBoxDirectory.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.directoryTabMain.SuspendLayout();
+            this.directoryTabCustom.SuspendLayout();
             this.tabPageLists.SuspendLayout();
             this.groupBoxLists.SuspendLayout();
             this.tabPageAdvanced.SuspendLayout();
@@ -136,9 +140,6 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.groupBoxInputFractionalSymbol.SuspendLayout();
             this.groupBoxOutputFractionalSymbol.SuspendLayout();
             this.groupBoxFractionalPart.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.directoryTabMain.SuspendLayout();
-            this.directoryTabCustom.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlConfigs
@@ -174,6 +175,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // 
             // groupBoxInvertedMouseButtons
             // 
+            this.groupBoxInvertedMouseButtons.Controls.Add(this.PropertyGrid_HideBloatElementsButton);
             this.groupBoxInvertedMouseButtons.Controls.Add(this.labelInvertedMouseButtonsWarning);
             this.groupBoxInvertedMouseButtons.Controls.Add(this.checkBoxMaximizeEditorOnStartup);
             this.groupBoxInvertedMouseButtons.Controls.Add(this.checkBoxUseInvertedMouseButtons);
@@ -379,6 +381,41 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.groupBoxDirectory.TabStop = false;
             this.groupBoxDirectory.Text = "Directories";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.directoryTabMain);
+            this.tabControl1.Controls.Add(this.directoryTabCustom);
+            this.tabControl1.Location = new System.Drawing.Point(9, 21);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(787, 248);
+            this.tabControl1.TabIndex = 25;
+            // 
+            // directoryTabMain
+            // 
+            this.directoryTabMain.Controls.Add(this.buttonDirectoryPS4NSRE4);
+            this.directoryTabMain.Controls.Add(this.labelDirectoryXFILE);
+            this.directoryTabMain.Controls.Add(this.textBoxDirectoryPS4NSRE4);
+            this.directoryTabMain.Controls.Add(this.textBoxDiretoryXFILE);
+            this.directoryTabMain.Controls.Add(this.labelDirectoryPS4NSRE4);
+            this.directoryTabMain.Controls.Add(this.buttonDiretoryXFILE);
+            this.directoryTabMain.Controls.Add(this.labelDirectory2007RE4);
+            this.directoryTabMain.Controls.Add(this.textBoxDirectory2007RE4);
+            this.directoryTabMain.Controls.Add(this.buttonDirectory2007RE4);
+            this.directoryTabMain.Controls.Add(this.labelDirectoryUHDRE4);
+            this.directoryTabMain.Controls.Add(this.textBoxDirectoryPS2RE4);
+            this.directoryTabMain.Controls.Add(this.buttonDirectoryPS2RE4);
+            this.directoryTabMain.Controls.Add(this.labelDirectoryPS2RE4);
+            this.directoryTabMain.Controls.Add(this.textBoxDirectoryUHDRE4);
+            this.directoryTabMain.Controls.Add(this.buttonDirectoryUHDRE4);
+            this.directoryTabMain.Location = new System.Drawing.Point(4, 22);
+            this.directoryTabMain.Name = "directoryTabMain";
+            this.directoryTabMain.Padding = new System.Windows.Forms.Padding(3);
+            this.directoryTabMain.Size = new System.Drawing.Size(779, 222);
+            this.directoryTabMain.TabIndex = 0;
+            this.directoryTabMain.Text = "Main";
+            this.directoryTabMain.UseVisualStyleBackColor = true;
+            // 
             // buttonDirectoryPS4NSRE4
             // 
             this.buttonDirectoryPS4NSRE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -389,6 +426,15 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.buttonDirectoryPS4NSRE4.Text = "...";
             this.buttonDirectoryPS4NSRE4.UseVisualStyleBackColor = true;
             this.buttonDirectoryPS4NSRE4.Click += new System.EventHandler(this.buttonDirectoryPS4NSRE4_Click);
+            // 
+            // labelDirectoryXFILE
+            // 
+            this.labelDirectoryXFILE.AutoSize = true;
+            this.labelDirectoryXFILE.Location = new System.Drawing.Point(10, 12);
+            this.labelDirectoryXFILE.Name = "labelDirectoryXFILE";
+            this.labelDirectoryXFILE.Size = new System.Drawing.Size(88, 13);
+            this.labelDirectoryXFILE.TabIndex = 0;
+            this.labelDirectoryXFILE.Text = "XFILE Directory:";
             // 
             // textBoxDirectoryPS4NSRE4
             // 
@@ -401,6 +447,17 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.textBoxDirectoryPS4NSRE4.Size = new System.Drawing.Size(721, 22);
             this.textBoxDirectoryPS4NSRE4.TabIndex = 13;
             // 
+            // textBoxDiretoryXFILE
+            // 
+            this.textBoxDiretoryXFILE.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDiretoryXFILE.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDiretoryXFILE.Location = new System.Drawing.Point(13, 29);
+            this.textBoxDiretoryXFILE.MaxLength = 3000;
+            this.textBoxDiretoryXFILE.Name = "textBoxDiretoryXFILE";
+            this.textBoxDiretoryXFILE.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDiretoryXFILE.TabIndex = 1;
+            // 
             // labelDirectoryPS4NSRE4
             // 
             this.labelDirectoryPS4NSRE4.AutoSize = true;
@@ -409,192 +466,6 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.labelDirectoryPS4NSRE4.Size = new System.Drawing.Size(121, 13);
             this.labelDirectoryPS4NSRE4.TabIndex = 12;
             this.labelDirectoryPS4NSRE4.Text = "RE4 PS4/NS Directory:";
-            // 
-            // buttonDirectoryCustom3
-            // 
-            this.buttonDirectoryCustom3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom3.Location = new System.Drawing.Point(748, 105);
-            this.buttonDirectoryCustom3.Name = "buttonDirectoryCustom3";
-            this.buttonDirectoryCustom3.Size = new System.Drawing.Size(33, 25);
-            this.buttonDirectoryCustom3.TabIndex = 23;
-            this.buttonDirectoryCustom3.Text = "...";
-            this.buttonDirectoryCustom3.UseVisualStyleBackColor = true;
-            this.buttonDirectoryCustom3.Click += new System.EventHandler(this.buttonDirectoryCustom3_Click);
-            // 
-            // buttonDirectoryCustom2
-            // 
-            this.buttonDirectoryCustom2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom2.Location = new System.Drawing.Point(748, 66);
-            this.buttonDirectoryCustom2.Name = "buttonDirectoryCustom2";
-            this.buttonDirectoryCustom2.Size = new System.Drawing.Size(33, 25);
-            this.buttonDirectoryCustom2.TabIndex = 20;
-            this.buttonDirectoryCustom2.Text = "...";
-            this.buttonDirectoryCustom2.UseVisualStyleBackColor = true;
-            this.buttonDirectoryCustom2.Click += new System.EventHandler(this.buttonDirectoryCustom2_Click);
-            // 
-            // buttonDirectoryCustom1
-            // 
-            this.buttonDirectoryCustom1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom1.Location = new System.Drawing.Point(748, 26);
-            this.buttonDirectoryCustom1.Name = "buttonDirectoryCustom1";
-            this.buttonDirectoryCustom1.Size = new System.Drawing.Size(33, 25);
-            this.buttonDirectoryCustom1.TabIndex = 17;
-            this.buttonDirectoryCustom1.Text = "...";
-            this.buttonDirectoryCustom1.UseVisualStyleBackColor = true;
-            this.buttonDirectoryCustom1.Click += new System.EventHandler(this.buttonDirectoryCustom1_Click);
-            // 
-            // textBoxDirectoryCustom3
-            // 
-            this.textBoxDirectoryCustom3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDirectoryCustom3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDirectoryCustom3.Location = new System.Drawing.Point(13, 106);
-            this.textBoxDirectoryCustom3.MaxLength = 3000;
-            this.textBoxDirectoryCustom3.Name = "textBoxDirectoryCustom3";
-            this.textBoxDirectoryCustom3.Size = new System.Drawing.Size(736, 22);
-            this.textBoxDirectoryCustom3.TabIndex = 22;
-            // 
-            // labelDirectoryCustom3
-            // 
-            this.labelDirectoryCustom3.AutoSize = true;
-            this.labelDirectoryCustom3.Location = new System.Drawing.Point(10, 90);
-            this.labelDirectoryCustom3.Name = "labelDirectoryCustom3";
-            this.labelDirectoryCustom3.Size = new System.Drawing.Size(106, 13);
-            this.labelDirectoryCustom3.TabIndex = 21;
-            this.labelDirectoryCustom3.Text = "Custom3 Directory:";
-            // 
-            // textBoxDirectoryCustom2
-            // 
-            this.textBoxDirectoryCustom2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDirectoryCustom2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDirectoryCustom2.Location = new System.Drawing.Point(13, 67);
-            this.textBoxDirectoryCustom2.MaxLength = 3000;
-            this.textBoxDirectoryCustom2.Name = "textBoxDirectoryCustom2";
-            this.textBoxDirectoryCustom2.Size = new System.Drawing.Size(736, 22);
-            this.textBoxDirectoryCustom2.TabIndex = 19;
-            // 
-            // labelDirectoryCustom2
-            // 
-            this.labelDirectoryCustom2.AutoSize = true;
-            this.labelDirectoryCustom2.Location = new System.Drawing.Point(10, 51);
-            this.labelDirectoryCustom2.Name = "labelDirectoryCustom2";
-            this.labelDirectoryCustom2.Size = new System.Drawing.Size(106, 13);
-            this.labelDirectoryCustom2.TabIndex = 18;
-            this.labelDirectoryCustom2.Text = "Custom2 Directory:";
-            // 
-            // textBoxDirectoryCustom1
-            // 
-            this.textBoxDirectoryCustom1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDirectoryCustom1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDirectoryCustom1.Location = new System.Drawing.Point(13, 28);
-            this.textBoxDirectoryCustom1.MaxLength = 3000;
-            this.textBoxDirectoryCustom1.Name = "textBoxDirectoryCustom1";
-            this.textBoxDirectoryCustom1.Size = new System.Drawing.Size(736, 22);
-            this.textBoxDirectoryCustom1.TabIndex = 16;
-            // 
-            // labelDirectoryCustom1
-            // 
-            this.labelDirectoryCustom1.AutoSize = true;
-            this.labelDirectoryCustom1.Location = new System.Drawing.Point(10, 12);
-            this.labelDirectoryCustom1.Name = "labelDirectoryCustom1";
-            this.labelDirectoryCustom1.Size = new System.Drawing.Size(106, 13);
-            this.labelDirectoryCustom1.TabIndex = 15;
-            this.labelDirectoryCustom1.Text = "Custom1 Directory:";
-            // 
-            // buttonDirectoryUHDRE4
-            // 
-            this.buttonDirectoryUHDRE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryUHDRE4.Location = new System.Drawing.Point(733, 144);
-            this.buttonDirectoryUHDRE4.Name = "buttonDirectoryUHDRE4";
-            this.buttonDirectoryUHDRE4.Size = new System.Drawing.Size(33, 25);
-            this.buttonDirectoryUHDRE4.TabIndex = 11;
-            this.buttonDirectoryUHDRE4.Text = "...";
-            this.buttonDirectoryUHDRE4.UseVisualStyleBackColor = true;
-            this.buttonDirectoryUHDRE4.Click += new System.EventHandler(this.buttonDirectoryUHDRE4_Click);
-            // 
-            // textBoxDirectoryUHDRE4
-            // 
-            this.textBoxDirectoryUHDRE4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDirectoryUHDRE4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDirectoryUHDRE4.Location = new System.Drawing.Point(13, 146);
-            this.textBoxDirectoryUHDRE4.MaxLength = 3000;
-            this.textBoxDirectoryUHDRE4.Name = "textBoxDirectoryUHDRE4";
-            this.textBoxDirectoryUHDRE4.Size = new System.Drawing.Size(721, 22);
-            this.textBoxDirectoryUHDRE4.TabIndex = 10;
-            // 
-            // labelDirectoryPS2RE4
-            // 
-            this.labelDirectoryPS2RE4.AutoSize = true;
-            this.labelDirectoryPS2RE4.Location = new System.Drawing.Point(10, 91);
-            this.labelDirectoryPS2RE4.Name = "labelDirectoryPS2RE4";
-            this.labelDirectoryPS2RE4.Size = new System.Drawing.Size(101, 13);
-            this.labelDirectoryPS2RE4.TabIndex = 6;
-            this.labelDirectoryPS2RE4.Text = "RE4 PS2 Directory:";
-            // 
-            // buttonDirectoryPS2RE4
-            // 
-            this.buttonDirectoryPS2RE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryPS2RE4.Location = new System.Drawing.Point(733, 105);
-            this.buttonDirectoryPS2RE4.Name = "buttonDirectoryPS2RE4";
-            this.buttonDirectoryPS2RE4.Size = new System.Drawing.Size(33, 25);
-            this.buttonDirectoryPS2RE4.TabIndex = 8;
-            this.buttonDirectoryPS2RE4.Text = "...";
-            this.buttonDirectoryPS2RE4.UseVisualStyleBackColor = true;
-            this.buttonDirectoryPS2RE4.Click += new System.EventHandler(this.buttonDirectoryPS2RE4_Click);
-            // 
-            // textBoxDirectoryPS2RE4
-            // 
-            this.textBoxDirectoryPS2RE4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDirectoryPS2RE4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDirectoryPS2RE4.Location = new System.Drawing.Point(13, 107);
-            this.textBoxDirectoryPS2RE4.MaxLength = 3000;
-            this.textBoxDirectoryPS2RE4.Name = "textBoxDirectoryPS2RE4";
-            this.textBoxDirectoryPS2RE4.Size = new System.Drawing.Size(721, 22);
-            this.textBoxDirectoryPS2RE4.TabIndex = 7;
-            // 
-            // labelDirectoryUHDRE4
-            // 
-            this.labelDirectoryUHDRE4.AutoSize = true;
-            this.labelDirectoryUHDRE4.Location = new System.Drawing.Point(10, 130);
-            this.labelDirectoryUHDRE4.Name = "labelDirectoryUHDRE4";
-            this.labelDirectoryUHDRE4.Size = new System.Drawing.Size(106, 13);
-            this.labelDirectoryUHDRE4.TabIndex = 9;
-            this.labelDirectoryUHDRE4.Text = "RE4 UHD Directory:";
-            // 
-            // buttonDirectory2007RE4
-            // 
-            this.buttonDirectory2007RE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectory2007RE4.Location = new System.Drawing.Point(733, 67);
-            this.buttonDirectory2007RE4.Name = "buttonDirectory2007RE4";
-            this.buttonDirectory2007RE4.Size = new System.Drawing.Size(33, 25);
-            this.buttonDirectory2007RE4.TabIndex = 5;
-            this.buttonDirectory2007RE4.Text = "...";
-            this.buttonDirectory2007RE4.UseVisualStyleBackColor = true;
-            this.buttonDirectory2007RE4.Click += new System.EventHandler(this.buttonDirectory2007RE4_Click);
-            // 
-            // textBoxDirectory2007RE4
-            // 
-            this.textBoxDirectory2007RE4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDirectory2007RE4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDirectory2007RE4.Location = new System.Drawing.Point(13, 68);
-            this.textBoxDirectory2007RE4.MaxLength = 3000;
-            this.textBoxDirectory2007RE4.Name = "textBoxDirectory2007RE4";
-            this.textBoxDirectory2007RE4.Size = new System.Drawing.Size(721, 22);
-            this.textBoxDirectory2007RE4.TabIndex = 4;
-            // 
-            // labelDirectory2007RE4
-            // 
-            this.labelDirectory2007RE4.AutoSize = true;
-            this.labelDirectory2007RE4.Location = new System.Drawing.Point(10, 52);
-            this.labelDirectory2007RE4.Name = "labelDirectory2007RE4";
-            this.labelDirectory2007RE4.Size = new System.Drawing.Size(106, 13);
-            this.labelDirectory2007RE4.TabIndex = 3;
-            this.labelDirectory2007RE4.Text = "RE4 2007 Directory:";
             // 
             // buttonDiretoryXFILE
             // 
@@ -607,25 +478,210 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.buttonDiretoryXFILE.UseVisualStyleBackColor = true;
             this.buttonDiretoryXFILE.Click += new System.EventHandler(this.buttonDiretoryXFILE_Click);
             // 
-            // textBoxDiretoryXFILE
+            // labelDirectory2007RE4
             // 
-            this.textBoxDiretoryXFILE.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.labelDirectory2007RE4.AutoSize = true;
+            this.labelDirectory2007RE4.Location = new System.Drawing.Point(10, 52);
+            this.labelDirectory2007RE4.Name = "labelDirectory2007RE4";
+            this.labelDirectory2007RE4.Size = new System.Drawing.Size(106, 13);
+            this.labelDirectory2007RE4.TabIndex = 3;
+            this.labelDirectory2007RE4.Text = "RE4 2007 Directory:";
+            // 
+            // textBoxDirectory2007RE4
+            // 
+            this.textBoxDirectory2007RE4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxDiretoryXFILE.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDiretoryXFILE.Location = new System.Drawing.Point(13, 29);
-            this.textBoxDiretoryXFILE.MaxLength = 3000;
-            this.textBoxDiretoryXFILE.Name = "textBoxDiretoryXFILE";
-            this.textBoxDiretoryXFILE.Size = new System.Drawing.Size(721, 22);
-            this.textBoxDiretoryXFILE.TabIndex = 1;
+            this.textBoxDirectory2007RE4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDirectory2007RE4.Location = new System.Drawing.Point(13, 68);
+            this.textBoxDirectory2007RE4.MaxLength = 3000;
+            this.textBoxDirectory2007RE4.Name = "textBoxDirectory2007RE4";
+            this.textBoxDirectory2007RE4.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDirectory2007RE4.TabIndex = 4;
             // 
-            // labelDirectoryXFILE
+            // buttonDirectory2007RE4
             // 
-            this.labelDirectoryXFILE.AutoSize = true;
-            this.labelDirectoryXFILE.Location = new System.Drawing.Point(10, 12);
-            this.labelDirectoryXFILE.Name = "labelDirectoryXFILE";
-            this.labelDirectoryXFILE.Size = new System.Drawing.Size(88, 13);
-            this.labelDirectoryXFILE.TabIndex = 0;
-            this.labelDirectoryXFILE.Text = "XFILE Directory:";
+            this.buttonDirectory2007RE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDirectory2007RE4.Location = new System.Drawing.Point(733, 67);
+            this.buttonDirectory2007RE4.Name = "buttonDirectory2007RE4";
+            this.buttonDirectory2007RE4.Size = new System.Drawing.Size(33, 25);
+            this.buttonDirectory2007RE4.TabIndex = 5;
+            this.buttonDirectory2007RE4.Text = "...";
+            this.buttonDirectory2007RE4.UseVisualStyleBackColor = true;
+            this.buttonDirectory2007RE4.Click += new System.EventHandler(this.buttonDirectory2007RE4_Click);
+            // 
+            // labelDirectoryUHDRE4
+            // 
+            this.labelDirectoryUHDRE4.AutoSize = true;
+            this.labelDirectoryUHDRE4.Location = new System.Drawing.Point(10, 130);
+            this.labelDirectoryUHDRE4.Name = "labelDirectoryUHDRE4";
+            this.labelDirectoryUHDRE4.Size = new System.Drawing.Size(106, 13);
+            this.labelDirectoryUHDRE4.TabIndex = 9;
+            this.labelDirectoryUHDRE4.Text = "RE4 UHD Directory:";
+            // 
+            // textBoxDirectoryPS2RE4
+            // 
+            this.textBoxDirectoryPS2RE4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDirectoryPS2RE4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDirectoryPS2RE4.Location = new System.Drawing.Point(13, 107);
+            this.textBoxDirectoryPS2RE4.MaxLength = 3000;
+            this.textBoxDirectoryPS2RE4.Name = "textBoxDirectoryPS2RE4";
+            this.textBoxDirectoryPS2RE4.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDirectoryPS2RE4.TabIndex = 7;
+            // 
+            // buttonDirectoryPS2RE4
+            // 
+            this.buttonDirectoryPS2RE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDirectoryPS2RE4.Location = new System.Drawing.Point(733, 105);
+            this.buttonDirectoryPS2RE4.Name = "buttonDirectoryPS2RE4";
+            this.buttonDirectoryPS2RE4.Size = new System.Drawing.Size(33, 25);
+            this.buttonDirectoryPS2RE4.TabIndex = 8;
+            this.buttonDirectoryPS2RE4.Text = "...";
+            this.buttonDirectoryPS2RE4.UseVisualStyleBackColor = true;
+            this.buttonDirectoryPS2RE4.Click += new System.EventHandler(this.buttonDirectoryPS2RE4_Click);
+            // 
+            // labelDirectoryPS2RE4
+            // 
+            this.labelDirectoryPS2RE4.AutoSize = true;
+            this.labelDirectoryPS2RE4.Location = new System.Drawing.Point(10, 91);
+            this.labelDirectoryPS2RE4.Name = "labelDirectoryPS2RE4";
+            this.labelDirectoryPS2RE4.Size = new System.Drawing.Size(101, 13);
+            this.labelDirectoryPS2RE4.TabIndex = 6;
+            this.labelDirectoryPS2RE4.Text = "RE4 PS2 Directory:";
+            // 
+            // textBoxDirectoryUHDRE4
+            // 
+            this.textBoxDirectoryUHDRE4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDirectoryUHDRE4.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDirectoryUHDRE4.Location = new System.Drawing.Point(13, 146);
+            this.textBoxDirectoryUHDRE4.MaxLength = 3000;
+            this.textBoxDirectoryUHDRE4.Name = "textBoxDirectoryUHDRE4";
+            this.textBoxDirectoryUHDRE4.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDirectoryUHDRE4.TabIndex = 10;
+            // 
+            // buttonDirectoryUHDRE4
+            // 
+            this.buttonDirectoryUHDRE4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDirectoryUHDRE4.Location = new System.Drawing.Point(733, 144);
+            this.buttonDirectoryUHDRE4.Name = "buttonDirectoryUHDRE4";
+            this.buttonDirectoryUHDRE4.Size = new System.Drawing.Size(33, 25);
+            this.buttonDirectoryUHDRE4.TabIndex = 11;
+            this.buttonDirectoryUHDRE4.Text = "...";
+            this.buttonDirectoryUHDRE4.UseVisualStyleBackColor = true;
+            this.buttonDirectoryUHDRE4.Click += new System.EventHandler(this.buttonDirectoryUHDRE4_Click);
+            // 
+            // directoryTabCustom
+            // 
+            this.directoryTabCustom.Controls.Add(this.buttonDirectoryCustom3);
+            this.directoryTabCustom.Controls.Add(this.labelDirectoryCustom1);
+            this.directoryTabCustom.Controls.Add(this.buttonDirectoryCustom2);
+            this.directoryTabCustom.Controls.Add(this.textBoxDirectoryCustom1);
+            this.directoryTabCustom.Controls.Add(this.buttonDirectoryCustom1);
+            this.directoryTabCustom.Controls.Add(this.labelDirectoryCustom2);
+            this.directoryTabCustom.Controls.Add(this.textBoxDirectoryCustom3);
+            this.directoryTabCustom.Controls.Add(this.textBoxDirectoryCustom2);
+            this.directoryTabCustom.Controls.Add(this.labelDirectoryCustom3);
+            this.directoryTabCustom.Location = new System.Drawing.Point(4, 22);
+            this.directoryTabCustom.Name = "directoryTabCustom";
+            this.directoryTabCustom.Padding = new System.Windows.Forms.Padding(3);
+            this.directoryTabCustom.Size = new System.Drawing.Size(779, 222);
+            this.directoryTabCustom.TabIndex = 1;
+            this.directoryTabCustom.Text = "Custom";
+            this.directoryTabCustom.UseVisualStyleBackColor = true;
+            // 
+            // buttonDirectoryCustom3
+            // 
+            this.buttonDirectoryCustom3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDirectoryCustom3.Location = new System.Drawing.Point(733, 105);
+            this.buttonDirectoryCustom3.Name = "buttonDirectoryCustom3";
+            this.buttonDirectoryCustom3.Size = new System.Drawing.Size(33, 25);
+            this.buttonDirectoryCustom3.TabIndex = 23;
+            this.buttonDirectoryCustom3.Text = "...";
+            this.buttonDirectoryCustom3.UseVisualStyleBackColor = true;
+            this.buttonDirectoryCustom3.Click += new System.EventHandler(this.buttonDirectoryCustom3_Click);
+            // 
+            // labelDirectoryCustom1
+            // 
+            this.labelDirectoryCustom1.AutoSize = true;
+            this.labelDirectoryCustom1.Location = new System.Drawing.Point(10, 12);
+            this.labelDirectoryCustom1.Name = "labelDirectoryCustom1";
+            this.labelDirectoryCustom1.Size = new System.Drawing.Size(106, 13);
+            this.labelDirectoryCustom1.TabIndex = 15;
+            this.labelDirectoryCustom1.Text = "Custom1 Directory:";
+            // 
+            // buttonDirectoryCustom2
+            // 
+            this.buttonDirectoryCustom2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDirectoryCustom2.Location = new System.Drawing.Point(733, 66);
+            this.buttonDirectoryCustom2.Name = "buttonDirectoryCustom2";
+            this.buttonDirectoryCustom2.Size = new System.Drawing.Size(33, 25);
+            this.buttonDirectoryCustom2.TabIndex = 20;
+            this.buttonDirectoryCustom2.Text = "...";
+            this.buttonDirectoryCustom2.UseVisualStyleBackColor = true;
+            this.buttonDirectoryCustom2.Click += new System.EventHandler(this.buttonDirectoryCustom2_Click);
+            // 
+            // textBoxDirectoryCustom1
+            // 
+            this.textBoxDirectoryCustom1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDirectoryCustom1.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDirectoryCustom1.Location = new System.Drawing.Point(13, 28);
+            this.textBoxDirectoryCustom1.MaxLength = 3000;
+            this.textBoxDirectoryCustom1.Name = "textBoxDirectoryCustom1";
+            this.textBoxDirectoryCustom1.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDirectoryCustom1.TabIndex = 16;
+            // 
+            // buttonDirectoryCustom1
+            // 
+            this.buttonDirectoryCustom1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDirectoryCustom1.Location = new System.Drawing.Point(733, 26);
+            this.buttonDirectoryCustom1.Name = "buttonDirectoryCustom1";
+            this.buttonDirectoryCustom1.Size = new System.Drawing.Size(33, 25);
+            this.buttonDirectoryCustom1.TabIndex = 17;
+            this.buttonDirectoryCustom1.Text = "...";
+            this.buttonDirectoryCustom1.UseVisualStyleBackColor = true;
+            this.buttonDirectoryCustom1.Click += new System.EventHandler(this.buttonDirectoryCustom1_Click);
+            // 
+            // labelDirectoryCustom2
+            // 
+            this.labelDirectoryCustom2.AutoSize = true;
+            this.labelDirectoryCustom2.Location = new System.Drawing.Point(10, 51);
+            this.labelDirectoryCustom2.Name = "labelDirectoryCustom2";
+            this.labelDirectoryCustom2.Size = new System.Drawing.Size(106, 13);
+            this.labelDirectoryCustom2.TabIndex = 18;
+            this.labelDirectoryCustom2.Text = "Custom2 Directory:";
+            // 
+            // textBoxDirectoryCustom3
+            // 
+            this.textBoxDirectoryCustom3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDirectoryCustom3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDirectoryCustom3.Location = new System.Drawing.Point(13, 106);
+            this.textBoxDirectoryCustom3.MaxLength = 3000;
+            this.textBoxDirectoryCustom3.Name = "textBoxDirectoryCustom3";
+            this.textBoxDirectoryCustom3.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDirectoryCustom3.TabIndex = 22;
+            // 
+            // textBoxDirectoryCustom2
+            // 
+            this.textBoxDirectoryCustom2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDirectoryCustom2.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxDirectoryCustom2.Location = new System.Drawing.Point(13, 67);
+            this.textBoxDirectoryCustom2.MaxLength = 3000;
+            this.textBoxDirectoryCustom2.Name = "textBoxDirectoryCustom2";
+            this.textBoxDirectoryCustom2.Size = new System.Drawing.Size(721, 22);
+            this.textBoxDirectoryCustom2.TabIndex = 19;
+            // 
+            // labelDirectoryCustom3
+            // 
+            this.labelDirectoryCustom3.AutoSize = true;
+            this.labelDirectoryCustom3.Location = new System.Drawing.Point(10, 90);
+            this.labelDirectoryCustom3.Name = "labelDirectoryCustom3";
+            this.labelDirectoryCustom3.Size = new System.Drawing.Size(106, 13);
+            this.labelDirectoryCustom3.TabIndex = 21;
+            this.labelDirectoryCustom3.Text = "Custom3 Directory:";
             // 
             // tabPageLists
             // 
@@ -1093,59 +1149,16 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.colorDialogColors.FullOpen = true;
             this.colorDialogColors.SolidColorOnly = true;
             // 
-            // tabControl1
+            // PropertyGrid_HideBloatElementsButton
             // 
-            this.tabControl1.Controls.Add(this.directoryTabMain);
-            this.tabControl1.Controls.Add(this.directoryTabCustom);
-            this.tabControl1.Location = new System.Drawing.Point(9, 21);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(787, 248);
-            this.tabControl1.TabIndex = 25;
-            // 
-            // directoryTabMain
-            // 
-            this.directoryTabMain.Controls.Add(this.buttonDirectoryPS4NSRE4);
-            this.directoryTabMain.Controls.Add(this.labelDirectoryXFILE);
-            this.directoryTabMain.Controls.Add(this.textBoxDirectoryPS4NSRE4);
-            this.directoryTabMain.Controls.Add(this.textBoxDiretoryXFILE);
-            this.directoryTabMain.Controls.Add(this.labelDirectoryPS4NSRE4);
-            this.directoryTabMain.Controls.Add(this.buttonDiretoryXFILE);
-            this.directoryTabMain.Controls.Add(this.labelDirectory2007RE4);
-            this.directoryTabMain.Controls.Add(this.textBoxDirectory2007RE4);
-            this.directoryTabMain.Controls.Add(this.buttonDirectory2007RE4);
-            this.directoryTabMain.Controls.Add(this.labelDirectoryUHDRE4);
-            this.directoryTabMain.Controls.Add(this.textBoxDirectoryPS2RE4);
-            this.directoryTabMain.Controls.Add(this.buttonDirectoryPS2RE4);
-            this.directoryTabMain.Controls.Add(this.labelDirectoryPS2RE4);
-            this.directoryTabMain.Controls.Add(this.textBoxDirectoryUHDRE4);
-            this.directoryTabMain.Controls.Add(this.buttonDirectoryUHDRE4);
-            this.directoryTabMain.Location = new System.Drawing.Point(4, 22);
-            this.directoryTabMain.Name = "directoryTabMain";
-            this.directoryTabMain.Padding = new System.Windows.Forms.Padding(3);
-            this.directoryTabMain.Size = new System.Drawing.Size(779, 222);
-            this.directoryTabMain.TabIndex = 0;
-            this.directoryTabMain.Text = "Main";
-            this.directoryTabMain.UseVisualStyleBackColor = true;
-            // 
-            // directoryTabCustom
-            // 
-            this.directoryTabCustom.Controls.Add(this.buttonDirectoryCustom3);
-            this.directoryTabCustom.Controls.Add(this.labelDirectoryCustom1);
-            this.directoryTabCustom.Controls.Add(this.buttonDirectoryCustom2);
-            this.directoryTabCustom.Controls.Add(this.textBoxDirectoryCustom1);
-            this.directoryTabCustom.Controls.Add(this.buttonDirectoryCustom1);
-            this.directoryTabCustom.Controls.Add(this.labelDirectoryCustom2);
-            this.directoryTabCustom.Controls.Add(this.textBoxDirectoryCustom3);
-            this.directoryTabCustom.Controls.Add(this.textBoxDirectoryCustom2);
-            this.directoryTabCustom.Controls.Add(this.labelDirectoryCustom3);
-            this.directoryTabCustom.Location = new System.Drawing.Point(4, 22);
-            this.directoryTabCustom.Name = "directoryTabCustom";
-            this.directoryTabCustom.Padding = new System.Windows.Forms.Padding(3);
-            this.directoryTabCustom.Size = new System.Drawing.Size(794, 156);
-            this.directoryTabCustom.TabIndex = 1;
-            this.directoryTabCustom.Text = "Custom";
-            this.directoryTabCustom.UseVisualStyleBackColor = true;
+            this.PropertyGrid_HideBloatElementsButton.AutoSize = true;
+            this.PropertyGrid_HideBloatElementsButton.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
+            this.PropertyGrid_HideBloatElementsButton.Location = new System.Drawing.Point(9, 67);
+            this.PropertyGrid_HideBloatElementsButton.Name = "PropertyGrid_HideBloatElementsButton";
+            this.PropertyGrid_HideBloatElementsButton.Size = new System.Drawing.Size(148, 17);
+            this.PropertyGrid_HideBloatElementsButton.TabIndex = 3;
+            this.PropertyGrid_HideBloatElementsButton.Text = "Hide unused properties";
+            this.PropertyGrid_HideBloatElementsButton.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -1181,6 +1194,11 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBoxDirectory.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.directoryTabMain.ResumeLayout(false);
+            this.directoryTabMain.PerformLayout();
+            this.directoryTabCustom.ResumeLayout(false);
+            this.directoryTabCustom.PerformLayout();
             this.tabPageLists.ResumeLayout(false);
             this.groupBoxLists.ResumeLayout(false);
             this.groupBoxLists.PerformLayout();
@@ -1196,11 +1214,6 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             this.groupBoxOutputFractionalSymbol.PerformLayout();
             this.groupBoxFractionalPart.ResumeLayout(false);
             this.groupBoxFractionalPart.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.directoryTabMain.ResumeLayout(false);
-            this.directoryTabMain.PerformLayout();
-            this.directoryTabCustom.ResumeLayout(false);
-            this.directoryTabCustom.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1295,5 +1308,6 @@ namespace Re4QuadExtremeEditor.Editor.Forms
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage directoryTabMain;
         private System.Windows.Forms.TabPage directoryTabCustom;
+        private System.Windows.Forms.CheckBox PropertyGrid_HideBloatElementsButton;
     }
 }

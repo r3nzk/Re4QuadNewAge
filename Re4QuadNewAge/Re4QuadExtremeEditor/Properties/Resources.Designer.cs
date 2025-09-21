@@ -63,6 +63,16 @@ namespace Re4QuadExtremeEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add {
+            get {
+                object obj = ResourceManager.GetObject("add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap BlackTexture {
             get {
                 object obj = ResourceManager.GetObject("BlackTexture", resourceCulture);
@@ -197,6 +207,26 @@ namespace Re4QuadExtremeEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("CylinderTopX", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap detail_dark {
+            get {
+                object obj = ResourceManager.GetObject("detail_dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dots {
+            get {
+                object obj = ResourceManager.GetObject("dots", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -373,6 +403,16 @@ namespace Re4QuadExtremeEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap play_yellow {
+            get {
+                object obj = ResourceManager.GetObject("play_yellow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap quad_splash {
             get {
                 object obj = ResourceManager.GetObject("quad_splash", resourceCulture);
@@ -417,6 +457,16 @@ namespace Re4QuadExtremeEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("RoomShaderVert", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap search_dark {
+            get {
+                object obj = ResourceManager.GetObject("search_dark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

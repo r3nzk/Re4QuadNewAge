@@ -293,9 +293,25 @@ namespace Re4QuadExtremeEditor
             this.saveFileDialogConvertESE = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialogQuadCustom = new System.Windows.Forms.SaveFileDialog();
             this.splitContainerRight = new System.Windows.Forms.SplitContainer();
-            this.splitContainerLeft = new System.Windows.Forms.SplitContainer();
-            this.propertyGridObjs = new System.Windows.Forms.PropertyGrid();
+            this.currentRoomLabel = new System.Windows.Forms.Label();
+            this.treeView_searchBar = new System.Windows.Forms.Panel();
+            this.treeView_searchButton = new System.Windows.Forms.Button();
+            this.treeView_searchField = new System.Windows.Forms.TextBox();
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
+            this.splitContainerLeft = new System.Windows.Forms.SplitContainer();
+            this.treeViewTablePanel = new System.Windows.Forms.TableLayoutPanel();
+            this.treeViewStrip = new System.Windows.Forms.TableLayoutPanel();
+            this.treeView_moreButton = new System.Windows.Forms.Button();
+            this.treeView_addButton = new System.Windows.Forms.Button();
+            this.treeViewLabel = new System.Windows.Forms.Label();
+            this.propertyGridPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.propertyGridStrip = new System.Windows.Forms.TableLayoutPanel();
+            this.propertyGrid_detailButton = new System.Windows.Forms.Button();
+            this.propertyGrid_searchBar = new System.Windows.Forms.Panel();
+            this.propertyGrid_searchButton = new System.Windows.Forms.Button();
+            this.propertyGrid_searchField = new System.Windows.Forms.TextBox();
+            this.propertyGridLabel = new System.Windows.Forms.Label();
+            this.propertyGridObjs = new System.Windows.Forms.PropertyGrid();
             this.openFileDialogLIT = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialogEFFBLOB = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogLIT = new System.Windows.Forms.SaveFileDialog();
@@ -304,18 +320,40 @@ namespace Re4QuadExtremeEditor
             this.openFileDialogCAM = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialogEFFBLOB = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialogEFFBLOBBIG = new System.Windows.Forms.SaveFileDialog();
+            this.editor = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolstrip_newQuad = new System.Windows.Forms.ToolStripButton();
+            this.toolstrip_OpenQuad = new System.Windows.Forms.ToolStripButton();
+            this.toolstrip_saveQuad = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolstrip_playButton = new System.Windows.Forms.ToolStripButton();
             this.treeViewObjs = new NsMultiselectTreeView.MultiselectTreeView();
             this.menuStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).BeginInit();
+            this.splitContainerRight.Panel1.SuspendLayout();
             this.splitContainerRight.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
-            this.splitContainerLeft.Panel1.SuspendLayout();
-            this.splitContainerLeft.Panel2.SuspendLayout();
-            this.splitContainerLeft.SuspendLayout();
+            this.treeView_searchBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
             this.splitContainerMain.Panel2.SuspendLayout();
             this.splitContainerMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).BeginInit();
+            this.splitContainerLeft.Panel1.SuspendLayout();
+            this.splitContainerLeft.Panel2.SuspendLayout();
+            this.splitContainerLeft.SuspendLayout();
+            this.treeViewTablePanel.SuspendLayout();
+            this.treeViewStrip.SuspendLayout();
+            this.propertyGridPanel.SuspendLayout();
+            this.propertyGridStrip.SuspendLayout();
+            this.propertyGrid_searchBar.SuspendLayout();
+            this.editor.SuspendLayout();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
+            this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
+            this.toolStripContainer1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMenu
@@ -329,7 +367,7 @@ namespace Re4QuadExtremeEditor
             this.toolStripMenuItemSelectRoom});
             this.menuStripMenu.Location = new System.Drawing.Point(0, 0);
             this.menuStripMenu.Name = "menuStripMenu";
-            this.menuStripMenu.Size = new System.Drawing.Size(892, 24);
+            this.menuStripMenu.Size = new System.Drawing.Size(900, 24);
             this.menuStripMenu.TabIndex = 0;
             this.menuStripMenu.Text = "Menu";
             // 
@@ -2509,9 +2547,9 @@ namespace Re4QuadExtremeEditor
             // 
             // splitContainerRight
             // 
+            this.splitContainerRight.BackColor = System.Drawing.Color.Transparent;
             this.splitContainerRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainerRight.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainerRight.IsSplitterFixed = true;
             this.splitContainerRight.Location = new System.Drawing.Point(0, 0);
             this.splitContainerRight.Name = "splitContainerRight";
             this.splitContainerRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -2519,71 +2557,82 @@ namespace Re4QuadExtremeEditor
             // splitContainerRight.Panel1
             // 
             this.splitContainerRight.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerRight.Panel1.Controls.Add(this.currentRoomLabel);
             this.splitContainerRight.Panel1MinSize = 100;
             // 
             // splitContainerRight.Panel2
             // 
             this.splitContainerRight.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainerRight.Panel2.Resize += new System.EventHandler(this.splitContainerRight_Panel2_Resize);
-            this.splitContainerRight.Panel2MinSize = 126;
-            this.splitContainerRight.Size = new System.Drawing.Size(680, 475);
-            this.splitContainerRight.SplitterDistance = 345;
+            this.splitContainerRight.Panel2MinSize = 140;
+            this.splitContainerRight.Size = new System.Drawing.Size(689, 483);
+            this.splitContainerRight.SplitterDistance = 339;
             this.splitContainerRight.TabIndex = 0;
             this.splitContainerRight.TabStop = false;
             // 
-            // splitContainerLeft
+            // currentRoomLabel
             // 
-            this.splitContainerLeft.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.splitContainerLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerLeft.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerLeft.Name = "splitContainerLeft";
-            this.splitContainerLeft.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.currentRoomLabel.AutoSize = true;
+            this.currentRoomLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.currentRoomLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.currentRoomLabel.Location = new System.Drawing.Point(0, 0);
+            this.currentRoomLabel.Name = "currentRoomLabel";
+            this.currentRoomLabel.Size = new System.Drawing.Size(38, 15);
+            this.currentRoomLabel.TabIndex = 0;
+            this.currentRoomLabel.Text = "label1";
             // 
-            // splitContainerLeft.Panel1
+            // treeView_searchBar
             // 
-            this.splitContainerLeft.Panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerLeft.Panel1.Controls.Add(this.treeViewObjs);
-            this.splitContainerLeft.Panel1MinSize = 50;
+            this.treeView_searchBar.BackColor = System.Drawing.Color.White;
+            this.treeView_searchBar.Controls.Add(this.treeView_searchButton);
+            this.treeView_searchBar.Controls.Add(this.treeView_searchField);
+            this.treeView_searchBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView_searchBar.Location = new System.Drawing.Point(95, 4);
+            this.treeView_searchBar.Margin = new System.Windows.Forms.Padding(3, 4, 1, 1);
+            this.treeView_searchBar.Name = "treeView_searchBar";
+            this.treeView_searchBar.Size = new System.Drawing.Size(82, 24);
+            this.treeView_searchBar.TabIndex = 1;
             // 
-            // splitContainerLeft.Panel2
+            // treeView_searchButton
             // 
-            this.splitContainerLeft.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerLeft.Panel2.Controls.Add(this.propertyGridObjs);
-            this.splitContainerLeft.Panel2MinSize = 100;
-            this.splitContainerLeft.Size = new System.Drawing.Size(208, 475);
-            this.splitContainerLeft.SplitterDistance = 215;
-            this.splitContainerLeft.TabIndex = 0;
-            this.splitContainerLeft.TabStop = false;
+            this.treeView_searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView_searchButton.BackColor = System.Drawing.Color.Transparent;
+            this.treeView_searchButton.FlatAppearance.BorderSize = 0;
+            this.treeView_searchButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
+            this.treeView_searchButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.treeView_searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.treeView_searchButton.Image = ((System.Drawing.Image)(resources.GetObject("treeView_searchButton.Image")));
+            this.treeView_searchButton.Location = new System.Drawing.Point(59, -2);
+            this.treeView_searchButton.Margin = new System.Windows.Forms.Padding(0);
+            this.treeView_searchButton.Name = "treeView_searchButton";
+            this.treeView_searchButton.Size = new System.Drawing.Size(22, 25);
+            this.treeView_searchButton.TabIndex = 1;
+            this.treeView_searchButton.UseVisualStyleBackColor = false;
             // 
-            // propertyGridObjs
+            // treeView_searchField
             // 
-            this.propertyGridObjs.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.propertyGridObjs.CategorySplitterColor = System.Drawing.SystemColors.ControlLight;
-            this.propertyGridObjs.CommandsActiveLinkColor = System.Drawing.Color.DarkRed;
-            this.propertyGridObjs.CommandsLinkColor = System.Drawing.Color.MidnightBlue;
-            this.propertyGridObjs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGridObjs.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.propertyGridObjs.HelpBorderColor = System.Drawing.SystemColors.Control;
-            this.propertyGridObjs.LineColor = System.Drawing.SystemColors.ControlLight;
-            this.propertyGridObjs.Location = new System.Drawing.Point(0, 0);
-            this.propertyGridObjs.Name = "propertyGridObjs";
-            this.propertyGridObjs.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.propertyGridObjs.Size = new System.Drawing.Size(208, 256);
-            this.propertyGridObjs.TabIndex = 0;
-            this.propertyGridObjs.ToolbarVisible = false;
-            this.propertyGridObjs.ViewBackColor = System.Drawing.SystemColors.Control;
-            this.propertyGridObjs.ViewBorderColor = System.Drawing.SystemColors.ControlLight;
-            this.propertyGridObjs.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGridObjs_PropertyValueChanged);
-            this.propertyGridObjs.PropertySortChanged += new System.EventHandler(this.propertyGridObjs_PropertySortChanged);
-            this.propertyGridObjs.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGridObjs_SelectedGridItemChanged);
-            this.propertyGridObjs.Enter += new System.EventHandler(this.propertyGridObjs_Enter);
-            this.propertyGridObjs.Leave += new System.EventHandler(this.propertyGridObjs_Leave);
+            this.treeView_searchField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView_searchField.BackColor = System.Drawing.Color.White;
+            this.treeView_searchField.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeView_searchField.HideSelection = false;
+            this.treeView_searchField.Location = new System.Drawing.Point(3, 3);
+            this.treeView_searchField.Margin = new System.Windows.Forms.Padding(1);
+            this.treeView_searchField.MaximumSize = new System.Drawing.Size(1000, 21);
+            this.treeView_searchField.MinimumSize = new System.Drawing.Size(100, 21);
+            this.treeView_searchField.Name = "treeView_searchField";
+            this.treeView_searchField.Size = new System.Drawing.Size(100, 16);
+            this.treeView_searchField.TabIndex = 0;
+            this.treeView_searchField.TabStop = false;
             // 
             // splitContainerMain
             // 
+            this.splitContainerMain.AccessibleRole = System.Windows.Forms.AccessibleRole.Document;
             this.splitContainerMain.BackColor = System.Drawing.SystemColors.ControlLight;
             this.splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerMain.Location = new System.Drawing.Point(0, 24);
+            this.splitContainerMain.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.splitContainerMain.Location = new System.Drawing.Point(3, 3);
             this.splitContainerMain.Name = "splitContainerMain";
             // 
             // splitContainerMain.Panel1
@@ -2597,11 +2646,253 @@ namespace Re4QuadExtremeEditor
             this.splitContainerMain.Panel2.BackColor = System.Drawing.SystemColors.ControlLight;
             this.splitContainerMain.Panel2.Controls.Add(this.splitContainerRight);
             this.splitContainerMain.Panel2MinSize = 250;
-            this.splitContainerMain.Size = new System.Drawing.Size(892, 475);
-            this.splitContainerMain.SplitterDistance = 208;
+            this.splitContainerMain.Size = new System.Drawing.Size(894, 483);
+            this.splitContainerMain.SplitterDistance = 201;
             this.splitContainerMain.TabIndex = 1;
             this.splitContainerMain.TabStop = false;
             this.splitContainerMain.SplitterMoving += new System.Windows.Forms.SplitterCancelEventHandler(this.splitContainerMain_SplitterMoving);
+            // 
+            // splitContainerLeft
+            // 
+            this.splitContainerLeft.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainerLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerLeft.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerLeft.Name = "splitContainerLeft";
+            this.splitContainerLeft.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerLeft.Panel1
+            // 
+            this.splitContainerLeft.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainerLeft.Panel1.Controls.Add(this.treeViewTablePanel);
+            this.splitContainerLeft.Panel1MinSize = 50;
+            // 
+            // splitContainerLeft.Panel2
+            // 
+            this.splitContainerLeft.Panel2.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainerLeft.Panel2.Controls.Add(this.propertyGridPanel);
+            this.splitContainerLeft.Panel2MinSize = 100;
+            this.splitContainerLeft.Size = new System.Drawing.Size(201, 483);
+            this.splitContainerLeft.SplitterDistance = 202;
+            this.splitContainerLeft.TabIndex = 0;
+            this.splitContainerLeft.TabStop = false;
+            // 
+            // treeViewTablePanel
+            // 
+            this.treeViewTablePanel.ColumnCount = 1;
+            this.treeViewTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.treeViewTablePanel.Controls.Add(this.treeViewStrip, 0, 0);
+            this.treeViewTablePanel.Controls.Add(this.treeViewObjs, 0, 1);
+            this.treeViewTablePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewTablePanel.Location = new System.Drawing.Point(0, 0);
+            this.treeViewTablePanel.Name = "treeViewTablePanel";
+            this.treeViewTablePanel.RowCount = 2;
+            this.treeViewTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.treeViewTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.treeViewTablePanel.Size = new System.Drawing.Size(201, 202);
+            this.treeViewTablePanel.TabIndex = 1;
+            // 
+            // treeViewStrip
+            // 
+            this.treeViewStrip.ColumnCount = 4;
+            this.treeViewStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 69F));
+            this.treeViewStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.treeViewStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.treeViewStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.treeViewStrip.Controls.Add(this.treeView_moreButton, 3, 0);
+            this.treeViewStrip.Controls.Add(this.treeView_addButton, 1, 0);
+            this.treeViewStrip.Controls.Add(this.treeViewLabel, 0, 0);
+            this.treeViewStrip.Controls.Add(this.treeView_searchBar, 2, 0);
+            this.treeViewStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewStrip.Location = new System.Drawing.Point(0, 0);
+            this.treeViewStrip.Margin = new System.Windows.Forms.Padding(0);
+            this.treeViewStrip.Name = "treeViewStrip";
+            this.treeViewStrip.RowCount = 1;
+            this.treeViewStrip.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.treeViewStrip.Size = new System.Drawing.Size(201, 29);
+            this.treeViewStrip.TabIndex = 0;
+            // 
+            // treeView_moreButton
+            // 
+            this.treeView_moreButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView_moreButton.FlatAppearance.BorderSize = 0;
+            this.treeView_moreButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
+            this.treeView_moreButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.treeView_moreButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.treeView_moreButton.Image = global::Re4QuadExtremeEditor.Properties.Resources.dots;
+            this.treeView_moreButton.Location = new System.Drawing.Point(178, 4);
+            this.treeView_moreButton.Margin = new System.Windows.Forms.Padding(0, 4, 0, 2);
+            this.treeView_moreButton.Name = "treeView_moreButton";
+            this.treeView_moreButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 2);
+            this.treeView_moreButton.Size = new System.Drawing.Size(23, 23);
+            this.treeView_moreButton.TabIndex = 6;
+            this.treeView_moreButton.UseVisualStyleBackColor = true;
+            // 
+            // treeView_addButton
+            // 
+            this.treeView_addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView_addButton.FlatAppearance.BorderSize = 0;
+            this.treeView_addButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
+            this.treeView_addButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.treeView_addButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.treeView_addButton.Image = global::Re4QuadExtremeEditor.Properties.Resources.add;
+            this.treeView_addButton.Location = new System.Drawing.Point(69, 4);
+            this.treeView_addButton.Margin = new System.Windows.Forms.Padding(0, 4, 0, 2);
+            this.treeView_addButton.Name = "treeView_addButton";
+            this.treeView_addButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 2);
+            this.treeView_addButton.Size = new System.Drawing.Size(23, 23);
+            this.treeView_addButton.TabIndex = 5;
+            this.treeView_addButton.UseVisualStyleBackColor = true;
+            this.treeView_addButton.Click += new System.EventHandler(this.treeView_addButton_Click);
+            // 
+            // treeViewLabel
+            // 
+            this.treeViewLabel.AutoSize = true;
+            this.treeViewLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewLabel.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.treeViewLabel.Location = new System.Drawing.Point(3, 0);
+            this.treeViewLabel.Name = "treeViewLabel";
+            this.treeViewLabel.Size = new System.Drawing.Size(63, 29);
+            this.treeViewLabel.TabIndex = 3;
+            this.treeViewLabel.Text = "Objects:";
+            this.treeViewLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // propertyGridPanel
+            // 
+            this.propertyGridPanel.BackColor = System.Drawing.Color.Transparent;
+            this.propertyGridPanel.ColumnCount = 1;
+            this.propertyGridPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.propertyGridPanel.Controls.Add(this.propertyGridStrip, 0, 0);
+            this.propertyGridPanel.Controls.Add(this.propertyGridObjs, 0, 1);
+            this.propertyGridPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGridPanel.Location = new System.Drawing.Point(0, 0);
+            this.propertyGridPanel.Name = "propertyGridPanel";
+            this.propertyGridPanel.RowCount = 2;
+            this.propertyGridPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.propertyGridPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.propertyGridPanel.Size = new System.Drawing.Size(201, 277);
+            this.propertyGridPanel.TabIndex = 2;
+            // 
+            // propertyGridStrip
+            // 
+            this.propertyGridStrip.ColumnCount = 3;
+            this.propertyGridStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
+            this.propertyGridStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.propertyGridStrip.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.propertyGridStrip.Controls.Add(this.propertyGrid_detailButton, 2, 0);
+            this.propertyGridStrip.Controls.Add(this.propertyGrid_searchBar, 1, 0);
+            this.propertyGridStrip.Controls.Add(this.propertyGridLabel, 0, 0);
+            this.propertyGridStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGridStrip.Location = new System.Drawing.Point(0, 0);
+            this.propertyGridStrip.Margin = new System.Windows.Forms.Padding(0);
+            this.propertyGridStrip.Name = "propertyGridStrip";
+            this.propertyGridStrip.RowCount = 1;
+            this.propertyGridStrip.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.propertyGridStrip.Size = new System.Drawing.Size(201, 29);
+            this.propertyGridStrip.TabIndex = 1;
+            // 
+            // propertyGrid_detailButton
+            // 
+            this.propertyGrid_detailButton.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.propertyGrid_detailButton.FlatAppearance.BorderSize = 0;
+            this.propertyGrid_detailButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
+            this.propertyGrid_detailButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.propertyGrid_detailButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.propertyGrid_detailButton.Image = global::Re4QuadExtremeEditor.Properties.Resources.detail_dark;
+            this.propertyGrid_detailButton.Location = new System.Drawing.Point(172, 4);
+            this.propertyGrid_detailButton.Margin = new System.Windows.Forms.Padding(0, 4, 0, 2);
+            this.propertyGrid_detailButton.Name = "propertyGrid_detailButton";
+            this.propertyGrid_detailButton.Padding = new System.Windows.Forms.Padding(0, 0, 2, 2);
+            this.propertyGrid_detailButton.Size = new System.Drawing.Size(29, 23);
+            this.propertyGrid_detailButton.TabIndex = 6;
+            this.propertyGrid_detailButton.UseVisualStyleBackColor = true;
+            // 
+            // propertyGrid_searchBar
+            // 
+            this.propertyGrid_searchBar.BackColor = System.Drawing.Color.White;
+            this.propertyGrid_searchBar.Controls.Add(this.propertyGrid_searchButton);
+            this.propertyGrid_searchBar.Controls.Add(this.propertyGrid_searchField);
+            this.propertyGrid_searchBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid_searchBar.Location = new System.Drawing.Point(83, 4);
+            this.propertyGrid_searchBar.Margin = new System.Windows.Forms.Padding(1, 4, 1, 1);
+            this.propertyGrid_searchBar.Name = "propertyGrid_searchBar";
+            this.propertyGrid_searchBar.Size = new System.Drawing.Size(88, 24);
+            this.propertyGrid_searchBar.TabIndex = 1;
+            // 
+            // propertyGrid_searchButton
+            // 
+            this.propertyGrid_searchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.propertyGrid_searchButton.BackColor = System.Drawing.Color.Transparent;
+            this.propertyGrid_searchButton.FlatAppearance.BorderSize = 0;
+            this.propertyGrid_searchButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DimGray;
+            this.propertyGrid_searchButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.propertyGrid_searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.propertyGrid_searchButton.Image = ((System.Drawing.Image)(resources.GetObject("propertyGrid_searchButton.Image")));
+            this.propertyGrid_searchButton.Location = new System.Drawing.Point(65, -2);
+            this.propertyGrid_searchButton.Margin = new System.Windows.Forms.Padding(0);
+            this.propertyGrid_searchButton.Name = "propertyGrid_searchButton";
+            this.propertyGrid_searchButton.Size = new System.Drawing.Size(22, 25);
+            this.propertyGrid_searchButton.TabIndex = 1;
+            this.propertyGrid_searchButton.UseVisualStyleBackColor = false;
+            // 
+            // propertyGrid_searchField
+            // 
+            this.propertyGrid_searchField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.propertyGrid_searchField.BackColor = System.Drawing.Color.White;
+            this.propertyGrid_searchField.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.propertyGrid_searchField.HideSelection = false;
+            this.propertyGrid_searchField.Location = new System.Drawing.Point(3, 3);
+            this.propertyGrid_searchField.Margin = new System.Windows.Forms.Padding(1);
+            this.propertyGrid_searchField.MaximumSize = new System.Drawing.Size(1000, 21);
+            this.propertyGrid_searchField.MinimumSize = new System.Drawing.Size(100, 21);
+            this.propertyGrid_searchField.Name = "propertyGrid_searchField";
+            this.propertyGrid_searchField.Size = new System.Drawing.Size(106, 16);
+            this.propertyGrid_searchField.TabIndex = 0;
+            this.propertyGrid_searchField.TabStop = false;
+            // 
+            // propertyGridLabel
+            // 
+            this.propertyGridLabel.AutoSize = true;
+            this.propertyGridLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGridLabel.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.propertyGridLabel.Location = new System.Drawing.Point(3, 0);
+            this.propertyGridLabel.Name = "propertyGridLabel";
+            this.propertyGridLabel.Size = new System.Drawing.Size(76, 29);
+            this.propertyGridLabel.TabIndex = 3;
+            this.propertyGridLabel.Text = "Properties:";
+            this.propertyGridLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // propertyGridObjs
+            // 
+            this.propertyGridObjs.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.propertyGridObjs.CategorySplitterColor = System.Drawing.SystemColors.ControlLight;
+            this.propertyGridObjs.CommandsActiveLinkColor = System.Drawing.Color.DarkRed;
+            this.propertyGridObjs.CommandsLinkColor = System.Drawing.Color.MidnightBlue;
+            this.propertyGridObjs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGridObjs.Font = new System.Drawing.Font("Segoe UI", 8.75F);
+            this.propertyGridObjs.HelpBorderColor = System.Drawing.SystemColors.Control;
+            this.propertyGridObjs.LineColor = System.Drawing.SystemColors.ControlLight;
+            this.propertyGridObjs.Location = new System.Drawing.Point(3, 32);
+            this.propertyGridObjs.Name = "propertyGridObjs";
+            this.propertyGridObjs.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+            this.propertyGridObjs.SelectedItemWithFocusBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.propertyGridObjs.Size = new System.Drawing.Size(195, 249);
+            this.propertyGridObjs.TabIndex = 0;
+            this.propertyGridObjs.ToolbarVisible = false;
+            this.propertyGridObjs.ViewBackColor = System.Drawing.SystemColors.Control;
+            this.propertyGridObjs.ViewBorderColor = System.Drawing.SystemColors.ControlLight;
+            this.propertyGridObjs.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGridObjs_PropertyValueChanged);
+            this.propertyGridObjs.PropertySortChanged += new System.EventHandler(this.propertyGridObjs_PropertySortChanged);
+            this.propertyGridObjs.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGridObjs_SelectedGridItemChanged);
+            this.propertyGridObjs.Enter += new System.EventHandler(this.propertyGridObjs_Enter);
+            this.propertyGridObjs.Leave += new System.EventHandler(this.propertyGridObjs_Leave);
             // 
             // openFileDialogLIT
             // 
@@ -2659,20 +2950,144 @@ namespace Re4QuadExtremeEditor
             this.saveFileDialogEFFBLOBBIG.Title = "Save Effect EFFBLOBBIG File";
             this.saveFileDialogEFFBLOBBIG.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialogEFFBLOBBIG_FileOk);
             // 
+            // editor
+            // 
+            this.editor.AutoSize = true;
+            this.editor.BackColor = System.Drawing.Color.Transparent;
+            this.editor.ColumnCount = 1;
+            this.editor.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.editor.Controls.Add(this.splitContainerMain, 0, 0);
+            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.editor.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.editor.Location = new System.Drawing.Point(0, 0);
+            this.editor.Margin = new System.Windows.Forms.Padding(0);
+            this.editor.Name = "editor";
+            this.editor.RowCount = 1;
+            this.editor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.editor.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 489F));
+            this.editor.Size = new System.Drawing.Size(900, 489);
+            this.editor.TabIndex = 2;
+            // 
+            // toolStripContainer1
+            // 
+            this.toolStripContainer1.BottomToolStripPanelVisible = false;
+            // 
+            // toolStripContainer1.ContentPanel
+            // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.editor);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(900, 489);
+            this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            // 
+            // toolStripContainer1.LeftToolStripPanel
+            // 
+            this.toolStripContainer1.LeftToolStripPanel.BackColor = System.Drawing.Color.Transparent;
+            this.toolStripContainer1.LeftToolStripPanelVisible = false;
+            this.toolStripContainer1.Location = new System.Drawing.Point(0, 24);
+            this.toolStripContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripContainer1.Name = "toolStripContainer1";
+            this.toolStripContainer1.Size = new System.Drawing.Size(900, 514);
+            this.toolStripContainer1.TabIndex = 1;
+            // 
+            // toolStripContainer1.TopToolStripPanel
+            // 
+            this.toolStripContainer1.TopToolStripPanel.BackColor = System.Drawing.Color.Gainsboro;
+            this.toolStripContainer1.TopToolStripPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
+            this.toolStripContainer1.TopToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.BackColor = System.Drawing.Color.Transparent;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolstrip_newQuad,
+            this.toolstrip_OpenQuad,
+            this.toolstrip_saveQuad,
+            this.toolStripSeparator,
+            this.helpToolStripButton,
+            this.toolStripSeparator1,
+            this.toolstrip_playButton});
+            this.toolStrip1.Location = new System.Drawing.Point(3, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStrip1.Size = new System.Drawing.Size(130, 25);
+            this.toolStrip1.TabIndex = 0;
+            // 
+            // toolstrip_newQuad
+            // 
+            this.toolstrip_newQuad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_newQuad.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_newQuad.Image")));
+            this.toolstrip_newQuad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_newQuad.Name = "toolstrip_newQuad";
+            this.toolstrip_newQuad.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_newQuad.Text = "&New";
+            this.toolstrip_newQuad.Click += new System.EventHandler(this.toolstrip_newQuad_Click);
+            // 
+            // toolstrip_OpenQuad
+            // 
+            this.toolstrip_OpenQuad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_OpenQuad.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_OpenQuad.Image")));
+            this.toolstrip_OpenQuad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_OpenQuad.Name = "toolstrip_OpenQuad";
+            this.toolstrip_OpenQuad.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_OpenQuad.Text = "&Open";
+            this.toolstrip_OpenQuad.Click += new System.EventHandler(this.toolstrip_OpenQuad_Click);
+            // 
+            // toolstrip_saveQuad
+            // 
+            this.toolstrip_saveQuad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_saveQuad.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_saveQuad.Image")));
+            this.toolstrip_saveQuad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_saveQuad.Name = "toolstrip_saveQuad";
+            this.toolstrip_saveQuad.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_saveQuad.Text = "&Save";
+            this.toolstrip_saveQuad.Click += new System.EventHandler(this.toolstrip_saveQuad_Click);
+            // 
+            // toolStripSeparator
+            // 
+            this.toolStripSeparator.Name = "toolStripSeparator";
+            this.toolStripSeparator.Size = new System.Drawing.Size(6, 25);
+            // 
+            // helpToolStripButton
+            // 
+            this.helpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.helpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripButton.Image")));
+            this.helpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.helpToolStripButton.Name = "helpToolStripButton";
+            this.helpToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.helpToolStripButton.Text = "He&lp";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.ForeColor = System.Drawing.Color.DimGray;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolstrip_playButton
+            // 
+            this.toolstrip_playButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_playButton.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_playButton.Image")));
+            this.toolstrip_playButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_playButton.Name = "toolstrip_playButton";
+            this.toolstrip_playButton.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_playButton.Text = "Launch RE4";
+            this.toolstrip_playButton.Click += new System.EventHandler(this.toolstrip_playButton_Click);
+            // 
             // treeViewObjs
             // 
-            this.treeViewObjs.BackColor = System.Drawing.SystemColors.Control;
+            this.treeViewObjs.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.treeViewObjs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.treeViewObjs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeViewObjs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
-            this.treeViewObjs.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
+            this.treeViewObjs.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.treeViewObjs.HideSelection = false;
             this.treeViewObjs.LineColor = System.Drawing.Color.DarkGray;
-            this.treeViewObjs.Location = new System.Drawing.Point(0, 0);
+            this.treeViewObjs.Location = new System.Drawing.Point(3, 32);
             this.treeViewObjs.Name = "treeViewObjs";
-            this.treeViewObjs.SelectedNodeBackColor = System.Drawing.SystemColors.Highlight;
+            this.treeViewObjs.SelectedNodeBackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.treeViewObjs.SelectedNodes = ((System.Collections.Generic.Dictionary<int, System.Windows.Forms.TreeNode>)(resources.GetObject("treeViewObjs.SelectedNodes")));
-            this.treeViewObjs.Size = new System.Drawing.Size(208, 215);
+            this.treeViewObjs.Size = new System.Drawing.Size(195, 174);
             this.treeViewObjs.TabIndex = 0;
             this.treeViewObjs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewObjs_AfterSelect);
             // 
@@ -2680,8 +3095,8 @@ namespace Re4QuadExtremeEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(892, 499);
-            this.Controls.Add(this.splitContainerMain);
+            this.ClientSize = new System.Drawing.Size(900, 538);
+            this.Controls.Add(this.toolStripContainer1);
             this.Controls.Add(this.menuStripMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStripMenu;
@@ -2694,16 +3109,37 @@ namespace Re4QuadExtremeEditor
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.menuStripMenu.ResumeLayout(false);
             this.menuStripMenu.PerformLayout();
+            this.splitContainerRight.Panel1.ResumeLayout(false);
+            this.splitContainerRight.Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).EndInit();
             this.splitContainerRight.ResumeLayout(false);
-            this.splitContainerLeft.Panel1.ResumeLayout(false);
-            this.splitContainerLeft.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).EndInit();
-            this.splitContainerLeft.ResumeLayout(false);
+            this.treeView_searchBar.ResumeLayout(false);
+            this.treeView_searchBar.PerformLayout();
             this.splitContainerMain.Panel1.ResumeLayout(false);
             this.splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).EndInit();
             this.splitContainerMain.ResumeLayout(false);
+            this.splitContainerLeft.Panel1.ResumeLayout(false);
+            this.splitContainerLeft.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerLeft)).EndInit();
+            this.splitContainerLeft.ResumeLayout(false);
+            this.treeViewTablePanel.ResumeLayout(false);
+            this.treeViewStrip.ResumeLayout(false);
+            this.treeViewStrip.PerformLayout();
+            this.propertyGridPanel.ResumeLayout(false);
+            this.propertyGridStrip.ResumeLayout(false);
+            this.propertyGridStrip.PerformLayout();
+            this.propertyGrid_searchBar.ResumeLayout(false);
+            this.propertyGrid_searchBar.PerformLayout();
+            this.editor.ResumeLayout(false);
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+            this.toolStripContainer1.ContentPanel.PerformLayout();
+            this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
+            this.toolStripContainer1.TopToolStripPanel.PerformLayout();
+            this.toolStripContainer1.ResumeLayout(false);
+            this.toolStripContainer1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2914,7 +3350,6 @@ namespace Re4QuadExtremeEditor
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSubMenuQuadCustom;
         private System.Windows.Forms.SplitContainer splitContainerRight;
         private System.Windows.Forms.SplitContainer splitContainerLeft;
-        private NsMultiselectTreeView.MultiselectTreeView treeViewObjs;
         private System.Windows.Forms.PropertyGrid propertyGridObjs;
         private System.Windows.Forms.SplitContainer splitContainerMain;
         private System.Windows.Forms.OpenFileDialog openFileDialogEFFBLOB;
@@ -2986,6 +3421,33 @@ namespace Re4QuadExtremeEditor
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemHideTable9_EFF;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparatorSubMenuEffect2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemDisableGroupPositionEFF;
+        private System.Windows.Forms.TableLayoutPanel editor;
+        private System.Windows.Forms.TableLayoutPanel treeViewStrip;
+        private System.Windows.Forms.TextBox treeView_searchField;
+        private System.Windows.Forms.Button treeView_searchButton;
+        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.TableLayoutPanel treeViewTablePanel;
+        private NsMultiselectTreeView.MultiselectTreeView treeViewObjs;
+        private System.Windows.Forms.ToolStripButton toolstrip_newQuad;
+        private System.Windows.Forms.ToolStripButton toolstrip_OpenQuad;
+        private System.Windows.Forms.ToolStripButton toolstrip_saveQuad;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton helpToolStripButton;
+        private System.Windows.Forms.ToolStripButton toolstrip_playButton;
+        private System.Windows.Forms.Label treeViewLabel;
+        private System.Windows.Forms.TableLayoutPanel propertyGridPanel;
+        private System.Windows.Forms.Label currentRoomLabel;
+        private System.Windows.Forms.Panel treeView_searchBar;
+        private System.Windows.Forms.TableLayoutPanel propertyGridStrip;
+        private System.Windows.Forms.Panel propertyGrid_searchBar;
+        private System.Windows.Forms.Button propertyGrid_searchButton;
+        private System.Windows.Forms.TextBox propertyGrid_searchField;
+        private System.Windows.Forms.Label propertyGridLabel;
+        private System.Windows.Forms.Button treeView_addButton;
+        private System.Windows.Forms.Button treeView_moreButton;
+        private System.Windows.Forms.Button propertyGrid_detailButton;
     }
 }
 

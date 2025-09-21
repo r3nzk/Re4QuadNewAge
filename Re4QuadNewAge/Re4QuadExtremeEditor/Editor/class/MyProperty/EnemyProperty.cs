@@ -12,7 +12,6 @@ using System.Linq;
 
 namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
 {
-
     [DefaultProperty(nameof(Order))]
     public class EnemyProperty : GenericProperty, IInternalID
     {
@@ -152,7 +151,7 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
         [HexNumber()]
         [DefaultValue(null)]
         [ReadOnly(false)]
-        [Browsable(true)]
+        [Browsable(false)]
         [AllowInMultiSelect()]
         [DynamicTypeDescriptor.Id(100, CategoryID3_Enemy)]
         public byte ESL_ENABLE
@@ -166,12 +165,25 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
         }
 
         [CustomCategory(aLang.EnemyCategory)]
+        [CustomDisplayName(aLang.ESL_ENABLE_Byte_Name)]
+        [CustomDescription(aLang.ESL_ENABLE_Byte_Description)]
+        [Browsable(true)] // Mantenha essa visível
+        [Editor(typeof(CheckBoxUITypeEditor), typeof(UITypeEditor))]
+        [DynamicTypeDescriptor.Id(100, CategoryID3_Enemy)]
+        public bool ESL_ENABLE_Checkbox
+        {
+            get => ESL_ENABLE == 1;
+            set => ESL_ENABLE = (byte)(value ? 1 : 0);
+        }
+
+        // this is not necessary anymore since we prioritize using a boolean check
+        [CustomCategory(aLang.EnemyCategory)]
         [CustomDisplayName(aLang.ESL_ENABLE_List_Name)]
         [CustomDescription(aLang.ESL_ENABLE_Byte_Description)]
         [Editor(typeof(EnemyEnableGridComboBox), typeof(UITypeEditor))]
         [DefaultValue(null)]
         [ReadOnly(false)]
-        [Browsable(true)]
+        [Browsable(false)]
         [DynamicTypeDescriptor.Id(200, CategoryID3_Enemy)]
         public ByteObjForListBox ESL_ENABLE_ListBox
         {
@@ -416,6 +428,49 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
             set
             {
                 Methods.SetByteFromPosition(InternalID, 0x0B, value);
+            }
+        }
+
+        [CustomCategory(aLang.EnemyCategory)]
+        [CustomDisplayName(aLang.Position_Name)]
+        [CustomDescription(aLang.ESL_Position_Description)]
+        [TypeConverter(typeof(Vector3sConverter))]
+        [DefaultValue(typeof(Vector3s), "0, 0, 0")]
+        [ReadOnly(false)]
+        [Browsable(true)]
+        [AllowInMultiSelect()]
+        [DynamicTypeDescriptor.Id(1300, CategoryID3_Enemy)]
+        public Vector3s Position
+        {
+            get => new Vector3s(Methods.ReturnPositionX(InternalID), Methods.ReturnPositionY(InternalID), Methods.ReturnPositionZ(InternalID));
+            set
+            {
+                Methods.SetPositionX(InternalID, value.X);
+                Methods.SetPositionY(InternalID, value.Y);
+                Methods.SetPositionZ(InternalID, value.Z);
+                updateMethods.UpdateOrbitCamera();
+                updateMethods.UpdateGL();
+            }
+        }
+
+        [CustomCategory(aLang.EnemyCategory)]
+        [CustomDisplayName(aLang.Angle_Name)]
+        [CustomDescription(aLang.ESL_Position_Description)]
+        [TypeConverter(typeof(Vector3sConverter))]
+        [DefaultValue(typeof(Vector3s), "0, 0, 0")]
+        [ReadOnly(false)]
+        [Browsable(true)]
+        [AllowInMultiSelect()]
+        [DynamicTypeDescriptor.Id(1600, CategoryID3_Enemy)]
+        public Vector3s Rotation
+        {
+            get => new Vector3s(Methods.ReturnRotationX(InternalID), Methods.ReturnRotationY(InternalID), Methods.ReturnRotationZ(InternalID));
+            set
+            {
+                Methods.SetRotationX(InternalID, value.X);
+                Methods.SetRotationY(InternalID, value.Y);
+                Methods.SetRotationZ(InternalID, value.Z);
+                updateMethods.UpdateGL();
             }
         }
 

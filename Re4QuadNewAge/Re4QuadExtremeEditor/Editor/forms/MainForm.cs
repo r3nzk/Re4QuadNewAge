@@ -13,6 +13,7 @@ using Re4QuadExtremeEditor.Editor.Class.Shaders;
 using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
 using Re4QuadExtremeEditor.Editor.Controls;
 using Re4QuadExtremeEditor.Editor.Forms;
+using Re4QuadExtremeEditor.Editor.Forms.Custom;
 using SimpleEndianBinaryIO;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 
 namespace Re4QuadExtremeEditor
@@ -36,6 +39,18 @@ namespace Re4QuadExtremeEditor
 
         CameraMoveControl cameraMove;
         ObjectMoveControl objectMove;
+
+        //for launch options detection/focus
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private const int SW_RESTORE = 9;
+
+        //searchbar placeholder
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+        private const int EM_SETCUEBANNER = 0x1501;
 
         #region Camera // variaveis para a camera
         Camera camera = new Camera();
@@ -61,10 +76,12 @@ namespace Re4QuadExtremeEditor
         public MainForm()
         {
             InitializeComponent();
+            Application.EnableVisualStyles();
             propertyGridObjs.SelectedItemWithFocusBackColor = Color.FromArgb(0x70, 0xBB, 0xDB);
             propertyGridObjs.SelectedItemWithFocusForeColor = Color.Black;
             treeViewObjs.SelectedNodeBackColor = Color.FromArgb(0x70, 0xBB, 0xDB);
             treeViewObjs.Font = Globals.TreeNodeFontText;
+
 
             propertyGridObjs.SelectedObject = none;
             DataBase.SelectedNodes = treeViewObjs.SelectedNodes;
@@ -89,7 +106,9 @@ namespace Re4QuadExtremeEditor
 
             camera.getSelectedObject = getSelectedObject;
 
+            //setup session
             buildTreeView();
+            currentRoomLabelToggle(false);
 
             cameraMove = new CameraMoveControl(ref camera, UpdateGL, UpdateCameraMatrix);
             cameraMove.Location = new Point(splitContainerRight.Panel2.Width - cameraMove.Width, 0);
@@ -125,15 +144,69 @@ namespace Re4QuadExtremeEditor
             updateMethods.UpdateMoveObjSelection = objectMove.UpdateSelection;
             updateMethods.UpdateOrbitCamera = UpdateOrbitCamera;
 
+            //remove toolstrip weird white line
+            toolStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomDarkColorTable());
+
+            //add searchbars placeholders
+            SetPlaceholder(treeView_searchField, "Filter: name, t:type, g:group");
+            SetPlaceholder(propertyGrid_searchField, "Filter: b:byte, o:offset, name");
+
             if (Globals.BackupConfigs.UseDarkTheme)
             {
                 DarkTheme();
             }
-
             if (Globals.BackupConfigs.UseInvertedMouseButtons)
             {
                 MouseButtonsLeft = MouseButtons.Right;
                 MouseButtonsRight = MouseButtons.Left;
+            }
+        }
+
+        private void ResetEditorState()
+        {
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to create a new QuadX environment? All unsaved progress will be lost.",
+                "Create New Environment?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            // If the user confirms (clicks Yes), proceed with the reset.
+            if (result == DialogResult.Yes)
+            {   
+                // clear current room
+                if (DataBase.SelectedRoom != null)
+                {
+                    DataBase.SelectedRoom.ClearGL();
+                    DataBase.SelectedRoom = null;
+                    GC.Collect();
+                    currentRoomLabel.Visible = false;
+                    currentRoomLabel.Text = "";
+                }
+
+                // clear the current selection and PropertyGrid to ensure a clean state.
+                TreeViewUpdateSelectedsClear();
+
+                // Call the clear methods for each file type.
+                FileManager.ClearESL();
+                FileManager.ClearETS();
+                FileManager.ClearITA();
+                FileManager.ClearAEV();
+                FileManager.ClearDSE();
+                FileManager.ClearFSE();
+                FileManager.ClearSAR();
+                FileManager.ClearEAR();
+                FileManager.ClearEMI();
+                FileManager.ClearESE();
+                FileManager.ClearLIT();
+                FileManager.ClearEFFBLOB();
+                FileManager.ClearQuadCustom();
+
+                // Reset the camera to a default position, ready for a new scene.
+                cameraMove.ResetCamera();
+
+                //rebuild new tree view
+                buildTreeView();
             }
         }
 
@@ -162,6 +235,12 @@ namespace Re4QuadExtremeEditor
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table7_Effect_0);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table8_Effect_1);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table9);
+        }
+
+        private void currentRoomLabelToggle(bool state = true, string newText = "")
+        {
+            currentRoomLabel.Visible = state;
+            currentRoomLabel.Text = newText;
         }
 
         #region GlControl Events
@@ -578,9 +657,8 @@ namespace Re4QuadExtremeEditor
                 glControl.SwapBuffers();
 
                 SplashScreen.Container?.Close?.Invoke();
-                // make window go to top temporarely
-                this.TopMost = true;
-                this.TopMost = false;
+
+                this.Activate();
 
                 //force maximize
                 if (Globals.BackupConfigs.MaximizeEditorOnStartup)
@@ -616,6 +694,11 @@ namespace Re4QuadExtremeEditor
         #region botões do menu edit
 
         private void toolStripMenuItemAddNewObj_Click(object sender, EventArgs e)
+        {
+            addNewObject();
+        }
+
+        private void addNewObject()
         {
             AddNewObjForm form = new AddNewObjForm();
             form.OnButtonOk_Click += OnButtonOk_Click;
@@ -815,6 +898,16 @@ namespace Re4QuadExtremeEditor
 
         #endregion
 
+        #region searchbar logic
+        public static void SetPlaceholder(Control control, string text)
+        {
+            if (control is TextBox)
+            {
+                SendMessage(control.Handle, EM_SETCUEBANNER, 0, text);
+            }
+        }
+
+        #endregion
 
         #region Botoes do menu
 
@@ -828,11 +921,11 @@ namespace Re4QuadExtremeEditor
                     text = text.Substring(0,100);
                     text += "...";
                 }
-                toolStripMenuItemSelectRoom.Text = text;
+                currentRoomLabelToggle(true, text);
             }
             else
             {
-                toolStripMenuItemSelectRoom.Text = Lang.GetText(eLang.SelectRoom);
+                currentRoomLabelToggle(false);
             }
 
             if (Globals.AutoDefinedRoom)
@@ -1527,6 +1620,7 @@ namespace Re4QuadExtremeEditor
         {
             if (propertyGridObjs.PropertySort == PropertySort.CategorizedAlphabetical)
                {propertyGridObjs.PropertySort = PropertySort.Categorized;}
+
         }
 
 
@@ -1539,6 +1633,7 @@ namespace Re4QuadExtremeEditor
         private void propertyGridObjs_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
         }
+
 
         private void TreeViewUpdateSelectedsClear()
         {
@@ -4621,6 +4716,11 @@ namespace Re4QuadExtremeEditor
 
         private void toolStripMenuItemSaveQuadCustom_Click(object sender, EventArgs e)
         {
+            SaveQuadCustom();
+        }
+
+        private void SaveQuadCustom()
+        {
             FileInfo file;
             FileStream stream;
             try
@@ -4980,11 +5080,63 @@ namespace Re4QuadExtremeEditor
             }
         }
 
-        private void splitContainerRight_Panel1_Paint(object sender, PaintEventArgs e)
-        {
+        //TOOLSTRIP BUTTONS
 
+        private void toolstrip_playButton_Click(object sender, EventArgs e)
+        {
+            const string processName = "bio4";
+            Process[] processes = Process.GetProcessesByName(processName);
+
+            if (processes.Length > 0)
+            {
+                // If the process is already running, focus it.
+                IntPtr handle = processes[0].MainWindowHandle;
+                ShowWindow(handle, SW_RESTORE); // Restore if minimized.
+                SetForegroundWindow(handle);    // Bring to the front.
+            }
+            else
+            {
+                // If not running, launch the game.
+                string filePath = Globals.DirectoryUHDRE4 + @"\Bin32\bio4.exe";
+
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        Process.Start(filePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The game path was not found. Check the path in \"options > setup\" or change the current version.");
+                }
+            }
         }
 
+        private void toolstrip_saveQuad_Click(object sender, EventArgs e)
+        {
+            SaveQuadCustom();
+        }
+
+        private void toolstrip_OpenQuad_Click(object sender, EventArgs e)
+        {
+            openFileDialogQuadCustom.ShowDialog();
+        }
+
+        private void toolstrip_newQuad_Click(object sender, EventArgs e)
+        {
+            //clear all scene and loaded itens
+            ResetEditorState();
+        }
+
+        private void treeView_addButton_Click(object sender, EventArgs e)
+        {
+            addNewObject();
+        }
         #endregion
 
         #region MainForm events/ metodos
@@ -5002,47 +5154,67 @@ namespace Re4QuadExtremeEditor
 
         private void DarkTheme()
         {
-            var backgroundColor = ColorTranslator.FromHtml("#1a1a1a");
-            var textColor = Color.Gainsboro; //major texts
-            var splitterColor = Color.FromArgb(45, 45, 48); // divisor
-            var menuBackgroundColor = ColorTranslator.FromHtml("#0a0a0a");
-            var darkerTextColor = ColorTranslator.FromHtml("#a1a1a1");
+            var backgroundColor = ColorTranslator.FromHtml("#181818");
+            var darkBackgroundColor = ColorTranslator.FromHtml("#0d0d0d");
+            var splitterColor = ColorTranslator.FromHtml("#1F1F1F"); // divisor
+            var textColor = ColorTranslator.FromHtml("#BABABA"); //major texts
+            var darkerTextColor = ColorTranslator.FromHtml("#878787");
+            var textBoxColor = ColorTranslator.FromHtml("#101010");
+            var selectedHighlight = ColorTranslator.FromHtml("#4F4F4F");
+
+            //MenuStrip (topbar)
+            menuStripMenu.BackColor = darkBackgroundColor;
+            menuStripMenu.ForeColor = textColor;
+
+            //toolstrip
+            toolStripContainer1.TopToolStripPanel.BackColor = darkBackgroundColor;
+
+            // editor (mostly borders)
+            // this panel holds most of the bellow panels
+            editor.BackColor = backgroundColor;
 
             // treeView
+            treeViewLabel.ForeColor = textColor;
+            treeView_searchBar.BackColor = textBoxColor;
+            treeView_searchField.BackColor = textBoxColor;
+            treeView_searchField.ForeColor = textColor;
             treeViewObjs.BackColor = backgroundColor;
             treeViewObjs.ForeColor = textColor;
+            treeViewObjs.SelectedNodeBackColor = selectedHighlight;
+            treeViewObjs.LineColor = ColorTranslator.FromHtml("#4A4A4A"); //treeview line
             Globals.NodeColorEntry = textColor;
 
             // PropertyGrid
+            propertyGridLabel.ForeColor = textColor;
+            propertyGrid_searchBar.BackColor = textBoxColor;
+            propertyGrid_searchField.BackColor = textBoxColor;
+            propertyGrid_searchField.ForeColor = textColor;
             propertyGridObjs.ViewBackColor = backgroundColor;
-            propertyGridObjs.ViewForeColor = textColor;
-            propertyGridObjs.LineColor = splitterColor;
+            propertyGridObjs.ViewForeColor = ColorTranslator.FromHtml("#DBDBDB");
+            propertyGridObjs.LineColor = ColorTranslator.FromHtml("#1C1C1C"); //category bg
             propertyGridObjs.CategorySplitterColor = splitterColor;
             propertyGridObjs.HelpBackColor = backgroundColor;
-            propertyGridObjs.HelpForeColor = textColor;
+            propertyGridObjs.HelpForeColor = darkerTextColor;
             propertyGridObjs.HelpBorderColor = splitterColor;
             propertyGridObjs.ViewBorderColor = splitterColor;
             propertyGridObjs.BackColor = backgroundColor;
-            // Selected item
-            propertyGridObjs.SelectedItemWithFocusForeColor = textColor;
-            // Property Grid
-            try { propertyGridObjs.CategoryForeColor = darkerTextColor; } catch { } //category title
-            try { propertyGridObjs.DisabledItemForeColor = Color.Silver; } catch { } //content title
+            propertyGridObjs.SelectedItemWithFocusBackColor = selectedHighlight;
+            // Property Grid Content
+            propertyGridObjs.CategoryForeColor = Color.White;//category title
+            propertyGridObjs.DisabledItemForeColor = textColor;//content title
+            propertyGridObjs.SelectedItemWithFocusBackColor = ColorTranslator.FromHtml("#595959"); //selected
+            propertyGridObjs.SelectedItemWithFocusForeColor = Color.White; //selected
 
             // Containers & splitters
-            splitContainerRight.Panel1.BackColor = backgroundColor;
-            splitContainerRight.BackColor = splitterColor;
+            splitContainerMain.BackColor = darkBackgroundColor;
+            splitContainerRight.Panel1.BackColor = darkBackgroundColor;
+            splitContainerRight.BackColor = darkBackgroundColor;
             splitContainerLeft.BackColor = splitterColor;
-            splitContainerMain.BackColor = splitterColor;
 
             // Controls
             //splitContainerRight.Panel2.BackColor = backgroundColor;
             //cameraMove.BackColor = backgroundColor;
             //objectMove.BackColor = backgroundColor;
-
-            //MenuStrip (topbar)
-            menuStripMenu.BackColor = menuBackgroundColor;
-            menuStripMenu.ForeColor = textColor;
         }
 
         private void StartUpdateTranslation()

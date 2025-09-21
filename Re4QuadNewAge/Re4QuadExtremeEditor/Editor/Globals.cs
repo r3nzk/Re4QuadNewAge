@@ -9,6 +9,12 @@ using Re4QuadExtremeEditor.Editor.Class.Enums;
 
 namespace Re4QuadExtremeEditor.Editor
 {
+    public enum EditorTool
+    {
+        Translate,
+        Rotate
+    }
+
     /// <summary>
     /// Representa todos os status (configurações/opções) do programa;
     /// </summary>
@@ -16,6 +22,8 @@ namespace Re4QuadExtremeEditor.Editor
     {
 
         #region Configs
+
+        public static EditorTool CurrentTool = EditorTool.Translate;
 
         // diretorios
         public static string DirectoryXFILE = @"";
@@ -197,6 +205,10 @@ namespace Re4QuadExtremeEditor.Editor
         public static bool EFF_RenderTable9 = true;
         public static bool EFF_Use_Group_Position = true;
 
+        //behaviour
+        //propertygrid
+        public static bool PropertyGrid_HideBloatElements { get; set; } = true;
+
         #endregion
 
 
@@ -230,8 +242,8 @@ namespace Re4QuadExtremeEditor.Editor
 
 
         // treenode fonts
-        public static Font TreeNodeFontText = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
-        public static Font TreeNodeFontHex = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
+        public static Font TreeNodeFontText = new System.Drawing.Font("Segoe UI Semibold", 8.75F, System.Drawing.FontStyle.Regular);
+        public static Font TreeNodeFontHex = new System.Drawing.Font("Segoe UI Semibold", 8.75F, System.Drawing.FontStyle.Regular);
 
         //OpenGLVersion
         public static string OpenGLVersion = "";

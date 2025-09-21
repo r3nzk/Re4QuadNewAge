@@ -143,6 +143,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             checkBoxUseDarkTheme.Checked = Globals.BackupConfigs.UseDarkTheme;
             checkBoxUseInvertedMouseButtons.Checked = Globals.BackupConfigs.UseInvertedMouseButtons;
             checkBoxMaximizeEditorOnStartup.Checked = Globals.BackupConfigs.MaximizeEditorOnStartup;
+            PropertyGrid_HideBloatElementsButton.Checked = Globals.BackupConfigs.PropertyGrid_HideBloatElements;
 
             EnableRadioButtons = true;
 
@@ -245,6 +246,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Globals.BackupConfigs.UseDarkTheme = checkBoxUseDarkTheme.Checked;
             Globals.BackupConfigs.UseInvertedMouseButtons = checkBoxUseInvertedMouseButtons.Checked;
             Globals.BackupConfigs.MaximizeEditorOnStartup = checkBoxMaximizeEditorOnStartup.Checked;
+            Globals.BackupConfigs.PropertyGrid_HideBloatElements = PropertyGrid_HideBloatElementsButton.Checked;
 
             if (comboBoxLanguage.SelectedIndex <= 0)
             {
