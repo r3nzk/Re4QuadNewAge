@@ -21,71 +21,14 @@ namespace Re4QuadExtremeEditor.Editor.Forms.Custom
         public override Color ToolStripGradientBegin => Color.Transparent;
         public override Color ToolStripGradientEnd => Color.Transparent;
         public override Color ToolStripGradientMiddle => Color.Transparent;
-        public override Color ButtonSelectedBorder => Color.FromArgb(28, 28, 28);
-        public override Color ButtonSelectedGradientBegin => Color.FromArgb(40, 40, 40);
-        public override Color ButtonSelectedGradientEnd => Color.FromArgb(40, 40, 40);
-    }
+        public override Color ButtonSelectedBorder => ColorTranslator.FromHtml("#5c5c5c");
+        public override Color ButtonSelectedGradientBegin => ColorTranslator.FromHtml("#404040");
+        public override Color ButtonSelectedGradientEnd => ColorTranslator.FromHtml("#404040");
+        public override Color ButtonSelectedHighlight => ColorTranslator.FromHtml("#404040");
+        public override Color OverflowButtonGradientBegin => Color.Transparent;
+        public override Color OverflowButtonGradientEnd => Color.Transparent;
+        public override Color SeparatorDark => ColorTranslator.FromHtml("#525252");
+        public override Color SeparatorLight => ColorTranslator.FromHtml("#525252");
 
-    public class CustomSearchBox : TextBox
-    {
-
-        private Padding _padding = new Padding(3, 3, 3, 3);
-        private string _placeholderText = "Pesquisar...";
-        private bool _showPlaceholder = true;
-
-        [Category("Layout")]
-        [Description("Define o espaçamento interno do texto.")]
-        public new Padding Padding
-        {
-            get { return _padding; }
-            set
-            {
-                if (_padding != value)
-                {
-                    _padding = value;
-                    this.Invalidate();
-                }
-            }
-        }
-
-        [Category("Aparência")]
-        [Description("Define o texto de dica que aparece quando o campo está vazio.")]
-        public string PlaceholderText
-        {
-            get { return _placeholderText; }
-            set
-            {
-                if (_placeholderText != value)
-                {
-                    _placeholderText = value;
-                    this.Invalidate();
-                }
-            }
-        }
-
-        public CustomSearchBox()
-        {
-            this.SetStyle(ControlStyles.UserPaint, true);
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.DoubleBuffer, true);
-        }
-
-
-        protected override void OnEnter(EventArgs e)
-        {
-            _showPlaceholder = false;
-            this.Invalidate();
-            base.OnEnter(e);
-        }
-
-        protected override void OnLeave(EventArgs e)
-        {
-            if (string.IsNullOrEmpty(this.Text))
-            {
-                _showPlaceholder = true;
-            }
-            this.Invalidate();
-            base.OnLeave(e);
-        }
     }
 }

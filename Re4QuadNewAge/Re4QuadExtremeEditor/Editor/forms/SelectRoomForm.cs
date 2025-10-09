@@ -29,6 +29,11 @@ namespace Re4QuadExtremeEditor.Editor.Forms
                 {
                     string[] RoomsLists = Directory.GetFiles(myDirectory, "*.json");
 
+                    if (RoomsLists.Length == 0)
+                    {
+                        Editor.Console.Warning($"No room list (.json) files found in {myDirectory}. The room selection will be empty.");
+                    }
+
                     List<RoomListObj> roomListObjs = new List<RoomListObj>();
                     foreach (var json in RoomsLists)
                     {
@@ -40,8 +45,8 @@ namespace Re4QuadExtremeEditor.Editor.Forms
                                 roomListObjs.Add(obj);
                             }
                         }
-                        catch (Exception)
-                        {
+                        catch (Exception ex){
+                            Editor.Console.Warning($"Could not parse room list file: {Path.GetFileName(json)}. Error: {ex.Message}. Skipping file.");
                         }
                     }
 
@@ -66,19 +71,29 @@ namespace Re4QuadExtremeEditor.Editor.Forms
                                         RoomModelDict.Add(roomModel.JsonFileName, roomModel);
                                     }
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
+                                    Editor.Console.Warning($"Could not parse room model file: {Path.GetFileName(json)}. Error: {ex.Message}. Skipping file.");
                                 }
-                               
+
                             }
 
                             roomInfoList.Add(new RoomInfo(item, RoomModelDict));
                         }
+                        else
+                        {
+                            //Editor.Console.Warning($"The directory '{subDirectory}' specified in '{item.JsonFileName}' does not exist. Skipping this room list.");
+                        }
                     }
                 }
+                else
+                {
+                    Editor.Console.Error($"Main rooms directory not found at path: {myDirectory}");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Editor.Console.Error($"A critical error occurred while loading room files: {ex.Message}");
             }
 
             return roomInfoList;
@@ -193,6 +208,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             // remove a antiga
             if (DataBase.SelectedRoom != null)
             {
+                Editor.Console.Log($"Clearing previously loaded room: {DataBase.SelectedRoom.GetRoomModel().Description} (ID: {DataBase.SelectedRoom.GetRoomModel().HexID})");
                 DataBase.SelectedRoom.ClearGL();
                 DataBase.SelectedRoom = null;
                 GC.Collect();
@@ -202,10 +218,12 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             if (comboBoxMainList.SelectedItem is RoomInfo r && comboBoxRoomList.SelectedItem is RoomModel rm)
             {
                 DataBase.SelectedRoom = new RoomSelectedObj(rm, r.RoomListObj);
+                Editor.Console.Log($"Loading new Room: {DataBase.SelectedRoom.GetRoomModel().Description} (ID: {DataBase.SelectedRoom.GetRoomModel().HexID})");
                 GC.Collect();
             }
 
             onLoadButtonClick?.Invoke(comboBoxRoomList.SelectedItem, new EventArgs());
+
             Close();
         }
 

@@ -2325,9 +2325,11 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeEFF_Table9.ChangeAmountMethods = null;
             DataBase.NodeEFF_Table9.MoveMethods = null;
 
-            DataBase.FileEFF._Table9.ChangeAmountCallbackMethods = null;
-            DataBase.FileEFF._TableEffectEntry.ChangeAmountCallbackMethods = null;
-            DataBase.FileEFF = null;
+            if(DataBase.FileEFF != null){
+                DataBase.FileEFF._Table9.ChangeAmountCallbackMethods = null;
+                DataBase.FileEFF._TableEffectEntry.ChangeAmountCallbackMethods = null;
+                DataBase.FileEFF = null;
+            }
 
             GC.Collect();
         }
@@ -2346,8 +2348,10 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeLIT_Entrys.DisplayMethods = null;
             DataBase.NodeLIT_Entrys.MoveMethods = null;
             DataBase.NodeLIT_Entrys.ChangeAmountMethods = null;
-            DataBase.FileLIT.LightEntrys.ChangeAmountCallbackMethods = null;
-            DataBase.FileLIT = null;
+            if(DataBase.FileLIT != null){
+                DataBase.FileLIT.LightEntrys.ChangeAmountCallbackMethods = null;
+                DataBase.FileLIT = null;
+            }
             GC.Collect();
         }
 

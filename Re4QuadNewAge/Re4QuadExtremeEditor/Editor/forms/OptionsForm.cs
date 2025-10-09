@@ -143,7 +143,8 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             checkBoxUseDarkTheme.Checked = Globals.BackupConfigs.UseDarkTheme;
             checkBoxUseInvertedMouseButtons.Checked = Globals.BackupConfigs.UseInvertedMouseButtons;
             checkBoxMaximizeEditorOnStartup.Checked = Globals.BackupConfigs.MaximizeEditorOnStartup;
-            PropertyGrid_HideBloatElementsButton.Checked = Globals.BackupConfigs.PropertyGrid_HideBloatElements;
+            checkboxPropertyGridHideBloatElements.Checked = Globals.BackupConfigs.PropertyGridHideBloatElements;
+            checkboxTreeViewHideEmptyRoot.Checked = Globals.BackupConfigs.TreeViewHideEmptyRoot;
 
             EnableRadioButtons = true;
 
@@ -151,6 +152,9 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             {
                 StartUpdateTranslation();
             }
+
+            //TODO - we need to load this from the globals/options as prefered version
+            if(selectedVersionDropdown.SelectedIndex == -1) selectedVersionDropdown.SelectedIndex = 0; //set uhd as default
         }
 
         private void OptionsForm_KeyDown(object sender, KeyEventArgs e)
@@ -246,7 +250,8 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Globals.BackupConfigs.UseDarkTheme = checkBoxUseDarkTheme.Checked;
             Globals.BackupConfigs.UseInvertedMouseButtons = checkBoxUseInvertedMouseButtons.Checked;
             Globals.BackupConfigs.MaximizeEditorOnStartup = checkBoxMaximizeEditorOnStartup.Checked;
-            Globals.BackupConfigs.PropertyGrid_HideBloatElements = PropertyGrid_HideBloatElementsButton.Checked;
+            Globals.BackupConfigs.PropertyGridHideBloatElements = checkboxPropertyGridHideBloatElements.Checked;
+            Globals.BackupConfigs.TreeViewHideEmptyRoot = checkboxTreeViewHideEmptyRoot.Checked;
 
             if (comboBoxLanguage.SelectedIndex <= 0)
             {

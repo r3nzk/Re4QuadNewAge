@@ -19,16 +19,15 @@ namespace Re4QuadExtremeEditor
         [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
             SplashScreen.StartSplashScreen();
             Thread.Sleep(100);
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             try
             {
                 // A list of loading tasks to be completed.
@@ -79,7 +78,7 @@ namespace Re4QuadExtremeEditor
                     loadingTasks[i].Invoke();
                     int progress = (int)((float)(i + 1) / loadingTasks.Length * 100);
                     SplashScreen.Container?.SetProgress(progress);
-                    Thread.Sleep(100); //progress delay for each loading part, to avoid issues in lower end devices.
+                    Thread.Sleep(25); //progress delay for each loading part, to avoid issues in lower end devices.
                 }
 
                 Application.Run(new MainForm());

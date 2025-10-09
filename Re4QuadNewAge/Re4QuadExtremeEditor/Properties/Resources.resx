@@ -169,9 +169,6 @@
   <data name="RoomSelectModeShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\RoomSelectModeShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TriggerZoneShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shader\TriggerZoneShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="CylinderTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderTop.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -184,6 +181,9 @@
   <data name="ObjModelShaderPlusVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\ObjModelShaderPlusVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="CylinderFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hex3D\CylinderFull.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="LitPointShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\LitPointShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -193,20 +193,23 @@
   <data name="RoomShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\RoomShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="HorizontalYelow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgControl\HorizontalYelow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="LIT_Point" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\LIT_Point.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="GridShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shader\GridShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="WhiteTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImgGL\WhiteTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dots" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\dots.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgGL\Transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SquareRedLookHorisontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgControl\SquareRedLookHorisontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BoundaryBoxShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\BoundaryBoxShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -220,8 +223,8 @@
   <data name="CylinderSides" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderSides.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgGL\Transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TriggerZoneShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Shader\TriggerZoneShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="VerticalDisable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImgControl\VerticalDisable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -232,8 +235,8 @@
   <data name="play_yellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\play_yellow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SquareRedLookHorisontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgControl\SquareRedLookHorisontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="GridShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Shader\GridShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Box" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\Box.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -250,8 +253,8 @@
   <data name="BoundaryBoxShaderPlusVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\BoundaryBoxShaderPlusVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="CylinderFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Hex3D\CylinderFull.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="HorizontalYelow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgControl\HorizontalYelow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SquareRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImgControl\SquareRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -268,7 +271,10 @@
   <data name="CylinderDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderDown.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="dots" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\img\dots.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tool_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\tool_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tool_rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\tool_rotate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -49,7 +49,8 @@ namespace Re4QuadExtremeEditor.Editor.JSON
         //editor
         public bool UseInvertedMouseButtons { get; set; }
         public bool MaximizeEditorOnStartup { get; set; }
-        public bool PropertyGrid_HideBloatElements{ get; set; }
+        public bool PropertyGridHideBloatElements{ get; set; }
+        public bool TreeViewHideEmptyRoot{ get; set; }
 
         // lang
         public bool LoadLangTranslation { get; set; }
@@ -92,7 +93,8 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             configs.UseDarkTheme = true; //dark theme enabled by default
             configs.UseInvertedMouseButtons = false;
             configs.MaximizeEditorOnStartup = true;
-            configs.PropertyGrid_HideBloatElements = true;
+            configs.PropertyGridHideBloatElements = true;
+            configs.TreeViewHideEmptyRoot = true;
             configs.LoadLangTranslation = false;
             configs.LangJsonFile = "";
             return configs;

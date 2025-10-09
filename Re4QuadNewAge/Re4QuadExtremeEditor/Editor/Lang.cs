@@ -1177,7 +1177,7 @@ namespace Re4QuadExtremeEditor.Editor
             Text.Add(eLang.LoadingSplashConfig, "Loading JSON configs...");
             Text.Add(eLang.LoadingSplashUtility, "Getting lists and other utilities...");
             Text.Add(eLang.LoadingSplashUI, "Setting up UI components...");
-            Text.Add(eLang.LoadingSplashTreeView, "Building hierarchy...");
+            Text.Add(eLang.LoadingSplashTreeView, "Preparing nodes...");
             Text.Add(eLang.LoadingSplashGraphics, "Initializing OpenGL...");
 
             // nodes names

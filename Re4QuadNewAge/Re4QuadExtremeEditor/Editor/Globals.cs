@@ -9,12 +9,6 @@ using Re4QuadExtremeEditor.Editor.Class.Enums;
 
 namespace Re4QuadExtremeEditor.Editor
 {
-    public enum EditorTool
-    {
-        Translate,
-        Rotate
-    }
-
     /// <summary>
     /// Representa todos os status (configurações/opções) do programa;
     /// </summary>
@@ -22,8 +16,6 @@ namespace Re4QuadExtremeEditor.Editor
     {
 
         #region Configs
-
-        public static EditorTool CurrentTool = EditorTool.Translate;
 
         // diretorios
         public static string DirectoryXFILE = @"";
@@ -42,7 +34,7 @@ namespace Re4QuadExtremeEditor.Editor
         public static string FileDiretoryQuadCustomList = Consts.DefaultQuadCustomModelsListFileDirectory;
 
         // a cor do ceu
-        public static Color SkyColor = Color.FromArgb(0xFF, 0x94, 0xD2, 0xFF);
+        public static Color SkyColor = ColorTranslator.FromHtml("#4f4f4f");
 
         // float
         public static ConfigFrationalSymbol FrationalSymbol = ConfigFrationalSymbol.AcceptsCommaAndPeriod_OutputPeriod;
@@ -186,9 +178,6 @@ namespace Re4QuadExtremeEditor.Editor
 
         public static bool TreeNodeRenderHexValues = false;
 
-        // opção que muda no propetyGrid
-        public static bool PropertyGridUseHexFloat = false;
-
         //search
         public static bool SearchFilterMode = false;
 
@@ -206,8 +195,11 @@ namespace Re4QuadExtremeEditor.Editor
         public static bool EFF_Use_Group_Position = true;
 
         //behaviour
+        //treeview
+        public static bool TreeViewHideEmptyRoot { get; set; } = true;
         //propertygrid
-        public static bool PropertyGrid_HideBloatElements { get; set; } = true;
+        public static bool PropertyGridHideBloatElements { get; set; } = true;
+        public static bool PropertyGridUseHexFloat = false;
 
         #endregion
 

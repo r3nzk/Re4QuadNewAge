@@ -513,6 +513,26 @@ namespace Re4QuadExtremeEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap tool_move {
+            get {
+                object obj = ResourceManager.GetObject("tool_move", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tool_rotate {
+            get {
+                object obj = ResourceManager.GetObject("tool_rotate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Transparent {
             get {
                 object obj = ResourceManager.GetObject("Transparent", resourceCulture);

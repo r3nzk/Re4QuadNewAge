@@ -293,7 +293,17 @@ namespace Re4QuadExtremeEditor
             this.saveFileDialogConvertESE = new System.Windows.Forms.SaveFileDialog();
             this.saveFileDialogQuadCustom = new System.Windows.Forms.SaveFileDialog();
             this.splitContainerRight = new System.Windows.Forms.SplitContainer();
+            this.glViewport = new System.Windows.Forms.Panel();
+            this.viewportToolstrip = new System.Windows.Forms.ToolStrip();
+            this.viewportTools_tool_move = new System.Windows.Forms.ToolStripButton();
+            this.viewportTools_tool_rotate = new System.Windows.Forms.ToolStripButton();
+            this.viewportTools_gizmospace = new System.Windows.Forms.ToolStripButton();
             this.currentRoomLabel = new System.Windows.Forms.Label();
+            this.utilityPanel = new PowerLib.Winform.Controls.XTabControl();
+            this.consoleTab = new System.Windows.Forms.TabPage();
+            this.consoleBox = new System.Windows.Forms.RichTextBox();
+            this.glControlTab = new System.Windows.Forms.TabPage();
+            this.glControls_old = new System.Windows.Forms.Panel();
             this.treeView_searchBar = new System.Windows.Forms.Panel();
             this.treeView_searchButton = new System.Windows.Forms.Button();
             this.treeView_searchField = new System.Windows.Forms.TextBox();
@@ -323,9 +333,9 @@ namespace Re4QuadExtremeEditor
             this.editor = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolstrip_newQuad = new System.Windows.Forms.ToolStripButton();
-            this.toolstrip_OpenQuad = new System.Windows.Forms.ToolStripButton();
-            this.toolstrip_saveQuad = new System.Windows.Forms.ToolStripButton();
+            this.toolstrip_newEnv = new System.Windows.Forms.ToolStripButton();
+            this.toolstrip_openEnv = new System.Windows.Forms.ToolStripButton();
+            this.toolstrip_saveEnv = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -334,7 +344,13 @@ namespace Re4QuadExtremeEditor
             this.menuStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).BeginInit();
             this.splitContainerRight.Panel1.SuspendLayout();
+            this.splitContainerRight.Panel2.SuspendLayout();
             this.splitContainerRight.SuspendLayout();
+            this.glViewport.SuspendLayout();
+            this.viewportToolstrip.SuspendLayout();
+            this.utilityPanel.SuspendLayout();
+            this.consoleTab.SuspendLayout();
+            this.glControlTab.SuspendLayout();
             this.treeView_searchBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerMain)).BeginInit();
             this.splitContainerMain.Panel1.SuspendLayout();
@@ -359,6 +375,7 @@ namespace Re4QuadExtremeEditor
             // menuStripMenu
             // 
             this.menuStripMenu.BackColor = System.Drawing.Color.Gainsboro;
+            this.menuStripMenu.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.menuStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemFile,
             this.toolStripMenuItemEdit,
@@ -2557,29 +2574,150 @@ namespace Re4QuadExtremeEditor
             // splitContainerRight.Panel1
             // 
             this.splitContainerRight.Panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerRight.Panel1.Controls.Add(this.currentRoomLabel);
+            this.splitContainerRight.Panel1.Controls.Add(this.glViewport);
             this.splitContainerRight.Panel1MinSize = 100;
             // 
             // splitContainerRight.Panel2
             // 
             this.splitContainerRight.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerRight.Panel2.Controls.Add(this.utilityPanel);
             this.splitContainerRight.Panel2.Resize += new System.EventHandler(this.splitContainerRight_Panel2_Resize);
-            this.splitContainerRight.Panel2MinSize = 140;
+            this.splitContainerRight.Panel2MinSize = 165;
             this.splitContainerRight.Size = new System.Drawing.Size(689, 483);
-            this.splitContainerRight.SplitterDistance = 339;
+            this.splitContainerRight.SplitterDistance = 304;
             this.splitContainerRight.TabIndex = 0;
             this.splitContainerRight.TabStop = false;
+            // 
+            // glViewport
+            // 
+            this.glViewport.Controls.Add(this.viewportToolstrip);
+            this.glViewport.Controls.Add(this.currentRoomLabel);
+            this.glViewport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glViewport.ForeColor = System.Drawing.SystemColors.Control;
+            this.glViewport.Location = new System.Drawing.Point(0, 0);
+            this.glViewport.Name = "glViewport";
+            this.glViewport.Size = new System.Drawing.Size(689, 304);
+            this.glViewport.TabIndex = 1;
+            // 
+            // viewportToolstrip
+            // 
+            this.viewportToolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.viewportToolstrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewportTools_tool_move,
+            this.viewportTools_tool_rotate,
+            this.viewportTools_gizmospace});
+            this.viewportToolstrip.Location = new System.Drawing.Point(0, 0);
+            this.viewportToolstrip.Name = "viewportToolstrip";
+            this.viewportToolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.viewportToolstrip.Size = new System.Drawing.Size(689, 25);
+            this.viewportToolstrip.TabIndex = 1;
+            this.viewportToolstrip.Text = "toolStrip2";
+            // 
+            // viewportTools_tool_move
+            // 
+            this.viewportTools_tool_move.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.viewportTools_tool_move.Image = global::Re4QuadExtremeEditor.Properties.Resources.tool_move;
+            this.viewportTools_tool_move.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.viewportTools_tool_move.Name = "viewportTools_tool_move";
+            this.viewportTools_tool_move.Size = new System.Drawing.Size(23, 22);
+            this.viewportTools_tool_move.Text = "toolStripButton1";
+            this.viewportTools_tool_move.ToolTipText = "Move Tool";
+            this.viewportTools_tool_move.Click += new System.EventHandler(this.viewportTools_tool_move_Click);
+            // 
+            // viewportTools_tool_rotate
+            // 
+            this.viewportTools_tool_rotate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.viewportTools_tool_rotate.Image = global::Re4QuadExtremeEditor.Properties.Resources.tool_rotate;
+            this.viewportTools_tool_rotate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.viewportTools_tool_rotate.Name = "viewportTools_tool_rotate";
+            this.viewportTools_tool_rotate.Size = new System.Drawing.Size(23, 22);
+            this.viewportTools_tool_rotate.Text = "toolStripButton2";
+            this.viewportTools_tool_rotate.ToolTipText = "Rotate Tool";
+            this.viewportTools_tool_rotate.Click += new System.EventHandler(this.viewportTools_tool_rotate_Click);
+            // 
+            // viewportTools_gizmospace
+            // 
+            this.viewportTools_gizmospace.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.viewportTools_gizmospace.Image = global::Re4QuadExtremeEditor.Properties.Resources.detail_dark;
+            this.viewportTools_gizmospace.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.viewportTools_gizmospace.Name = "viewportTools_gizmospace";
+            this.viewportTools_gizmospace.Size = new System.Drawing.Size(59, 22);
+            this.viewportTools_gizmospace.Text = "World";
+            this.viewportTools_gizmospace.Click += new System.EventHandler(this.viewportTools_gizmospace_Click);
             // 
             // currentRoomLabel
             // 
             this.currentRoomLabel.AutoSize = true;
-            this.currentRoomLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.currentRoomLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.currentRoomLabel.Location = new System.Drawing.Point(0, 0);
+            this.currentRoomLabel.Location = new System.Drawing.Point(-3, 25);
             this.currentRoomLabel.Name = "currentRoomLabel";
-            this.currentRoomLabel.Size = new System.Drawing.Size(38, 15);
+            this.currentRoomLabel.Size = new System.Drawing.Size(108, 15);
             this.currentRoomLabel.TabIndex = 0;
-            this.currentRoomLabel.Text = "label1";
+            this.currentRoomLabel.Text = "viewportRoomTitle";
+            // 
+            // utilityPanel
+            // 
+            this.utilityPanel.BorderColor = System.Drawing.Color.Transparent;
+            this.utilityPanel.Controls.Add(this.consoleTab);
+            this.utilityPanel.Controls.Add(this.glControlTab);
+            this.utilityPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.utilityPanel.HeaderBackColorEnd = System.Drawing.SystemColors.Control;
+            this.utilityPanel.HeaderBackColorStart = System.Drawing.SystemColors.Control;
+            this.utilityPanel.HeaderForeColor = System.Drawing.Color.Black;
+            this.utilityPanel.HeaderSelectedBackColorEnd = System.Drawing.Color.White;
+            this.utilityPanel.HeaderSelectedBackColorStart = System.Drawing.Color.White;
+            this.utilityPanel.HeaderSelectedForeColor = System.Drawing.Color.Black;
+            this.utilityPanel.Location = new System.Drawing.Point(0, 0);
+            this.utilityPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.utilityPanel.Name = "utilityPanel";
+            this.utilityPanel.SelectedIndex = 0;
+            this.utilityPanel.Size = new System.Drawing.Size(689, 175);
+            this.utilityPanel.TabIndex = 2;
+            // 
+            // consoleTab
+            // 
+            this.consoleTab.BackColor = System.Drawing.Color.Transparent;
+            this.consoleTab.Controls.Add(this.consoleBox);
+            this.consoleTab.Location = new System.Drawing.Point(4, 24);
+            this.consoleTab.Name = "consoleTab";
+            this.consoleTab.Padding = new System.Windows.Forms.Padding(3);
+            this.consoleTab.Size = new System.Drawing.Size(681, 147);
+            this.consoleTab.TabIndex = 0;
+            this.consoleTab.Text = "Console";
+            // 
+            // consoleBox
+            // 
+            this.consoleBox.BackColor = System.Drawing.SystemColors.Control;
+            this.consoleBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.consoleBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.consoleBox.Location = new System.Drawing.Point(3, 3);
+            this.consoleBox.Margin = new System.Windows.Forms.Padding(0);
+            this.consoleBox.Name = "consoleBox";
+            this.consoleBox.ReadOnly = true;
+            this.consoleBox.Size = new System.Drawing.Size(675, 141);
+            this.consoleBox.TabIndex = 0;
+            this.consoleBox.Text = "";
+            // 
+            // glControlTab
+            // 
+            this.glControlTab.Controls.Add(this.glControls_old);
+            this.glControlTab.Location = new System.Drawing.Point(4, 24);
+            this.glControlTab.Margin = new System.Windows.Forms.Padding(0);
+            this.glControlTab.Name = "glControlTab";
+            this.glControlTab.Size = new System.Drawing.Size(681, 147);
+            this.glControlTab.TabIndex = 1;
+            this.glControlTab.Text = "GLControls";
+            this.glControlTab.UseVisualStyleBackColor = true;
+            // 
+            // glControls_old
+            // 
+            this.glControls_old.BackColor = System.Drawing.SystemColors.Control;
+            this.glControls_old.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.glControls_old.Location = new System.Drawing.Point(0, 0);
+            this.glControls_old.Margin = new System.Windows.Forms.Padding(0);
+            this.glControls_old.Name = "glControls_old";
+            this.glControls_old.Size = new System.Drawing.Size(681, 147);
+            this.glControls_old.TabIndex = 2;
             // 
             // treeView_searchBar
             // 
@@ -2672,7 +2810,7 @@ namespace Re4QuadExtremeEditor
             this.splitContainerLeft.Panel2.Controls.Add(this.propertyGridPanel);
             this.splitContainerLeft.Panel2MinSize = 100;
             this.splitContainerLeft.Size = new System.Drawing.Size(201, 483);
-            this.splitContainerLeft.SplitterDistance = 202;
+            this.splitContainerLeft.SplitterDistance = 191;
             this.splitContainerLeft.TabIndex = 0;
             this.splitContainerLeft.TabStop = false;
             // 
@@ -2688,7 +2826,7 @@ namespace Re4QuadExtremeEditor
             this.treeViewTablePanel.RowCount = 2;
             this.treeViewTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.treeViewTablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.treeViewTablePanel.Size = new System.Drawing.Size(201, 202);
+            this.treeViewTablePanel.Size = new System.Drawing.Size(201, 191);
             this.treeViewTablePanel.TabIndex = 1;
             // 
             // treeViewStrip
@@ -2773,7 +2911,7 @@ namespace Re4QuadExtremeEditor
             this.propertyGridPanel.RowCount = 2;
             this.propertyGridPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.propertyGridPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.propertyGridPanel.Size = new System.Drawing.Size(201, 277);
+            this.propertyGridPanel.Size = new System.Drawing.Size(201, 288);
             this.propertyGridPanel.TabIndex = 2;
             // 
             // propertyGridStrip
@@ -2883,7 +3021,7 @@ namespace Re4QuadExtremeEditor
             this.propertyGridObjs.Name = "propertyGridObjs";
             this.propertyGridObjs.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.propertyGridObjs.SelectedItemWithFocusBackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.propertyGridObjs.Size = new System.Drawing.Size(195, 249);
+            this.propertyGridObjs.Size = new System.Drawing.Size(195, 253);
             this.propertyGridObjs.TabIndex = 0;
             this.propertyGridObjs.ToolbarVisible = false;
             this.propertyGridObjs.ViewBackColor = System.Drawing.SystemColors.Control;
@@ -3001,9 +3139,9 @@ namespace Re4QuadExtremeEditor
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolstrip_newQuad,
-            this.toolstrip_OpenQuad,
-            this.toolstrip_saveQuad,
+            this.toolstrip_newEnv,
+            this.toolstrip_openEnv,
+            this.toolstrip_saveEnv,
             this.toolStripSeparator,
             this.helpToolStripButton,
             this.toolStripSeparator1,
@@ -3014,35 +3152,35 @@ namespace Re4QuadExtremeEditor
             this.toolStrip1.Size = new System.Drawing.Size(130, 25);
             this.toolStrip1.TabIndex = 0;
             // 
-            // toolstrip_newQuad
+            // toolstrip_newEnv
             // 
-            this.toolstrip_newQuad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolstrip_newQuad.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_newQuad.Image")));
-            this.toolstrip_newQuad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolstrip_newQuad.Name = "toolstrip_newQuad";
-            this.toolstrip_newQuad.Size = new System.Drawing.Size(23, 22);
-            this.toolstrip_newQuad.Text = "&New";
-            this.toolstrip_newQuad.Click += new System.EventHandler(this.toolstrip_newQuad_Click);
+            this.toolstrip_newEnv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_newEnv.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_newEnv.Image")));
+            this.toolstrip_newEnv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_newEnv.Name = "toolstrip_newEnv";
+            this.toolstrip_newEnv.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_newEnv.Text = "&New";
+            this.toolstrip_newEnv.Click += new System.EventHandler(this.toolstrip_newEnv_Click);
             // 
-            // toolstrip_OpenQuad
+            // toolstrip_openEnv
             // 
-            this.toolstrip_OpenQuad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolstrip_OpenQuad.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_OpenQuad.Image")));
-            this.toolstrip_OpenQuad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolstrip_OpenQuad.Name = "toolstrip_OpenQuad";
-            this.toolstrip_OpenQuad.Size = new System.Drawing.Size(23, 22);
-            this.toolstrip_OpenQuad.Text = "&Open";
-            this.toolstrip_OpenQuad.Click += new System.EventHandler(this.toolstrip_OpenQuad_Click);
+            this.toolstrip_openEnv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_openEnv.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_openEnv.Image")));
+            this.toolstrip_openEnv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_openEnv.Name = "toolstrip_openEnv";
+            this.toolstrip_openEnv.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_openEnv.Text = "&Open";
+            this.toolstrip_openEnv.Click += new System.EventHandler(this.toolstrip_openEnv_Click);
             // 
-            // toolstrip_saveQuad
+            // toolstrip_saveEnv
             // 
-            this.toolstrip_saveQuad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolstrip_saveQuad.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_saveQuad.Image")));
-            this.toolstrip_saveQuad.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolstrip_saveQuad.Name = "toolstrip_saveQuad";
-            this.toolstrip_saveQuad.Size = new System.Drawing.Size(23, 22);
-            this.toolstrip_saveQuad.Text = "&Save";
-            this.toolstrip_saveQuad.Click += new System.EventHandler(this.toolstrip_saveQuad_Click);
+            this.toolstrip_saveEnv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolstrip_saveEnv.Image = ((System.Drawing.Image)(resources.GetObject("toolstrip_saveEnv.Image")));
+            this.toolstrip_saveEnv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolstrip_saveEnv.Name = "toolstrip_saveEnv";
+            this.toolstrip_saveEnv.Size = new System.Drawing.Size(23, 22);
+            this.toolstrip_saveEnv.Text = "&Save QuadX Environment";
+            this.toolstrip_saveEnv.Click += new System.EventHandler(this.toolstrip_saveEnv_Click);
             // 
             // toolStripSeparator
             // 
@@ -3087,6 +3225,7 @@ namespace Re4QuadExtremeEditor
             this.treeViewObjs.Name = "treeViewObjs";
             this.treeViewObjs.SelectedNodeBackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.treeViewObjs.SelectedNodes = ((System.Collections.Generic.Dictionary<int, System.Windows.Forms.TreeNode>)(resources.GetObject("treeViewObjs.SelectedNodes")));
+            this.treeViewObjs.ShowNodeToolTips = true;
             this.treeViewObjs.Size = new System.Drawing.Size(195, 174);
             this.treeViewObjs.TabIndex = 0;
             this.treeViewObjs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewObjs_AfterSelect);
@@ -3110,9 +3249,16 @@ namespace Re4QuadExtremeEditor
             this.menuStripMenu.ResumeLayout(false);
             this.menuStripMenu.PerformLayout();
             this.splitContainerRight.Panel1.ResumeLayout(false);
-            this.splitContainerRight.Panel1.PerformLayout();
+            this.splitContainerRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).EndInit();
             this.splitContainerRight.ResumeLayout(false);
+            this.glViewport.ResumeLayout(false);
+            this.glViewport.PerformLayout();
+            this.viewportToolstrip.ResumeLayout(false);
+            this.viewportToolstrip.PerformLayout();
+            this.utilityPanel.ResumeLayout(false);
+            this.consoleTab.ResumeLayout(false);
+            this.glControlTab.ResumeLayout(false);
             this.treeView_searchBar.ResumeLayout(false);
             this.treeView_searchBar.PerformLayout();
             this.splitContainerMain.Panel1.ResumeLayout(false);
@@ -3429,9 +3575,9 @@ namespace Re4QuadExtremeEditor
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.TableLayoutPanel treeViewTablePanel;
         private NsMultiselectTreeView.MultiselectTreeView treeViewObjs;
-        private System.Windows.Forms.ToolStripButton toolstrip_newQuad;
-        private System.Windows.Forms.ToolStripButton toolstrip_OpenQuad;
-        private System.Windows.Forms.ToolStripButton toolstrip_saveQuad;
+        private System.Windows.Forms.ToolStripButton toolstrip_newEnv;
+        private System.Windows.Forms.ToolStripButton toolstrip_openEnv;
+        private System.Windows.Forms.ToolStripButton toolstrip_saveEnv;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton helpToolStripButton;
@@ -3448,6 +3594,16 @@ namespace Re4QuadExtremeEditor
         private System.Windows.Forms.Button treeView_addButton;
         private System.Windows.Forms.Button treeView_moreButton;
         private System.Windows.Forms.Button propertyGrid_detailButton;
+        private System.Windows.Forms.Panel glViewport;
+        private System.Windows.Forms.Panel glControls_old;
+        private System.Windows.Forms.ToolStrip viewportToolstrip;
+        private System.Windows.Forms.ToolStripButton viewportTools_tool_move;
+        private System.Windows.Forms.ToolStripButton viewportTools_tool_rotate;
+        private System.Windows.Forms.ToolStripButton viewportTools_gizmospace;
+        private PowerLib.Winform.Controls.XTabControl utilityPanel;
+        private System.Windows.Forms.TabPage consoleTab;
+        private System.Windows.Forms.TabPage glControlTab;
+        private System.Windows.Forms.RichTextBox consoleBox;
     }
 }
 

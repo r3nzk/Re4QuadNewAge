@@ -43,7 +43,8 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             entry["UseDarkTheme"] = config.UseDarkTheme;
             entry["UseInvertedMouseButtons"] = config.UseInvertedMouseButtons;
             entry["MaximizeEditorOnStartup"] = config.MaximizeEditorOnStartup;
-            entry["PropertyGrid_HideBloatElements"] = config.PropertyGrid_HideBloatElements;
+            entry["PropertyGridHideBloatElements"] = config.PropertyGridHideBloatElements;
+            entry["TreeViewHideEmptyRoot"] = config.TreeViewHideEmptyRoot;
             entry["LoadLangTranslation"] = config.LoadLangTranslation;
             entry["LangJsonFile"] = config.LangJsonFile;
 
@@ -261,11 +262,22 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                         }
                     }
 
-                    if (oConfigs["PropertyGrid_HideBloatElements"] != null)
+                    if (oConfigs["TreeViewHideEmptyRoot"] != null)
                     {
                         try
                         {
-                            config.PropertyGrid_HideBloatElements = bool.Parse(oConfigs["PropertyGrid_HideBloatElements"].ToString());
+                            config.TreeViewHideEmptyRoot = bool.Parse(oConfigs["TreeViewHideEmptyRoot"].ToString());
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+
+                    if (oConfigs["PropertyGridHideBloatElements"] != null)
+                    {
+                        try
+                        {
+                            config.PropertyGridHideBloatElements = bool.Parse(oConfigs["PropertyGridHideBloatElements"].ToString());
                         }
                         catch (Exception)
                         {

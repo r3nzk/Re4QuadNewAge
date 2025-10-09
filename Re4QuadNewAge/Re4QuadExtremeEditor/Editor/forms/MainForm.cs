@@ -19,15 +19,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 
 namespace Re4QuadExtremeEditor
@@ -37,6 +37,11 @@ namespace Re4QuadExtremeEditor
         GLControl glControl;
         readonly System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
 
+        //gizmo
+        public EditorTool CurrentTool { get; private set; } = EditorTool.Move;
+        public GizmoSpace CurrentGizmoSpace { get; private set; } = GizmoSpace.World;
+
+        Gizmo moveGizmo;
         CameraMoveControl cameraMove;
         ObjectMoveControl objectMove;
 
@@ -63,6 +68,14 @@ namespace Re4QuadExtremeEditor
         //movimentação camera no glControl
         MouseButtons MouseButtonsLeft = MouseButtons.Left; //botão para movimentação camera
         MouseButtons MouseButtonsRight = MouseButtons.Right; // botão para selecionar objeto
+        //gizmo raycast
+        private bool isDraggingGizmo = false;
+        private GizmoAxis draggedAxis = GizmoAxis.None;
+        private Vector3 dragPlaneNormal;
+        private Vector3 lastDragPoint;
+        //dictionaries to store initial state of objects when a drag starts
+        private Dictionary<int, Vector3> initialDragPositions = new Dictionary<int, Vector3>();
+        private Dictionary<int, Vector3> initialDragRotations = new Dictionary<int, Vector3>();
         #endregion
 
         // Property que fica no PropertyGrid quando não tem nada selecionado;
@@ -76,7 +89,6 @@ namespace Re4QuadExtremeEditor
         public MainForm()
         {
             InitializeComponent();
-            Application.EnableVisualStyles();
             propertyGridObjs.SelectedItemWithFocusBackColor = Color.FromArgb(0x70, 0xBB, 0xDB);
             propertyGridObjs.SelectedItemWithFocusForeColor = Color.Black;
             treeViewObjs.SelectedNodeBackColor = Color.FromArgb(0x70, 0xBB, 0xDB);
@@ -86,6 +98,7 @@ namespace Re4QuadExtremeEditor
             propertyGridObjs.SelectedObject = none;
             DataBase.SelectedNodes = treeViewObjs.SelectedNodes;
 
+            //viewport actions setup
             glControl = new OpenTK.GLControl();
             glControl.Dock = DockStyle.Fill;
             glControl.Name = "glControl";
@@ -102,7 +115,7 @@ namespace Re4QuadExtremeEditor
             glControl.MouseUp += GlControl_MouseUp;
             glControl.MouseLeave += GlControl_MouseLeave;
             glControl.Resize += GlControl_Resize;
-            splitContainerRight.Panel1.Controls.Add(glControl);
+            glViewport.Controls.Add(glControl);
 
             camera.getSelectedObject = getSelectedObject;
 
@@ -110,26 +123,31 @@ namespace Re4QuadExtremeEditor
             buildTreeView();
             currentRoomLabelToggle(false);
 
+            //setup old controls
             cameraMove = new CameraMoveControl(ref camera, UpdateGL, UpdateCameraMatrix);
-            cameraMove.Location = new Point(splitContainerRight.Panel2.Width - cameraMove.Width, 0);
-            cameraMove.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+            cameraMove.Location = new Point(glControls_old.Width - cameraMove.Width, 0);
+            cameraMove.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             cameraMove.Name = "cameraMove";
             cameraMove.TabIndex = 998;
             cameraMove.TabStop = false;
-
             objectMove = new ObjectMoveControl(ref camera, UpdateGL, UpdateCameraMatrix, UpdatePropertyGrid, UpdateTreeViewObjs);
             objectMove.Location = new Point(0, 0);
-            objectMove.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Left;
+            objectMove.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             objectMove.Name = "objectMove";
             objectMove.TabIndex = 995;
             objectMove.TabStop = false;
+            glControls_old.Controls.Add(cameraMove);
+            glControls_old.Controls.Add(objectMove);
 
-            splitContainerRight.Panel2.Controls.Add(cameraMove);
-            splitContainerRight.Panel2.Controls.Add(objectMove);
-            enable_splitContainerRight_Panel2_Resize = true;
+            //setup console
+            Editor.Console.RegisterOutputControl(this.consoleBox);
 
+            //editor tools
+            selectTool(0); //set start tool (move)
+            selectGizmospace(true); // set localspace as default
+
+            //input
             KeyPreview = true;
-
             myTimer.Tick += updateWASDControls;
             myTimer.Interval = 10;
             myTimer.Enabled = false;
@@ -146,6 +164,7 @@ namespace Re4QuadExtremeEditor
 
             //remove toolstrip weird white line
             toolStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomDarkColorTable());
+            viewportToolstrip.Renderer = new ToolStripProfessionalRenderer(new CustomDarkColorTable());
 
             //add searchbars placeholders
             SetPlaceholder(treeView_searchField, "Filter: name, t:type, g:group");
@@ -160,6 +179,8 @@ namespace Re4QuadExtremeEditor
                 MouseButtonsLeft = MouseButtons.Right;
                 MouseButtonsRight = MouseButtons.Left;
             }
+
+            Editor.Console.Log("Finished setup, you are running RE4QuadX ver 1.0");
         }
 
         private void ResetEditorState()
@@ -179,15 +200,16 @@ namespace Re4QuadExtremeEditor
                 {
                     DataBase.SelectedRoom.ClearGL();
                     DataBase.SelectedRoom = null;
-                    GC.Collect();
                     currentRoomLabel.Visible = false;
                     currentRoomLabel.Text = "";
                 }
 
-                // clear the current selection and PropertyGrid to ensure a clean state.
+                //clear the current selection and PropertyGrid to ensure a clean state.
                 TreeViewUpdateSelectedsClear();
+                UpdateTreeViewObjs();
+                UpdatePropertyGrid();
 
-                // Call the clear methods for each file type.
+                //clear all files loaded
                 FileManager.ClearESL();
                 FileManager.ClearETS();
                 FileManager.ClearITA();
@@ -202,11 +224,12 @@ namespace Re4QuadExtremeEditor
                 FileManager.ClearEFFBLOB();
                 FileManager.ClearQuadCustom();
 
-                // Reset the camera to a default position, ready for a new scene.
+                UpdateGL();
+
                 cameraMove.ResetCamera();
 
-                //rebuild new tree view
-                buildTreeView();
+                Editor.Console.Clear();
+                Editor.Console.Log("New QuadX Environment created.");
             }
         }
 
@@ -235,6 +258,30 @@ namespace Re4QuadExtremeEditor
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table7_Effect_0);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table8_Effect_1);
             treeViewObjs.Nodes.Add(DataBase.NodeEFF_Table9);
+        }
+
+        public void UpdateTreeViewNodes()
+        {
+            // Temporarily store all root nodes in a list.
+            List<TreeNode> allRootNodes = new List<TreeNode>();
+            foreach (TreeNode node in treeViewObjs.Nodes)
+            {
+                allRootNodes.Add(node);
+            }
+
+            treeViewObjs.BeginUpdate(); // Prevents flickering
+            treeViewObjs.Nodes.Clear();
+
+            foreach (TreeNode rootNode in allRootNodes)
+            {
+                // If hiding empty nodes is disabled, OR if the node has children, add it back.
+                if (!Globals.TreeViewHideEmptyRoot || rootNode.Nodes.Count > 0)
+                {
+                    treeViewObjs.Nodes.Add(rootNode);
+                }
+            }
+
+            treeViewObjs.EndUpdate(); // Re-enables drawing
         }
 
         private void currentRoomLabelToggle(bool state = true, string newText = "")
@@ -268,7 +315,6 @@ namespace Re4QuadExtremeEditor
             camera.resetMouseStuff();
             isMouseDown = false;
             isMouseMove = false;
-            Cursor.Show();
         }
 
         private void GlControl_MouseUp(object sender, MouseEventArgs e)
@@ -278,7 +324,11 @@ namespace Re4QuadExtremeEditor
                 camera.resetMouseStuff();
                 isMouseDown = false;
                 isMouseMove = false;
+
+                //cursor behaviour
                 Cursor.Show();
+                CenterCursorInViewport();
+
                 camera.SaveCameraPosition();
                 if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isQDown && !isEDown)
                 {
@@ -289,15 +339,23 @@ namespace Re4QuadExtremeEditor
 
         private void GlControl_MouseDown(object sender, MouseEventArgs e)
         {
+            glControl.Focus(); //this ensures that this control handles all subsequent mouse and keyboard events.
+
             if (e.Button == MouseButtonsLeft)
             {
                 camera.resetMouseStuff();
+                camera.SaveCameraPosition();
+
+                //input
                 isMouseDown = true;
                 isMouseMove = true;
-                camera.SaveCameraPosition();
                 myTimer.Enabled = true;
+
+                //cursor behaviour
                 Cursor.Hide();
-            }       
+                CenterCursorInViewport();
+            }
+
             if (e.Button == MouseButtonsRight)
             {
                 selectObject(e.X, e.Y);
@@ -305,12 +363,20 @@ namespace Re4QuadExtremeEditor
             }
         }
 
+        private void CenterCursorInViewport()
+        {
+            Point localCenter = new Point(glControl.Width / 2, glControl.Height / 2);
+            Point screenCenter = glControl.PointToScreen(localCenter);
+
+            Cursor.Position = screenCenter;
+        }
+
         /// <summary>
         /// metodo destinado para a seleção dos objetos no ambiente GL
         /// </summary>
         private void selectObject(int mx, int my)
         {
-            NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), true); // renderiza o ambiente GL no modo seleção.
+            NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), moveGizmo, camera, CurrentTool, CurrentGizmoSpace, true); // renderiza o ambiente GL no modo seleção.
 
             int h = glControl.Height;
             byte[] pixel = new byte[4];
@@ -490,7 +556,6 @@ namespace Re4QuadExtremeEditor
             isMouseDown = false;
             isMouseMove = false;
             myTimer.Enabled = false;
-            Cursor.Show();
         }
 
         private void GlControl_KeyUp(object sender, KeyEventArgs e)
@@ -565,33 +630,26 @@ namespace Re4QuadExtremeEditor
         /// </summary>
         private void updateWASDControls(object sender, EventArgs e)
         {
-            if (!isControlDown && camera.CamMode == Camera.CameraMode.FLY)
+            bool needsRedraw = false;
+
+            // Camera rotation via mouse movement.
+            if (isMouseDown && isMouseMove)
+                needsRedraw = true;
+
+            // Keyboard navigation (WASD, QE).
+            if (isMouseDown && !isControlDown && camera.CamMode == Camera.CameraMode.FLY)
             {
-                //directional movement 3d viewport shortcut
-                if (isWDown)
-                    camera.updateCameraToFront();
-                if (isSDown)
-                    camera.updateCameraToBack();
-                if (isDDown)
-                    camera.updateCameraToRight();
-                if (isADown)
-                    camera.updateCameraToLeft();
-
-                //Up and Down 3d viewport shortcut
-                if (isQDown)
-                    camera.updateCameraToDown();
-                if (isEDown)
-                    camera.updateCameraToUp();
-
-                if (isWDown || isSDown || isDDown || isADown || isShiftDown || isEDown || isQDown || isMouseMove)
-                {
-                    camMtx = camera.GetViewMatrix();
-                    glControl.Invalidate();
-                }
-
+                if (isWDown) { camera.updateCameraToFront(); needsRedraw = true; }
+                if (isSDown) { camera.updateCameraToBack(); needsRedraw = true; }
+                if (isDDown) { camera.updateCameraToRight(); needsRedraw = true; }
+                if (isADown) { camera.updateCameraToLeft(); needsRedraw = true; }
+                if (isQDown) { camera.updateCameraToDown(); needsRedraw = true; }
+                if (isEDown) { camera.updateCameraToUp(); needsRedraw = true; }
             }
-            else 
+
+            if (needsRedraw)
             {
+                camMtx = camera.GetViewMatrix();
                 glControl.Invalidate();
             }
         }
@@ -654,6 +712,8 @@ namespace Re4QuadExtremeEditor
                 DataShader.StartLoad();
                 Utils.StartLoadObjsModels();
 
+                moveGizmo = new Gizmo();
+
                 glControl.SwapBuffers();
 
                 SplashScreen.Container?.Close?.Invoke();
@@ -672,11 +732,11 @@ namespace Re4QuadExtremeEditor
         {
             if (RenderSelectViewer)
             {
-                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), true); // este é da seleção
+                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), moveGizmo, camera, CurrentTool, CurrentGizmoSpace, true); // este é da seleção
             }
             else
             {
-                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY()); // rederiza todos os objetos do GL;
+                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), moveGizmo, camera, CurrentTool, CurrentGizmoSpace); // rederiza todos os objetos do GL;
             }
             glControl.SwapBuffers();
         }
@@ -1287,15 +1347,15 @@ namespace Re4QuadExtremeEditor
         {
             if (toolStripMenuItemHideBottomMenu.Checked) // fazer reaparecer
             {
-                splitContainerRight.Panel2.Enabled = true;
-                splitContainerRight.Panel2Collapsed = false;
+                glControls_old.Enabled = true;
+                //glControls_old.Collapsed = false;
 
                 toolStripMenuItemHideBottomMenu.Checked = false;
             }
             else //fazer esconder
             {
-                splitContainerRight.Panel2Collapsed = true;
-                splitContainerRight.Panel2.Enabled = false;
+                glControls_old.Enabled = false;
+                //glControls_old.Collapsed = true;
 
                 toolStripMenuItemHideBottomMenu.Checked = true;
             }
@@ -5093,6 +5153,7 @@ namespace Re4QuadExtremeEditor
                 IntPtr handle = processes[0].MainWindowHandle;
                 ShowWindow(handle, SW_RESTORE); // Restore if minimized.
                 SetForegroundWindow(handle);    // Bring to the front.
+                Editor.Console.Log("bio4.exe already running, focusing on game window.");
             }
             else
             {
@@ -5104,30 +5165,32 @@ namespace Re4QuadExtremeEditor
                     try
                     {
                         Process.Start(filePath);
+                        Editor.Console.Log("Launching bio4.exe...");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error: " + ex.Message);
+                        Editor.Console.Error(ex.Message);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("The game path was not found. Check the path in \"options > setup\" or change the current version.");
+                    string warningLog = "The game path was not found. Check the path in \"options > setup\" or change the current version.";
+                    Editor.Console.Warning(warningLog);
                 }
             }
         }
 
-        private void toolstrip_saveQuad_Click(object sender, EventArgs e)
+        private void toolstrip_saveEnv_Click(object sender, EventArgs e)
         {
-            SaveQuadCustom();
+            //save all env data
         }
 
-        private void toolstrip_OpenQuad_Click(object sender, EventArgs e)
+        private void toolstrip_openEnv_Click(object sender, EventArgs e)
         {
-            openFileDialogQuadCustom.ShowDialog();
+            //load from env data
         }
 
-        private void toolstrip_newQuad_Click(object sender, EventArgs e)
+        private void toolstrip_newEnv_Click(object sender, EventArgs e)
         {
             //clear all scene and loaded itens
             ResetEditorState();
@@ -5137,6 +5200,74 @@ namespace Re4QuadExtremeEditor
         {
             addNewObject();
         }
+
+        //VIEWPORT TOOLSTRIP
+        private void viewportTools_tool_move_Click(object sender, EventArgs e)
+        {
+            selectTool(0);
+        }
+
+        private void viewportTools_tool_rotate_Click(object sender, EventArgs e)
+        {
+            selectTool(1);
+        }
+
+        private void selectTool(int tool = 0)
+        {
+            //uncheck all
+            viewportTools_tool_move.Checked = false;
+            viewportTools_tool_move.CheckState = CheckState.Unchecked;
+            viewportTools_tool_rotate.Checked = false;
+            viewportTools_tool_rotate.CheckState = CheckState.Unchecked;
+
+            //select new tool
+            if (tool == 0)
+            {
+                CurrentTool = EditorTool.Move;
+                viewportTools_tool_move.Checked = true;
+                viewportTools_tool_move.CheckState = CheckState.Checked;
+                glControl.Invalidate(); // Redraw to show the correct gizmo
+            }
+            else if ( tool == 1)
+            {
+                CurrentTool = EditorTool.Rotate;
+                viewportTools_tool_rotate.Checked = true;
+                viewportTools_tool_rotate.CheckState = CheckState.Checked;
+                glControl.Invalidate(); // Redraw to show the correct gizmo
+            }
+        }
+
+        private void viewportTools_gizmospace_Click(object sender, EventArgs e)
+        {
+            toggleGizmospace();
+        }
+
+        private void toggleGizmospace()
+        {
+            //toggle between world/local
+            if (CurrentGizmoSpace == GizmoSpace.World)
+            {
+                selectGizmospace(true);
+            }
+            else
+            {
+                selectGizmospace(false);
+            }
+        }
+
+        private void selectGizmospace(bool localSpace)
+        {
+            if (localSpace == true){
+                CurrentGizmoSpace = GizmoSpace.Local;
+                viewportTools_gizmospace.Text = "Local";
+            }else{
+                CurrentGizmoSpace = GizmoSpace.World;
+                viewportTools_gizmospace.Text = "World";
+            }
+
+            glControl.Invalidate();
+        }
+
         #endregion
 
         #region MainForm events/ metodos
@@ -5147,7 +5278,7 @@ namespace Re4QuadExtremeEditor
         {
             if (enable_splitContainerRight_Panel2_Resize)
             {
-                int painel2Width = splitContainerRight.Panel2.Width;
+                int painel2Width = glControls_old.Width;
                 int quite = painel2Width / 2;
             }
         }
@@ -5168,6 +5299,7 @@ namespace Re4QuadExtremeEditor
 
             //toolstrip
             toolStripContainer1.TopToolStripPanel.BackColor = darkBackgroundColor;
+            viewportToolstrip.BackColor = splitterColor;
 
             // editor (mostly borders)
             // this panel holds most of the bellow panels
@@ -5207,15 +5339,49 @@ namespace Re4QuadExtremeEditor
 
             // Containers & splitters
             splitContainerMain.BackColor = darkBackgroundColor;
-            splitContainerRight.Panel1.BackColor = darkBackgroundColor;
+            glViewport.BackColor = darkBackgroundColor;
             splitContainerRight.BackColor = darkBackgroundColor;
             splitContainerLeft.BackColor = splitterColor;
 
-            // Controls
-            //splitContainerRight.Panel2.BackColor = backgroundColor;
-            //cameraMove.BackColor = backgroundColor;
-            //objectMove.BackColor = backgroundColor;
+            //utility
+            splitContainerRight.Panel2.BackColor = backgroundColor;
+            splitContainerRight.Panel2.ForeColor = textColor;
+
+            if (utilityPanel != null)
+            {
+                //utilitypanel
+                utilityPanel.BackColor = splitterColor;
+                utilityPanel.BorderColor = splitterColor;
+                utilityPanel.ForeColor = textColor;
+
+                //utilitypanel button idle
+                utilityPanel.HeaderBackColorStart = splitterColor;
+                utilityPanel.HeaderBackColorEnd = splitterColor;
+                utilityPanel.HeaderForeColor = textColor;
+                //utilitypanel button selected
+                utilityPanel.HeaderSelectedBackColorStart = backgroundColor;
+                utilityPanel.HeaderSelectedBackColorEnd = backgroundColor;
+                utilityPanel.HeaderSelectedForeColor = textColor;
+
+                //tab content background
+                foreach (TabPage tabPage in utilityPanel.TabPages){
+                    tabPage.BackColor = backgroundColor;
+                }
+
+                //Console
+                consoleBox.BackColor = backgroundColor;
+                //consoleBox.ForeColor = textColor;
+
+                //Controls
+                cameraMove.BackColor = backgroundColor;
+                objectMove.BackColor = backgroundColor;
+                cameraMove.ForeColor = textColor;
+                objectMove.ForeColor = textColor;
+                glControls_old.BackColor = backgroundColor;
+                glControls_old.ForeColor = textColor;
+            }
         }
+
 
         private void StartUpdateTranslation()
         {
@@ -5483,6 +5649,22 @@ namespace Re4QuadExtremeEditor
         {
             // entrada de teclas para açoes especiais
             cameraMove.isControlDown = e.Control;
+
+            if (!isMouseDown){
+                //not manipulating viewport shortcuts
+                switch (e.KeyCode){
+                    case Keys.W:
+                        selectTool(0); //Select Move Tool
+                        break;
+                    case Keys.E:
+                        selectTool(1); //Select Rotate Tool
+                        break;
+                }
+            }
+            else
+            {
+                //while manipualting viewport shortcuts
+            }
 
             #region usado em propery
             // proibe a estrada de caracteres que não vão nos campos de numeros

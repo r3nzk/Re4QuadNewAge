@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
+﻿using NsCamera;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Re4QuadExtremeEditor.Editor;
 using Re4QuadExtremeEditor.Editor.Class;
-using Re4QuadExtremeEditor.Editor.Class.ObjMethods;
-using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
 using Re4QuadExtremeEditor.Editor.Class.Enums;
+using Re4QuadExtremeEditor.Editor.Class.ObjMethods;
 using Re4QuadExtremeEditor.Editor.Class.Shaders;
+using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace NewAgeTheRender
@@ -34,7 +35,7 @@ namespace NewAgeTheRender
         private static readonly Vector3 boundNoneEFF = new Vector3(2f, 2f, 2f);
         private static readonly Vector3 boundNoneEFFTable9 = new Vector3(0.3f, 0.3f, 0.3f);
 
-        public static void AllRender(ref Matrix4 camMtx, ref Matrix4 ProjMatrix, Vector3 camPos, float objY, bool IsSelectMode = false)
+        public static void AllRender(ref Matrix4 camMtx, ref Matrix4 ProjMatrix, Vector3 camPos, float objY, Gizmo gizmo, NsCamera.Camera camera, EditorTool currentTool, GizmoSpace currentSpace, bool IsSelectMode = false)
         {
             if (IsSelectMode)
             {
@@ -178,6 +179,31 @@ namespace NewAgeTheRender
                 //final, transparencia da triggerzone
                 RenderPosTriggerZoneBox();
             }
+
+            //gizmo handles rendering
+            if (!IsSelectMode && gizmo != null && DataBase.SelectedNodes.Count > 0)
+            {
+                var firstSelected = DataBase.SelectedNodes.Values.FirstOrDefault() as Object3D;
+                if (firstSelected != null)
+                {
+                    //object rotation angles
+                    Vector3[] anglesRad = firstSelected.GetObjRotarionAngles_ToMove();
+                    Matrix4 objectRotation = Matrix4.Identity;
+
+                    //if angles are available will create a rotation matrix from them
+                    if (anglesRad != null && anglesRad.Length > 0){
+                        objectRotation = Matrix4.CreateRotationZ(anglesRad[0].Z) * Matrix4.CreateRotationY(anglesRad[0].Y) * Matrix4.CreateRotationX(anglesRad[0].X); // the order is Z/Y/X
+                    }
+
+                    Vector3 objectPosition = firstSelected.GetObjPosition_ToCamera();
+                    gizmo.Position = objectPosition;
+                    gizmo.UpdateScale(camera);
+
+                    //update the render call
+                    gizmo.Render(camMtx, ProjMatrix, currentTool, currentSpace, objectRotation);
+                }
+            }
+
 
             GL.Finish();
         }
