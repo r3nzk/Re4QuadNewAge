@@ -177,12 +177,13 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             // 
             // comboBoxMoveMode
             // 
+            this.comboBoxMoveMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxMoveMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxMoveMode.Font = new System.Drawing.Font("Corbel", 9F, System.Drawing.FontStyle.Bold);
             this.comboBoxMoveMode.FormattingEnabled = true;
             this.comboBoxMoveMode.Location = new System.Drawing.Point(3, 102);
             this.comboBoxMoveMode.Name = "comboBoxMoveMode";
-            this.comboBoxMoveMode.Size = new System.Drawing.Size(424, 22);
+            this.comboBoxMoveMode.Size = new System.Drawing.Size(395, 22);
             this.comboBoxMoveMode.TabIndex = 9;
             this.comboBoxMoveMode.TabStop = false;
             this.comboBoxMoveMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxMoveMode_SelectedIndexChanged);
@@ -279,8 +280,9 @@ namespace Re4QuadExtremeEditor.Editor.Controls
             this.Controls.Add(this.panelHorizontalObject);
             this.Controls.Add(this.panelMoveObject);
             this.Controls.Add(this.trackBarMoveSpeed);
+            this.MaximumSize = new System.Drawing.Size(406, 128);
             this.Name = "ObjectMoveControl";
-            this.Size = new System.Drawing.Size(430, 126);
+            this.Size = new System.Drawing.Size(406, 128);
             this.Resize += new System.EventHandler(this.ObjectMoveControl_Resize);
             this.panelMoveObject.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.moveObjSquare)).EndInit();

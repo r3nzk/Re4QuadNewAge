@@ -65,6 +65,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeESL.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeESL.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -132,6 +133,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeETS.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeETS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -199,6 +201,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeETS.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeETS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -271,6 +274,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeITA.Expand();
             DataBase.Extras.AddITAs();
             DataBase.NodeEXTRAS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -343,6 +347,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeITA.Expand();
             DataBase.Extras.AddITAs();
             DataBase.NodeEXTRAS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -415,6 +420,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeAEV.Expand();
             DataBase.Extras.AddAll();
             DataBase.NodeEXTRAS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -487,6 +493,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeAEV.Expand();
             DataBase.Extras.AddAll();
             DataBase.NodeEXTRAS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -547,6 +554,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeDSE.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeDSE.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -614,6 +622,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeFSE.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeFSE.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -683,6 +692,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeSAR.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeSAR.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -752,6 +762,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeEAR.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeEAR.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -820,6 +831,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeEMI.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeEMI.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -888,6 +900,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeEMI.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeEMI.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
        
@@ -955,6 +968,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeESE.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeESE.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1022,6 +1036,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeESE.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeESE.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1131,6 +1146,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeQuadCustom.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeQuadCustom.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1427,6 +1443,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
                 DataBase.NodeEFF_Table9.Expand();
             }
 
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1601,6 +1618,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
                 DataBase.NodeLIT_Entrys.Expand();
             }
 
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1669,6 +1687,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeITA.Expand();
             DataBase.Extras.AddITAs();
             DataBase.NodeEXTRAS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1737,6 +1756,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeAEV.Expand();
             DataBase.Extras.AddAll();
             DataBase.NodeEXTRAS.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1770,6 +1790,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
             DataBase.NodeESL.Nodes.AddRange(nodes.ToArray());
             DataBase.NodeESL.Expand();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1791,6 +1812,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeETS.DisplayMethods = DataBase.FileETS.DisplayMethods;
             DataBase.NodeETS.MoveMethods = DataBase.FileETS.MoveMethods;
             DataBase.NodeETS.ChangeAmountMethods = DataBase.FileETS.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1821,6 +1843,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeITA.MoveMethods = DataBase.FileITA.MoveMethods;
             DataBase.NodeITA.ChangeAmountMethods = DataBase.FileITA.ChangeAmountMethods;
             DataBase.Extras.AddITAs();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1851,6 +1874,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeAEV.MoveMethods = DataBase.FileAEV.MoveMethods;
             DataBase.NodeAEV.ChangeAmountMethods = DataBase.FileAEV.ChangeAmountMethods;
             DataBase.Extras.AddAll();
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1867,6 +1891,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeDSE.DisplayMethods = DataBase.FileDSE.DisplayMethods;
             DataBase.NodeDSE.MoveMethods = DataBase.FileDSE.MoveMethods;
             DataBase.NodeDSE.ChangeAmountMethods = DataBase.FileDSE.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1894,6 +1919,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeFSE.DisplayMethods = DataBase.FileFSE.DisplayMethods;
             DataBase.NodeFSE.MoveMethods = DataBase.FileFSE.MoveMethods;
             DataBase.NodeFSE.ChangeAmountMethods = DataBase.FileFSE.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1916,6 +1942,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeSAR.DisplayMethods = DataBase.FileSAR.DisplayMethods;
             DataBase.NodeSAR.MoveMethods = DataBase.FileSAR.MoveMethods;
             DataBase.NodeSAR.ChangeAmountMethods = DataBase.FileSAR.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1938,6 +1965,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeEAR.DisplayMethods = DataBase.FileEAR.DisplayMethods;
             DataBase.NodeEAR.MoveMethods = DataBase.FileEAR.MoveMethods;
             DataBase.NodeEAR.ChangeAmountMethods = DataBase.FileEAR.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -1988,6 +2016,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeESE.DisplayMethods = DataBase.FileESE.DisplayMethods;
             DataBase.NodeESE.MoveMethods = DataBase.FileESE.MoveMethods;
             DataBase.NodeESE.ChangeAmountMethods = DataBase.FileESE.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -2004,6 +2033,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeQuadCustom.DisplayMethods = DataBase.FileQuadCustom.DisplayMethods;
             DataBase.NodeQuadCustom.MoveMethods = DataBase.FileQuadCustom.MoveMethods;
             DataBase.NodeQuadCustom.ChangeAmountMethods = DataBase.FileQuadCustom.ChangeAmountMethods;
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -2080,6 +2110,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeEFF_Table9.ChangeAmountMethods = DataBase.FileEFF._Table9.ChangeAmountMethods;
             DataBase.NodeEFF_Table9.MoveMethods = DataBase.FileEFF._Table9.MoveMethods;
 
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
         }
 
@@ -2110,6 +2141,7 @@ namespace Re4QuadExtremeEditor.Editor.Class
             DataBase.NodeLIT_Entrys.ChangeAmountMethods = DataBase.FileLIT.LightEntrys.ChangeAmountMethods;
             DataBase.NodeLIT_Entrys.Expand();
 
+            MainForm.instance.UpdateTreeViewNodes();
             GC.Collect();
 
         }

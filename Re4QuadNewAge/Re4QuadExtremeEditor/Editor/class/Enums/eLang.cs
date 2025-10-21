@@ -574,7 +574,6 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
         labelQuadCustom,
         groupBoxTheme,
         labelThemeWarning,
-        checkBoxUseDarkTheme,
         groupBoxInvertedMouseButtons,
         labelInvertedMouseButtonsWarning,
         checkBoxUseInvertedMouseButtons,

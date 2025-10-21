@@ -106,7 +106,12 @@ namespace NewAgeTheRender
                     {
                         preFixs.Add(FileID, sub.PreFix);
                     }
-                }             
+                }
+                else
+                {
+                    //this is used for 2007 and other versions, we always need a valid xfile directory, which is mandatory for the editor objects load, so we always log this
+                    Re4QuadExtremeEditor.Editor.Console.Warning($"Failed to find 3D model '{sub.PmdFile}' for 2007/xFile in directory '{BaseDirectory ?? "null"}'. Check the path or folder order.");
+                }
             }
 
             List<string> ObjNameOrderList = new List<string>();
@@ -160,6 +165,11 @@ namespace NewAgeTheRender
                     {
                         preFixs.Add(FileID_BIN, sub.PreFix);
                     }
+                }
+                else
+                {
+                    //bin file not found
+                    //Re4QuadExtremeEditor.Editor.Console.Warning($"Failed to find 3D model '{sub.UhdBinFile}' for UHD in directory '{BaseDirectory ?? "null"}'. Check the path or folder order.");
                 }
 
                 if (File.Exists(tplFullPath))
@@ -292,6 +302,11 @@ namespace NewAgeTheRender
                     {
                         preFixs.Add(FileID_BIN, sub.PreFix);
                     }
+                }
+                else
+                {
+                    //ps2 bin file not found
+                    //Re4QuadExtremeEditor.Editor.Console.Warning($"Failed to find 3D model '{sub.Ps2BinFile}' for PS2 in directory '{BaseDirectory ?? "null"}'. Check the path or folder order.");
                 }
 
                 if (File.Exists(tplFullPath))

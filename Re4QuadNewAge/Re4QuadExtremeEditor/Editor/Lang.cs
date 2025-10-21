@@ -242,6 +242,7 @@ namespace Re4QuadExtremeEditor.Editor
             AttributeText.Add(aLang.EtcModel_AssociatedSpecialEventFromSpecialIndexDisplayName, "Special Index");
             AttributeText.Add(aLang.EtcModel_AssociatedSpecialEventFromSpecialIndexFromDescription, "Special Index description");
             AttributeText.Add(aLang.EtcModel_AssociatedSpecialEventFromFileDisplayName, "From File");
+            AttributeText.Add(aLang.AssociatedSpecialEventFromFileLinkName, "Link to Associated object");
             AttributeText.Add(aLang.EtcModel_AssociatedSpecialEventFromFileDescription, "Source file description (Informs which file the information is coming from).");
             AttributeText.Add(aLang.EtcModelCategory, "EtcModel");
 
@@ -1739,7 +1740,6 @@ namespace Re4QuadExtremeEditor.Editor
             Text.Add(eLang.labelQuadCustom, "QuadCustom");
             Text.Add(eLang.groupBoxTheme, "Theme");
             Text.Add(eLang.labelThemeWarning, "Theme changes only take effect after program restart");
-            Text.Add(eLang.checkBoxUseDarkTheme, "Dark Theme");
             Text.Add(eLang.groupBoxInvertedMouseButtons, "Swap Mouse Buttons");
             Text.Add(eLang.labelInvertedMouseButtonsWarning, "Changes only take effect after restarting the program");
             Text.Add(eLang.checkBoxUseInvertedMouseButtons, "Use inverted Mouse Buttons in the 3d viewer");

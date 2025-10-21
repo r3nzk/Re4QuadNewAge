@@ -42,7 +42,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
 
         private void linkLabelProjectGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            To("https://github.com/JADERLINK/Re4QuadNewAge");
+            To("https://github.com/r3nzk/Re4QuadX-Project");
         }
 
         private void linkLabelDonate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -396,5 +396,19 @@ namespace Re4QuadExtremeEditor.Editor.Forms
 
         #endregion
 
+        private void linkLabelOriginalRE4QuadNewAge_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            To("https://github.com/JADERLINK/Re4QuadNewAge");
+        }
+
+        private void linkLabelPowerlib_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            To("https://www.nuget.org/packages/PowerLib.Winform");
+        }
+
+        private void linkLabelRealTaiizor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            To("https://github.com/Taiizor/ReaLTaiizor");
+        }
     }
 }

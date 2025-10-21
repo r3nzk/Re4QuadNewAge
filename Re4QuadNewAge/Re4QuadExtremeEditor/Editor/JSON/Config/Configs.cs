@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Re4QuadExtremeEditor.Editor.Class.Enums;
+using Re4QuadExtremeEditor.Editor.Class;
 using System.IO;
 
 namespace Re4QuadExtremeEditor.Editor.JSON
@@ -22,6 +23,12 @@ namespace Re4QuadExtremeEditor.Editor.JSON
         public string DirectoryCustom1 { get; set; }
         public string DirectoryCustom2 { get; set; }
         public string DirectoryCustom3 { get; set; }
+
+        public string ToolPathUDAS { get; set; }
+        public string ToolPathLFS { get; set; }
+        public string ToolPathPACK { get; set; }
+        public string ToolPathGCA { get; set; }
+
 
         //listagens json
         public string FileDiretoryItemsList { get; set; }
@@ -44,13 +51,17 @@ namespace Re4QuadExtremeEditor.Editor.JSON
         public float ItemRotationCalculationDivider { get; set; }
 
         //theme
-        public bool UseDarkTheme { get; set; }
+        public EditorTheme SelectedTheme { get; set; }
 
         //editor
         public bool UseInvertedMouseButtons { get; set; }
         public bool MaximizeEditorOnStartup { get; set; }
-        public bool PropertyGridHideBloatElements{ get; set; }
+        public bool PropertyGridShowAllByDefault { get; set; }
         public bool TreeViewHideEmptyRoot{ get; set; }
+
+        public EditorRe4Ver PreferredVersion { get; set; }
+        public string PreferredRoomList { get; set; }
+
 
         // lang
         public bool LoadLangTranslation { get; set; }
@@ -64,6 +75,7 @@ namespace Re4QuadExtremeEditor.Editor.JSON
         public static Configs GetDefaultConfigs()
         {
             Configs configs = new Configs();
+            //game paths
             configs.DirectoryXFILE = @"";
             configs.Directory2007RE4 = @"";
             configs.DirectoryPS2RE4 = @"";
@@ -72,6 +84,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             configs.DirectoryCustom1 = @"";
             configs.DirectoryCustom2 = @"";
             configs.DirectoryCustom3 = @"";
+            //tool paths
+            configs.ToolPathUDAS = @"";
+            configs.ToolPathLFS = @"";
+            configs.ToolPathPACK = @"";
+            configs.ToolPathGCA = @"";
 
             configs.FileDiretoryEnemiesList = Consts.DefaultEnemiesListFileDirectory;
             configs.FileDiretoryEtcModelsList = Consts.DefaultEtcModelsListFileDirectory;
@@ -90,13 +107,17 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             configs.ItemRotationCalculationMultiplier = 1;
             configs.ItemRotationCalculationDivider = 1;
 
-            configs.UseDarkTheme = true; //dark theme enabled by default
+            configs.SelectedTheme = EditorTheme.Dark; //dark theme enabled by default
+
             configs.UseInvertedMouseButtons = false;
             configs.MaximizeEditorOnStartup = true;
-            configs.PropertyGridHideBloatElements = true;
+            configs.PropertyGridShowAllByDefault = true;
             configs.TreeViewHideEmptyRoot = true;
             configs.LoadLangTranslation = false;
             configs.LangJsonFile = "";
+
+            configs.PreferredRoomList = "";
+            configs.PreferredVersion = 0;
             return configs;
         }
 
@@ -121,6 +142,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                 Globals.DirectoryCustom2 = configs.DirectoryCustom2;
                 Globals.DirectoryCustom3 = configs.DirectoryCustom3;
 
+                Globals.ToolPathUDAS = configs.ToolPathUDAS;
+                Globals.ToolPathLFS = configs.ToolPathLFS;
+                Globals.ToolPathPACK = configs.ToolPathPACK;
+                Globals.ToolPathGCA = configs.ToolPathGCA;
+
                 Globals.FileDiretoryEnemiesList = configs.FileDiretoryEnemiesList;
                 Globals.FileDiretoryEtcModelsList = configs.FileDiretoryEtcModelsList;
                 Globals.FileDiretoryItemsList = configs.FileDiretoryItemsList;
@@ -131,6 +157,13 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                 // colocar novas configurões aqui;
                 Globals.FrationalAmount = configs.FrationalAmount;
                 Globals.FrationalSymbol = configs.FrationalSymbol;
+
+                Globals.PreferredRoomList = configs.PreferredRoomList;
+                Globals.PreferredVersion = configs.PreferredVersion;
+
+                Globals.SelectedTheme = configs.SelectedTheme;
+                Globals.PropertyGridShowAllByDefault = configs.PropertyGridShowAllByDefault;
+                Globals.TreeViewHideEmptyRoot = configs.TreeViewHideEmptyRoot;
 
                 Globals.ItemDisableRotationAll = configs.ItemDisableRotationAll;
                 Globals.ItemDisableRotationIfXorYorZequalZero = configs.ItemDisableRotationIfXorYorZequalZero;

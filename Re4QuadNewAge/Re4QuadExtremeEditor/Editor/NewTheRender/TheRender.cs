@@ -181,26 +181,22 @@ namespace NewAgeTheRender
             }
 
             //gizmo handles rendering
-            if (!IsSelectMode && gizmo != null && DataBase.SelectedNodes.Count > 0)
+            if (gizmo != null && DataBase.SelectedNodes.Count > 0)
             {
+                GL.Clear(ClearBufferMask.DepthBufferBit);
+
                 var firstSelected = DataBase.SelectedNodes.Values.FirstOrDefault() as Object3D;
                 if (firstSelected != null)
                 {
                     //object rotation angles
-                    Vector3[] anglesRad = firstSelected.GetObjRotarionAngles_ToMove();
-                    Matrix4 objectRotation = Matrix4.Identity;
+                    Matrix4 objectRotation = firstSelected.GetRotationMatrix();
 
-                    //if angles are available will create a rotation matrix from them
-                    if (anglesRad != null && anglesRad.Length > 0){
-                        objectRotation = Matrix4.CreateRotationZ(anglesRad[0].Z) * Matrix4.CreateRotationY(anglesRad[0].Y) * Matrix4.CreateRotationX(anglesRad[0].X); // the order is Z/Y/X
-                    }
-
-                    Vector3 objectPosition = firstSelected.GetObjPosition_ToCamera();
+                    Vector3 objectPosition = firstSelected.GetGizmoPosition();
                     gizmo.Position = objectPosition;
                     gizmo.UpdateScale(camera);
 
                     //update the render call
-                    gizmo.Render(camMtx, ProjMatrix, currentTool, currentSpace, objectRotation);
+                    gizmo.Render(camMtx, ProjMatrix, currentTool, currentSpace, objectRotation, IsSelectMode);
                 }
             }
 

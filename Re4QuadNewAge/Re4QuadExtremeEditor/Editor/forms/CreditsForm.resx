@@ -122,6 +122,11 @@
 and Mr.Curious's documentation, together with his contributors (RE4UHD Tutorials by Mr.Curious).
 Other discoveries was made by Jaderlink, analysing the game mechanics.</value>
   </data>
+  <data name="labelThanksJader.Text" xml:space="preserve">
+    <value>QuadX is a fork of the RE4QuadNewAge Editor created by JADERLINK.
+Most of the heavy lifting, research, and reverse-engineering work were done by him and the RE4 modding community.
+This fork mainly focuses on improving usability, adding quality-of-life features, and modernizing the interface, while keeping the original core and logic built by jaderlink.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

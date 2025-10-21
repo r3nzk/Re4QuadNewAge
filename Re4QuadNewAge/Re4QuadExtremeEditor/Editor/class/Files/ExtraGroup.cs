@@ -708,6 +708,16 @@ namespace Re4QuadExtremeEditor.Editor.Class.Files
 
         #region RefInteractionType returns
 
+        public string GetAssociatedSpecialEventLineID(RefInteractionType objType, ushort objID)
+        {
+            RefInteractionTypeValue[] value = GetRefInteractionTypeValue(objType, objID);
+            if (value != null && value.Length >= 1)
+            {
+                return value[0].LineID.ToString();
+            }
+            return "---";
+        }
+
         public string AssociatedSpecialEventFromSpecialIndex(RefInteractionType objType, ushort objID) 
         {
             RefInteractionTypeValue[] value = GetRefInteractionTypeValue(objType, objID);

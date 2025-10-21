@@ -1340,7 +1340,6 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
             }
         }
 
-
         [CustomCategory(aLang.SpecialGeneralCategory)]
         [CustomDisplayName(aLang.Unknown_NT_Byte_DisplayName)]
         [TypeConverter(typeof(HexNumberTypeConverter))]

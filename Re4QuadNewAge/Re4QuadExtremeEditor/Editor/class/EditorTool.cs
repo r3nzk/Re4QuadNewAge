@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Re4QuadExtremeEditor.Editor.Class.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,4 +20,5 @@ namespace Re4QuadExtremeEditor.Editor
         World,
         Local
     }
+
 }

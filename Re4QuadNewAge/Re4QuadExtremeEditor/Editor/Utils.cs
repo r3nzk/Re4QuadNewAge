@@ -1,16 +1,17 @@
-﻿using System;
+﻿using NewAgeTheRender;
+using OpenTK;
+using Re4QuadExtremeEditor.Editor.Class;
+using Re4QuadExtremeEditor.Editor.Class.Enums;
+using Re4QuadExtremeEditor.Editor.Class.Shaders;
+using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
+using Re4QuadExtremeEditor.Editor.JSON;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
-using Re4QuadExtremeEditor.Editor.JSON;
-using Re4QuadExtremeEditor.Editor.Class;
-using Re4QuadExtremeEditor.Editor.Class.Enums;
-using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
-using Re4QuadExtremeEditor.Editor.Class.Shaders;
-using System.IO;
-using OpenTK;
 
 namespace Re4QuadExtremeEditor.Editor
 {
@@ -18,7 +19,87 @@ namespace Re4QuadExtremeEditor.Editor
     /// Metodos uteis para serem usados;
     /// </summary>
     public static class Utils
-    {        
+    {
+        public static List<RoomInfo> LoadRoomListJSON()
+        {
+            List<RoomInfo> roomInfoList = new List<RoomInfo>();
+
+            try{
+                string myDirectory = Path.Combine(AppContext.BaseDirectory, Consts.RoomsDirectory);
+
+                if (Directory.Exists(myDirectory)){
+                    string[] RoomsLists = Directory.GetFiles(myDirectory, "*.json");
+
+                    if (RoomsLists.Length == 0){
+                        Editor.Console.Warning($"No room list (.json) files found in {myDirectory}. The room selection will be empty.");
+                    }
+
+                    List<RoomListObj> roomListObjs = new List<RoomListObj>();
+                    foreach (var json in RoomsLists)
+                    {
+                        try
+                        {
+                            var obj = RoomListObjFile.ParseFromFile(json);
+                            if (obj != null)
+                            {
+                                roomListObjs.Add(obj);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Editor.Console.Warning($"Could not parse room list file: {Path.GetFileName(json)}. Error: {ex.Message}. Skipping file.");
+                        }
+                    }
+
+                    foreach (var item in roomListObjs)
+                    {
+                        string subDirectory = Path.Combine(AppContext.BaseDirectory, Consts.RoomsDirectory, item.Folder);
+
+                        if (Directory.Exists(subDirectory))
+                        {
+                            string[] roomModelInfo = Directory.GetFiles(subDirectory, "*.json");
+
+                            Dictionary<string, RoomModel> RoomModelDict = new Dictionary<string, RoomModel>();
+
+                            foreach (var json in roomModelInfo)
+                            {
+
+                                try
+                                {
+                                    var roomModel = RoomModelFile.ParseFromFile(json);
+                                    if (roomModel != null)
+                                    {
+                                        RoomModelDict.Add(roomModel.JsonFileName, roomModel);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Editor.Console.Warning($"Could not parse room model file: {Path.GetFileName(json)}. Error: {ex.Message}. Skipping file.");
+                                }
+
+                            }
+
+                            roomInfoList.Add(new RoomInfo(item, RoomModelDict));
+                        }
+                        else
+                        {
+                            //Editor.Console.Warning($"The directory '{subDirectory}' specified in '{item.JsonFileName}' does not exist. Skipping this room list.");
+                        }
+                    }
+                }
+                else
+                {
+                    Editor.Console.Error($"Main rooms directory not found at path: {myDirectory}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Editor.Console.Error($"A critical error occurred while loading room files: {ex.Message}");
+            }
+
+            return roomInfoList;
+        }
+
 
         /// <summary>
         /// carrega os modelos 3d dos objetos ao iniciar o programa
@@ -653,7 +734,15 @@ namespace Re4QuadExtremeEditor.Editor
             DataBase.DirectoryDic = new Dictionary<string, string>();
             DataBase.DirectoryDic.Add("", "");
             DataBase.DirectoryDic.Add("app", AppContext.BaseDirectory + "\\");
-            DataBase.DirectoryDic.Add("xfile", Globals.DirectoryXFILE);
+
+            //special treatment for xfile assignment
+            string xfilePath = Globals.DirectoryXFILE;
+            if (!string.IsNullOrEmpty(xfilePath) && Directory.Exists(xfilePath)) {
+                DataBase.DirectoryDic.Add("xfile", xfilePath);
+            } else {
+                Editor.Console.Warning("Path for 'xFile' null or invalid. 3D objects will appear as generic. Please assign a valid path in 'Settings > Game Paths'.");
+            }
+
             DataBase.DirectoryDic.Add("2007re4", Globals.Directory2007RE4);
             DataBase.DirectoryDic.Add("ps2re4", Globals.DirectoryPS2RE4);
             DataBase.DirectoryDic.Add("uhdre4", Globals.DirectoryUHDRE4);
@@ -760,6 +849,55 @@ namespace Re4QuadExtremeEditor.Editor
                 SetObjScale_ToMove = SetObjScale_ToMove_Null,
                 GetTriggerZoneCategory = GetTriggerZoneCategory_Null
             };
+        }
+
+        public static string GetCurrentRoomDirectory()
+        {
+            if (DataBase.SelectedRoom == null || DataBase.SelectedRoom.GetRoomModel() == null)
+                return null;
+
+            EditorRe4Ver gameVersion = Globals.PreferredVersion;
+            string rootGamePath = "";
+
+            switch (gameVersion)
+            {
+                case EditorRe4Ver.UHD: rootGamePath = Globals.DirectoryUHDRE4; break;
+                case EditorRe4Ver.SourceNext2007: rootGamePath = Globals.Directory2007RE4; break;
+                case EditorRe4Ver.PS2: rootGamePath = Globals.DirectoryPS2RE4; break;
+                case EditorRe4Ver.PS4NS: rootGamePath = Globals.DirectoryPS4NSRE4; break;
+                default:
+                    Editor.Console.Warning($"The selected game version '{gameVersion}' is not supported for finding room paths automatically.");
+                    return null;
+            }
+
+            if (string.IsNullOrEmpty(rootGamePath) || !Directory.Exists(rootGamePath))
+            {
+                Editor.Console.Warning($"The game path for '{gameVersion}' is not set or is invalid.");
+                return null;
+            }
+
+            //for now we only have directory assignment for UHD, since I'm not familiar with other versions (TODO)
+            string basePath = (gameVersion == EditorRe4Ver.UHD || gameVersion == EditorRe4Ver.PS4NS)
+                ? Path.Combine(rootGamePath, "BIO4")
+                : rootGamePath;
+
+            string rawFileName = Path.GetFileNameWithoutExtension(DataBase.SelectedRoom.GetRoomModel().JsonFileName);
+            string roomName = rawFileName.Split('_')[0];
+
+            for (int i = 0; i <= 7; i++)
+            {
+                string stagePath = Path.Combine(basePath, "St" + i);
+                if (!Directory.Exists(stagePath)) continue;
+
+                string potentialPath = Path.Combine(stagePath, roomName);
+                if (Directory.Exists(potentialPath))
+                {
+                    Editor.Console.Log($"Found current room directory at: {potentialPath}");
+                    return potentialPath;
+                }
+            }
+
+            return null;
         }
 
     }

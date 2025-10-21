@@ -268,7 +268,20 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
         [DynamicTypeDescriptor.Id(6, CategoryID1_AssociatedSpecialEvent)]
         public string AssociatedSpecialEventFromFile { get { return DataBase.Extras.AssociatedSpecialEventFromFile(RefInteractionType.EtcModel, PROP_ETS_ID); } }
 
-
+        [CustomCategory(aLang.EtcModel_AssociatedSpecialEventCategory)]
+        [CustomDisplayName(aLang.AssociatedSpecialEventFromFileLinkName)]
+        [Editor(typeof(FocusNodeObjectEditor), typeof(UITypeEditor))]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        [DynamicTypeDescriptor.Id(7, CategoryID1_AssociatedSpecialEvent)]
+        public string LinkToAssociatedObject
+        {
+            get
+            {
+                bool hasAssociation = !string.IsNullOrEmpty(AssociatedSpecialEventObjName) && AssociatedSpecialEventObjName != "---";
+                return hasAssociation ? "Click to select associated object -->" : "(None)";
+            }
+        }
 
         [CustomCategory(aLang.NewAge_LineArrayCategory)]
         [CustomDisplayName(aLang.NewAge_LineArrayDisplayName)]

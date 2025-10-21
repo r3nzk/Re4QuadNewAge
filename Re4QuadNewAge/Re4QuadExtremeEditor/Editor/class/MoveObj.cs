@@ -57,6 +57,45 @@ namespace Re4QuadExtremeEditor.Editor.Class
             }
         }
 
+        public static Object3D GetObjectFromKey(ObjKey key)
+        {
+            TreeNodeGroup parentNode = null;
+            switch (key.Group)
+            {
+                case GroupType.ESL: parentNode = DataBase.NodeESL; break;
+                case GroupType.ETS: parentNode = DataBase.NodeETS; break;
+                case GroupType.ITA: parentNode = DataBase.NodeITA; break;
+                case GroupType.AEV: parentNode = DataBase.NodeAEV; break;
+                case GroupType.EXTRAS: parentNode = DataBase.NodeEXTRAS; break;
+                case GroupType.DSE: parentNode = DataBase.NodeDSE; break;
+                case GroupType.FSE: parentNode = DataBase.NodeFSE; break;
+                case GroupType.SAR: parentNode = DataBase.NodeSAR; break;
+                case GroupType.EAR: parentNode = DataBase.NodeEAR; break;
+                case GroupType.ESE: parentNode = DataBase.NodeESE; break;
+                case GroupType.EMI: parentNode = DataBase.NodeEMI; break;
+                case GroupType.LIT_ENTRYS: parentNode = DataBase.NodeLIT_Entrys; break;
+                case GroupType.LIT_GROUPS: parentNode = DataBase.NodeLIT_Groups; break;
+                case GroupType.QUAD_CUSTOM: parentNode = DataBase.NodeQuadCustom; break;
+                case GroupType.EFF_EffectEntry: parentNode = DataBase.NodeEFF_EffectEntry; break;
+                case GroupType.EFF_Table0: parentNode = DataBase.NodeEFF_Table0; break;
+                case GroupType.EFF_Table1: parentNode = DataBase.NodeEFF_Table1; break;
+                case GroupType.EFF_Table2: parentNode = DataBase.NodeEFF_Table2; break;
+                case GroupType.EFF_Table3: parentNode = DataBase.NodeEFF_Table3; break;
+                case GroupType.EFF_Table4: parentNode = DataBase.NodeEFF_Table4; break;
+                case GroupType.EFF_Table6: parentNode = DataBase.NodeEFF_Table6; break;
+                case GroupType.EFF_Table7_Effect_0: parentNode = DataBase.NodeEFF_Table7_Effect_0; break;
+                case GroupType.EFF_Table8_Effect_1: parentNode = DataBase.NodeEFF_Table8_Effect_1; break;
+                case GroupType.EFF_Table9: parentNode = DataBase.NodeEFF_Table9; break;
+            }
+
+            if (parentNode != null && parentNode.Nodes.ContainsKey(key.ID.ToString()))
+            {
+                return parentNode.Nodes[key.ID.ToString()] as Object3D;
+            }
+
+            return null;
+        }
+
         public static Dictionary<ObjKey, Vector3[]> GetSavedPosition() 
         {
             Dictionary<ObjKey, Vector3[]> r = new Dictionary<ObjKey, Vector3[]>();

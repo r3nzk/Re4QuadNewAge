@@ -171,6 +171,7 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
         EtcModel_AssociatedSpecialEventFromSpecialIndexDisplayName,
         EtcModel_AssociatedSpecialEventFromSpecialIndexFromDescription,
         EtcModel_AssociatedSpecialEventFromFileDisplayName,
+        AssociatedSpecialEventFromFileLinkName,
         EtcModel_AssociatedSpecialEventFromFileDescription,
         EtcModelCategory,
 

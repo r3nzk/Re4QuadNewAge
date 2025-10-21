@@ -138,6 +138,21 @@ namespace Re4QuadExtremeEditor.Editor.Class.MyProperty
             } 
         }
 
+        [CustomCategory(aLang.Enemy_AssociatedSpecialEventCategory)]
+        [CustomDisplayName(aLang.AssociatedSpecialEventFromFileLinkName)]
+        [Editor(typeof(FocusNodeObjectEditor), typeof(UITypeEditor))]
+        [ReadOnly(true)]
+        [Browsable(true)]
+        [DynamicTypeDescriptor.Id(7, CategoryID1_AssociatedSpecialEvent)]
+        public string LinkToAssociatedObject
+        {
+            get
+            {
+                bool hasAssociation = !string.IsNullOrEmpty(AssociatedSpecialEventObjName) && AssociatedSpecialEventObjName != "---";
+                return hasAssociation ? "Click to select associated object -->" : "(None)";
+            }
+        }
+
 
         #endregion
 

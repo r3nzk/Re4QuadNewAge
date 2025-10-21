@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Re4QuadExtremeEditor.Editor.Class;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,25 +10,38 @@ namespace Re4QuadExtremeEditor.Editor
     {
         private static RichTextBox outputControl;
 
+        private static readonly List<(string message, LogLevel level)> earlyLogCache = new List<(string, LogLevel)>();
         private enum LogLevel { Info, Warning, Error }
 
         //colors
-        private static readonly Color InfoColor = ColorTranslator.FromHtml("#adadad");
-        private static readonly Color WarningColor = ColorTranslator.FromHtml("#c2b34f");
-        private static readonly Color ErrorColor = ColorTranslator.FromHtml("#c26161");
+        private static Color InfoColor;
+        private static Color WarningColor;
+        private static Color ErrorColor;
 
         public static void RegisterOutputControl(RichTextBox richTextBox)
         {
             outputControl = richTextBox;
-            outputControl.ForeColor = InfoColor;
+
+            var palette = ThemeManager.GetCurrentPalette();
+            InfoColor = palette.ConsoleInfo;
+            WarningColor = palette.ConsoleWarning;
+            ErrorColor = palette.ConsoleError;
+
             outputControl.Font = new Font("Consolas", 9.75F);
             outputControl.Clear();
+
+            if (earlyLogCache.Count > 0){
+                foreach (var log in earlyLogCache)
+                {
+                    LogInternal(log.message, log.level, isFromCache: true);
+                }
+                earlyLogCache.Clear();
+            }
         }
 
         public static void Clear(){
             if (outputControl == null)
                 return;
-
 
             outputControl.Clear();
         }
@@ -35,9 +50,11 @@ namespace Re4QuadExtremeEditor.Editor
         public static void Warning(string message) => LogInternal(message, LogLevel.Warning);
         public static void Error(string message) => LogInternal(message, LogLevel.Error);
 
-        private static void LogInternal(string message, LogLevel level){
-            if (outputControl == null)
+        private static void LogInternal(string message, LogLevel level, bool isFromCache = false) {
+            if (outputControl == null){
+                earlyLogCache.Add((message, level));
                 return;
+            }
 
             if (outputControl.InvokeRequired){
                 outputControl.Invoke(new Action(() => LogInternal(message, level)));

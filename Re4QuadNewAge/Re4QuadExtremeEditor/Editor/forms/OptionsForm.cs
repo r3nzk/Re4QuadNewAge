@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
+﻿using NewAgeTheRender;
+using Re4QuadExtremeEditor.Editor.Class;
 using Re4QuadExtremeEditor.Editor.Class.Enums;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Re4QuadExtremeEditor.Editor.Forms
 {
@@ -36,6 +35,12 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             textBoxDirectoryCustom2.Text = Globals.DirectoryCustom2;
             textBoxDirectoryCustom3.Text = Globals.DirectoryCustom3;
 
+            //tool
+            toolTextbox_udas.Text = Globals.ToolPathUDAS;
+            toolTextbox_lfs.Text = Globals.ToolPathLFS;
+            toolTextbox_pack.Text = Globals.ToolPathPACK;
+            toolTextbox_gca.Text = Globals.ToolPathGCA;
+
             //aba 2
             var EnemiesLists = GetEnemiesListJson();
             var EtcModelsLists = GetEtcModelsListJson();
@@ -62,7 +67,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             }
 
             JSON.ObjectInfoList selectedEtcModelsList = EtcModelsLists.Where(x => x.JsonFileName == Globals.FileDiretoryEtcModelsList).FirstOrDefault();
-            if(selectedEtcModelsList != null)
+            if (selectedEtcModelsList != null)
             {
                 int index = comboBoxEtcModels.Items.IndexOf(selectedEtcModelsList);
                 if (index > -1)
@@ -123,7 +128,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
                     radioButtonOutputPeriod.Checked = true;
                     groupBoxOutputFractionalSymbol.Enabled = false;
                     break;
-             case ConfigFrationalSymbol.AcceptsCommaAndPeriod_OutputPeriod:
+                case ConfigFrationalSymbol.AcceptsCommaAndPeriod_OutputPeriod:
                 default:
                     radioButtonAcceptsCommaAndPeriod.Checked = true;
                     radioButtonOutputPeriod.Checked = true;
@@ -140,11 +145,21 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             numericUpDownMultiplier.Value = (decimal)Globals.ItemRotationCalculationMultiplier;
             comboBoxItemRotationOrder.SelectedIndex = (int)Globals.ItemRotationOrder;
 
-            checkBoxUseDarkTheme.Checked = Globals.BackupConfigs.UseDarkTheme;
+            themeDropdown.SelectedIndex = (int)Globals.BackupConfigs.SelectedTheme;
             checkBoxUseInvertedMouseButtons.Checked = Globals.BackupConfigs.UseInvertedMouseButtons;
             checkBoxMaximizeEditorOnStartup.Checked = Globals.BackupConfigs.MaximizeEditorOnStartup;
-            checkboxPropertyGridHideBloatElements.Checked = Globals.BackupConfigs.PropertyGridHideBloatElements;
+           // checkBoxPropertyGridShowAllByDefault.Checked = Globals.BackupConfigs.PropertyGridShowAllByDefault;
             checkboxTreeViewHideEmptyRoot.Checked = Globals.BackupConfigs.TreeViewHideEmptyRoot;
+
+
+            //preferred version
+            PopulatePreferredRoomListDropdown();
+            preferredVersionDropdown.SelectedIndex = (int)Globals.BackupConfigs.PreferredVersion;
+
+            if (Globals.BackupConfigs.SelectedTheme != EditorTheme.Light)
+            {
+                //ThemeManager.ApplyThemeRecursive(this);
+            }
 
             EnableRadioButtons = true;
 
@@ -153,8 +168,35 @@ namespace Re4QuadExtremeEditor.Editor.Forms
                 StartUpdateTranslation();
             }
 
-            //TODO - we need to load this from the globals/options as prefered version
-            if(selectedVersionDropdown.SelectedIndex == -1) selectedVersionDropdown.SelectedIndex = 0; //set uhd as default
+        }
+
+        private void PopulatePreferredRoomListDropdown()
+        {
+            preferredRoomListDropdown.Items.Clear();
+            preferredRoomListDropdown.Items.Add("None");
+
+            var list1 = Editor.Utils.LoadRoomListJSON();
+            preferredRoomListDropdown.Items.AddRange(list1.ToArray());
+
+            if (!string.IsNullOrEmpty(Globals.PreferredRoomList))
+            {
+                var list = preferredRoomListDropdown.Items.OfType<RoomInfo>();
+                var obj = list.FirstOrDefault(x => x.RoomListObj?.JsonFileName == Globals.PreferredRoomList);
+                if (obj != null)
+                {
+                    preferredRoomListDropdown.SelectedItem = obj;
+                }
+            }
+            else
+            {
+                preferredRoomListDropdown.SelectedIndex = 0;
+            }
+        }
+
+        private List<RoomInfo> GetRoomLists()
+        {
+            List<RoomInfo> roomInfoList = new List<RoomInfo>();
+            return roomInfoList;
         }
 
         private void OptionsForm_KeyDown(object sender, KeyEventArgs e)
@@ -170,14 +212,14 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Close();
         }
 
-        private string FixDirectory(string dir) 
+        private string FixDirectory(string dir)
         {
             return dir != null && dir.Length > 0 ? (dir + (dir.Last() != '\\' ? "\\" : "")) : "";
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-          
+
             Globals.DirectoryXFILE = FixDirectory(textBoxDiretoryXFILE.Text);
             Globals.Directory2007RE4 = FixDirectory(textBoxDirectory2007RE4.Text);
             Globals.DirectoryPS2RE4 = FixDirectory(textBoxDirectoryPS2RE4.Text);
@@ -186,6 +228,11 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Globals.DirectoryCustom1 = FixDirectory(textBoxDirectoryCustom1.Text);
             Globals.DirectoryCustom2 = FixDirectory(textBoxDirectoryCustom2.Text);
             Globals.DirectoryCustom3 = FixDirectory(textBoxDirectoryCustom3.Text);
+
+            Globals.ToolPathUDAS = toolTextbox_udas.Text;
+            Globals.ToolPathLFS = toolTextbox_lfs.Text;
+            Globals.ToolPathPACK = toolTextbox_pack.Text;
+            Globals.ToolPathGCA = toolTextbox_gca.Text;
 
             Globals.FileDiretoryEnemiesList = ((JSON.ObjectInfoList)comboBoxEnemies.SelectedItem).JsonFileName;
             Globals.FileDiretoryEtcModelsList = ((JSON.ObjectInfoList)comboBoxEtcModels.SelectedItem).JsonFileName;
@@ -232,6 +279,11 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Globals.BackupConfigs.DirectoryCustom2 = Globals.DirectoryCustom2;
             Globals.BackupConfigs.DirectoryCustom3 = Globals.DirectoryCustom3;
 
+            Globals.BackupConfigs.ToolPathUDAS = Globals.ToolPathUDAS;
+            Globals.BackupConfigs.ToolPathLFS = Globals.ToolPathLFS;
+            Globals.BackupConfigs.ToolPathPACK = Globals.ToolPathPACK;
+            Globals.BackupConfigs.ToolPathGCA = Globals.ToolPathGCA;
+
             Globals.BackupConfigs.FileDiretoryEnemiesList = Globals.FileDiretoryEnemiesList;
             Globals.BackupConfigs.FileDiretoryEtcModelsList = Globals.FileDiretoryEtcModelsList;
             Globals.BackupConfigs.FileDiretoryItemsList = Globals.FileDiretoryItemsList;
@@ -247,10 +299,10 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             Globals.BackupConfigs.ItemRotationCalculationMultiplier = Globals.ItemRotationCalculationMultiplier;
             Globals.BackupConfigs.ItemRotationOrder = Globals.ItemRotationOrder;
 
-            Globals.BackupConfigs.UseDarkTheme = checkBoxUseDarkTheme.Checked;
+            Globals.BackupConfigs.SelectedTheme = (Editor.Class.EditorTheme)themeDropdown.SelectedIndex;
             Globals.BackupConfigs.UseInvertedMouseButtons = checkBoxUseInvertedMouseButtons.Checked;
             Globals.BackupConfigs.MaximizeEditorOnStartup = checkBoxMaximizeEditorOnStartup.Checked;
-            Globals.BackupConfigs.PropertyGridHideBloatElements = checkboxPropertyGridHideBloatElements.Checked;
+            Globals.BackupConfigs.PropertyGridShowAllByDefault = checkBoxPropertyGridShowAllByDefault.Checked;
             Globals.BackupConfigs.TreeViewHideEmptyRoot = checkboxTreeViewHideEmptyRoot.Checked;
 
             if (comboBoxLanguage.SelectedIndex <= 0)
@@ -265,6 +317,22 @@ namespace Re4QuadExtremeEditor.Editor.Forms
                 Globals.BackupConfigs.LangJsonFile = langSelected.LangJsonFileName;
             }
 
+            //preferred version
+            var selectedVersion = (EditorRe4Ver)preferredVersionDropdown.SelectedIndex;
+            Globals.PreferredVersion = selectedVersion;
+            Globals.BackupConfigs.PreferredVersion = selectedVersion;
+
+            string selectedRoomList = "";
+            if (preferredRoomListDropdown.SelectedIndex > 0)
+            {
+                var selectedList = (RoomInfo)preferredRoomListDropdown.SelectedItem;
+                selectedRoomList = selectedList.RoomListObj.JsonFileName;
+            }
+            Globals.PreferredRoomList = selectedRoomList;
+            Globals.BackupConfigs.PreferredRoomList = selectedRoomList;
+
+
+            //finish config loading
             JSON.ConfigsFile.writeConfigsFile(Consts.ConfigsFileDirectory, Globals.BackupConfigs);
 
             tabControlConfigs.Enabled = false;
@@ -277,7 +345,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             if (ForceReload)
             {
                 MessageBox.Show(Lang.GetText(eLang.OptionsFormWarningLoadModelsMessageBoxDialog), Lang.GetText(eLang.OptionsFormWarningLoadModelsMessageBoxTitle));
-     
+
                 Utils.ReloadJsonFiles();
                 Utils.ReloadModels();
             }
@@ -455,7 +523,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             }
         }
 
-        private JSON.LangObjForList[] GetLangList() 
+        private JSON.LangObjForList[] GetLangList()
         {
             List<JSON.LangObjForList> list = new List<JSON.LangObjForList>();
 
@@ -486,7 +554,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             return list.ToArray();
         }
 
-        private JSON.ObjectInfoList[] GetEnemiesListJson() 
+        private JSON.ObjectInfoList[] GetEnemiesListJson()
         {
             List<JSON.ObjectInfoList> lists = new List<JSON.ObjectInfoList>();
 
@@ -519,7 +587,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             {
                 lists.Add(_default);
             }
-    
+
             return lists.ToArray();
         }
 
@@ -635,7 +703,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
         }
 
 
-        private void StartUpdateTranslation() 
+        private void StartUpdateTranslation()
         {
             this.Text = Lang.GetText(eLang.OptionsForm);
             buttonCancel.Text = Lang.GetText(eLang.Options_buttonCancel);
@@ -663,7 +731,7 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             radioButtonOnlyAcceptPeriod.Text = Lang.GetText(eLang.radioButtonOnlyAcceptPeriod);
             radioButtonOutputComma.Text = Lang.GetText(eLang.radioButtonOutputComma);
             radioButtonOutputPeriod.Text = Lang.GetText(eLang.radioButtonOutputPeriod);
-            tabPageSetup.Text = Lang.GetText(eLang.tabPageDiretory);
+            tabPageDirectories.Text = Lang.GetText(eLang.tabPageDiretory);
             tabPageAdvanced.Text = Lang.GetText(eLang.tabPageOthers);
             tabPageLists.Text = Lang.GetText(eLang.tabPageLists);
             groupBoxLists.Text = Lang.GetText(eLang.groupBoxLists);
@@ -672,14 +740,14 @@ namespace Re4QuadExtremeEditor.Editor.Forms
             labelItems.Text = Lang.GetText(eLang.labelItems);
             labelQuadCustom.Text = Lang.GetText(eLang.labelQuadCustom);
             labelThemeWarning.Text = Lang.GetText(eLang.labelThemeWarning);
-            checkBoxUseDarkTheme.Text = Lang.GetText(eLang.checkBoxUseDarkTheme);
+
             groupBoxInvertedMouseButtons.Text = Lang.GetText(eLang.groupBoxInvertedMouseButtons);
             labelInvertedMouseButtonsWarning.Text = Lang.GetText(eLang.labelInvertedMouseButtonsWarning);
             checkBoxUseInvertedMouseButtons.Text = Lang.GetText(eLang.checkBoxUseInvertedMouseButtons);
             checkBoxMaximizeEditorOnStartup.Text = Lang.GetText(eLang.checkBoxMaximizeEditorOnStartup);
 
 
-            labelDirectoryXFILE.Text = "XFILE " + Lang.GetText(eLang.labelOptionsDirectory);
+            //labelDirectoryXFILE.Text = "XFILE " + Lang.GetText(eLang.labelOptionsDirectory);
             labelDirectory2007RE4.Text = "RE4 2007 " + Lang.GetText(eLang.labelOptionsDirectory);
             labelDirectoryPS2RE4.Text = "RE4 PS2 " + Lang.GetText(eLang.labelOptionsDirectory);
             labelDirectoryUHDRE4.Text = "RE4 UHD " + Lang.GetText(eLang.labelOptionsDirectory);
@@ -692,6 +760,79 @@ namespace Re4QuadExtremeEditor.Editor.Forms
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void groupBoxColors_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void toolButton_udas_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
+                openFileDialog.Title = "Select UDAS Tool";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.CheckPathExists = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    toolTextbox_udas.Text = openFileDialog.FileName;
+                }
+            }
+        }
+        private void toolButton_lfs_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
+                openFileDialog.Title = "Select LFS Tool";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.CheckPathExists = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    toolTextbox_lfs.Text = openFileDialog.FileName;
+                }
+            }
+        }
+
+        private void toolButton_pack_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
+                openFileDialog.Title = "Select PACK Tool";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.CheckPathExists = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    toolTextbox_pack.Text = openFileDialog.FileName;
+                }
+            }
+        }
+
+        private void toolButton_gca_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
+                openFileDialog.Title = "Select GCA Tool";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.CheckPathExists = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    toolTextbox_gca.Text = openFileDialog.FileName;
+                }
+            }
         }
     }
 }

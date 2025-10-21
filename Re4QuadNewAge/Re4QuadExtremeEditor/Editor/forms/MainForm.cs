@@ -1,4 +1,6 @@
-﻿using NsCamera;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NsCamera;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Re4QuadExtremeEditor.Editor;
@@ -12,8 +14,9 @@ using Re4QuadExtremeEditor.Editor.Class.ObjMethods;
 using Re4QuadExtremeEditor.Editor.Class.Shaders;
 using Re4QuadExtremeEditor.Editor.Class.TreeNodeObj;
 using Re4QuadExtremeEditor.Editor.Controls;
+using Re4QuadExtremeEditor.Editor.forms;
 using Re4QuadExtremeEditor.Editor.Forms;
-using Re4QuadExtremeEditor.Editor.Forms.Custom;
+using ReaLTaiizor.Controls;
 using SimpleEndianBinaryIO;
 using System;
 using System.Collections.Generic;
@@ -23,25 +26,33 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls.WebParts;
 using System.Windows.Forms;
+using ViewerBase;
+using static OpenTK.Graphics.OpenGL.GL;
 
 
 namespace Re4QuadExtremeEditor
 {
     public partial class MainForm : Form
     {
-        GLControl glControl;
+        public static MainForm instance { get; private set; }
+
         readonly System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
 
-        //gizmo
-        public EditorTool CurrentTool { get; private set; } = EditorTool.Move;
-        public GizmoSpace CurrentGizmoSpace { get; private set; } = GizmoSpace.World;
+        GLControl glControl;
+        Gizmo gizmo;
+        ObjectControl objectControl;
+        CameraControl cameraControl;
 
-        Gizmo moveGizmo;
+        //legacy gl controls
         CameraMoveControl cameraMove;
         ObjectMoveControl objectMove;
 
@@ -65,14 +76,13 @@ namespace Re4QuadExtremeEditor
         bool isShiftDown = false, isControlDown = false, isQDown = false, isEDown = false;
         bool isMouseDown = false, isMouseMove = false;
         bool isWDown = false, isSDown = false, isADown = false, isDDown = false;
-        //movimentação camera no glControl
-        MouseButtons MouseButtonsLeft = MouseButtons.Left; //botão para movimentação camera
-        MouseButtons MouseButtonsRight = MouseButtons.Right; // botão para selecionar objeto
-        //gizmo raycast
+        //gizmo fields
         private bool isDraggingGizmo = false;
-        private GizmoAxis draggedAxis = GizmoAxis.None;
-        private Vector3 dragPlaneNormal;
-        private Vector3 lastDragPoint;
+        private Gizmo.GizmoAxis draggedGizmoAxis = Gizmo.GizmoAxis.None;
+        private Point lastMousePosition;
+        //movimentação camera no glControl
+        MouseButtons MouseButtonsRight = MouseButtons.Right; //botão para movimentação camera
+        MouseButtons MouseButtonsLeft = MouseButtons.Left; // botão para selecionar objeto
         //dictionaries to store initial state of objects when a drag starts
         private Dictionary<int, Vector3> initialDragPositions = new Dictionary<int, Vector3>();
         private Dictionary<int, Vector3> initialDragRotations = new Dictionary<int, Vector3>();
@@ -84,10 +94,19 @@ namespace Re4QuadExtremeEditor
         // define se esta com o PropertyGrid selecionado;
         bool InPropertyGrid = false;
 
+        //filtering suite
+        private object propertyGridOriginalObj;
+        private readonly Dictionary<TreeNode, (TreeNode Parent, int Index)> _hiddenNodes = new Dictionary<TreeNode, (TreeNode, int)>();
+
+        //project
+        private string currentProjectPath = null;
+
         UpdateMethods updateMethods;
 
         public MainForm()
         {
+            instance = this;
+
             InitializeComponent();
             propertyGridObjs.SelectedItemWithFocusBackColor = Color.FromArgb(0x70, 0xBB, 0xDB);
             propertyGridObjs.SelectedItemWithFocusForeColor = Color.Black;
@@ -95,7 +114,7 @@ namespace Re4QuadExtremeEditor
             treeViewObjs.Font = Globals.TreeNodeFontText;
 
 
-            propertyGridObjs.SelectedObject = none;
+            SetObjectToPropertyGrid(none);
             DataBase.SelectedNodes = treeViewObjs.SelectedNodes;
 
             //viewport actions setup
@@ -121,23 +140,30 @@ namespace Re4QuadExtremeEditor
 
             //setup session
             buildTreeView();
+            UpdateTreeViewNodes();
             currentRoomLabelToggle(false);
 
-            //setup old controls
-            cameraMove = new CameraMoveControl(ref camera, UpdateGL, UpdateCameraMatrix);
-            cameraMove.Location = new Point(glControls_old.Width - cameraMove.Width, 0);
-            cameraMove.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-            cameraMove.Name = "cameraMove";
-            cameraMove.TabIndex = 998;
-            cameraMove.TabStop = false;
-            objectMove = new ObjectMoveControl(ref camera, UpdateGL, UpdateCameraMatrix, UpdatePropertyGrid, UpdateTreeViewObjs);
+            // new controls
+            objectControl = new ObjectControl(ref camera, UpdateGL, UpdateCameraMatrix, UpdatePropertyGrid, UpdateTreeViewObjs);
+            cameraControl = new CameraControl(ref camera, UpdateGL, UpdateProjectionMatrix);
+
+            // setup old controls
+            objectMove = new ObjectMoveControl(objectControl);
             objectMove.Location = new Point(0, 0);
             objectMove.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             objectMove.Name = "objectMove";
             objectMove.TabIndex = 995;
             objectMove.TabStop = false;
-            glControls_old.Controls.Add(cameraMove);
             glControls_old.Controls.Add(objectMove);
+
+            cameraMove = new CameraMoveControl(cameraControl, objectControl); //assigning object controll too to keep legacy controls exactly as they were
+            cameraMove.Location = new Point(objectMove.Right, objectMove.Top);
+            cameraMove.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            cameraMove.Name = "cameraMove";
+            cameraMove.TabIndex = 998;
+            cameraMove.TabStop = false;
+            glControls_old.Controls.Add(cameraMove);
+
 
             //setup console
             Editor.Console.RegisterOutputControl(this.consoleBox);
@@ -162,39 +188,80 @@ namespace Re4QuadExtremeEditor
             updateMethods.UpdateMoveObjSelection = objectMove.UpdateSelection;
             updateMethods.UpdateOrbitCamera = UpdateOrbitCamera;
 
-            //remove toolstrip weird white line
-            toolStrip1.Renderer = new ToolStripProfessionalRenderer(new CustomDarkColorTable());
-            viewportToolstrip.Renderer = new ToolStripProfessionalRenderer(new CustomDarkColorTable());
+            Globals.updateMethods = updateMethods;
 
             //add searchbars placeholders
             SetPlaceholder(treeView_searchField, "Filter: name, t:type, g:group");
             SetPlaceholder(propertyGrid_searchField, "Filter: b:byte, o:offset, name");
 
-            if (Globals.BackupConfigs.UseDarkTheme)
-            {
-                DarkTheme();
-            }
+            //assign re4 preferred ver into toolstrip dropdown text
+            PopulatePreferredVerDropdown();
+
+            GenerateViewportUtility();
+
+            //property grid sorting
+            propertyGridButton_Categorized.Checked = true; // categorized always default
+            propertyGridButton_ShowAll.Checked = Globals.PropertyGridShowAllByDefault;
+            UpdatePropertyGridDisplay();
+
+            ApplyTheme();
+
+            //project setup
+            UpdateFormTitle();
+
             if (Globals.BackupConfigs.UseInvertedMouseButtons)
             {
-                MouseButtonsLeft = MouseButtons.Right;
                 MouseButtonsRight = MouseButtons.Left;
+                MouseButtonsLeft = MouseButtons.Right;
             }
 
+
+
             Editor.Console.Log("Finished setup, you are running RE4QuadX ver 1.0");
+        }
+
+        private void UpdateFormTitle()
+        {
+            //project based title form
+            /*if (string.IsNullOrEmpty(currentProjectPath))
+            {
+                this.Text = "New Project - QuadX";
+            }else
+            {
+                this.Text = Path.GetFileName(currentProjectPath) + " - QuadX";
+            }*/
+
+
+            if (DataBase.SelectedRoom != null)
+            {
+                var roomId = DataBase.SelectedRoom.GetRoomId().ToString("X4");
+                roomId = roomId.Substring(1);
+                this.Text = $"r{roomId} - RE4QuadX";
+            }
+            else
+            {
+                this.Text = "RE4QuadX";
+            }
+        }
+
+        public void SelectNode(TreeNode nodeToSelect)
+        {
+            treeViewObjs.ToSelectSingleNode(nodeToSelect);
+            UpdateGL();
         }
 
         private void ResetEditorState()
         {
             DialogResult result = MessageBox.Show(
-                "Are you sure you want to create a new QuadX environment? All unsaved progress will be lost.",
-                "Create New Environment?",
+                "Are you sure you want to create a new QuadX Project? All unsaved progress will be lost.",
+                "Create New Project?",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             );
 
             // If the user confirms (clicks Yes), proceed with the reset.
             if (result == DialogResult.Yes)
-            {   
+            {
                 // clear current room
                 if (DataBase.SelectedRoom != null)
                 {
@@ -208,21 +275,10 @@ namespace Re4QuadExtremeEditor
                 TreeViewUpdateSelectedsClear();
                 UpdateTreeViewObjs();
                 UpdatePropertyGrid();
+                UpdateTreeViewNodes();
 
                 //clear all files loaded
-                FileManager.ClearESL();
-                FileManager.ClearETS();
-                FileManager.ClearITA();
-                FileManager.ClearAEV();
-                FileManager.ClearDSE();
-                FileManager.ClearFSE();
-                FileManager.ClearSAR();
-                FileManager.ClearEAR();
-                FileManager.ClearEMI();
-                FileManager.ClearESE();
-                FileManager.ClearLIT();
-                FileManager.ClearEFFBLOB();
-                FileManager.ClearQuadCustom();
+                clearAllObjects();
 
                 UpdateGL();
 
@@ -231,6 +287,23 @@ namespace Re4QuadExtremeEditor
                 Editor.Console.Clear();
                 Editor.Console.Log("New QuadX Environment created.");
             }
+        }
+
+        private void clearAllObjects()
+        {
+            FileManager.ClearESL();
+            FileManager.ClearETS();
+            FileManager.ClearITA();
+            FileManager.ClearAEV();
+            FileManager.ClearDSE();
+            FileManager.ClearFSE();
+            FileManager.ClearSAR();
+            FileManager.ClearEAR();
+            FileManager.ClearEMI();
+            FileManager.ClearESE();
+            FileManager.ClearLIT();
+            FileManager.ClearEFFBLOB();
+            FileManager.ClearQuadCustom();
         }
 
         private void buildTreeView()
@@ -262,47 +335,68 @@ namespace Re4QuadExtremeEditor
 
         public void UpdateTreeViewNodes()
         {
-            // Temporarily store all root nodes in a list.
-            List<TreeNode> allRootNodes = new List<TreeNode>();
-            foreach (TreeNode node in treeViewObjs.Nodes)
+            List<TreeNode> allRootNodes = new List<TreeNode>
             {
-                allRootNodes.Add(node);
-            }
+                DataBase.NodeESL,
+                DataBase.NodeETS,
+                DataBase.NodeITA,
+                DataBase.NodeAEV,
+                DataBase.NodeEXTRAS,
+                DataBase.NodeDSE,
+                DataBase.NodeFSE,
+                DataBase.NodeEAR,
+                DataBase.NodeSAR,
+                DataBase.NodeEMI,
+                DataBase.NodeESE,
+                DataBase.NodeQuadCustom,
+                DataBase.NodeLIT_Groups,
+                DataBase.NodeLIT_Entrys,
+                DataBase.NodeEFF_Table0,
+                DataBase.NodeEFF_Table1,
+                DataBase.NodeEFF_Table2,
+                DataBase.NodeEFF_Table3,
+                DataBase.NodeEFF_Table4,
+                DataBase.NodeEFF_Table6,
+                DataBase.NodeEFF_Table7_Effect_0,
+                DataBase.NodeEFF_Table8_Effect_1,
+                DataBase.NodeEFF_Table9
+            };
 
-            treeViewObjs.BeginUpdate(); // Prevents flickering
+            treeViewObjs.BeginUpdate();
             treeViewObjs.Nodes.Clear();
 
-            foreach (TreeNode rootNode in allRootNodes)
-            {
-                // If hiding empty nodes is disabled, OR if the node has children, add it back.
+            foreach (TreeNode rootNode in allRootNodes){
+                if (rootNode == null) continue;
+
                 if (!Globals.TreeViewHideEmptyRoot || rootNode.Nodes.Count > 0)
                 {
                     treeViewObjs.Nodes.Add(rootNode);
                 }
             }
 
-            treeViewObjs.EndUpdate(); // Re-enables drawing
+            treeViewObjs.EndUpdate();
         }
 
         private void currentRoomLabelToggle(bool state = true, string newText = "")
         {
             currentRoomLabel.Visible = state;
             currentRoomLabel.Text = newText;
+            UpdateFormTitle();
         }
 
         #region GlControl Events
 
-        private Matrix4 ReturnNewProjMatrix() 
+        private Matrix4 ReturnNewProjMatrix()
         {
             return Matrix4.CreatePerspectiveFieldOfView(Globals.FOV * ((float)Math.PI / 180.0f), (float)glControl.Width / (float)glControl.Height, 0.01f, 1_000_000f);
         }
 
         private void GlControl_Resize(object sender, EventArgs e)
-        {            
+        {
             glControl.Context.Update(glControl.WindowInfo);
             GL.Viewport(0, 0, glControl.Width, glControl.Height);
             ProjMatrix = ReturnNewProjMatrix();
-            glControl.Invalidate(); 
+            glControl.Invalidate();
         }
 
         private void splitContainerMain_SplitterMoving(object sender, SplitterCancelEventArgs e)
@@ -319,7 +413,15 @@ namespace Re4QuadExtremeEditor
 
         private void GlControl_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtonsLeft)
+            if (e.Button == MouseButtonsLeft && isDraggingGizmo)
+            {
+                isDraggingGizmo = false;
+                isMouseDown = false;
+                isMouseMove = false;
+                objectControl.EndMove();
+            }
+
+            if (e.Button == MouseButtonsRight)
             {
                 camera.resetMouseStuff();
                 isMouseDown = false;
@@ -330,18 +432,19 @@ namespace Re4QuadExtremeEditor
                 CenterCursorInViewport();
 
                 camera.SaveCameraPosition();
-                if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isQDown && !isEDown)
-                {
-                    myTimer.Enabled = false;
-                }
-            }    
+            }
+
+            if (!isWDown && !isSDown && !isADown && !isDDown && !isMouseMove && !isShiftDown && !isQDown && !isEDown)
+            {
+                myTimer.Enabled = false;
+            }
         }
 
         private void GlControl_MouseDown(object sender, MouseEventArgs e)
         {
-            glControl.Focus(); //this ensures that this control handles all subsequent mouse and keyboard events.
+            glControl.Focus();
 
-            if (e.Button == MouseButtonsLeft)
+            if (e.Button == MouseButtonsRight)
             {
                 camera.resetMouseStuff();
                 camera.SaveCameraPosition();
@@ -351,14 +454,19 @@ namespace Re4QuadExtremeEditor
                 isMouseMove = true;
                 myTimer.Enabled = true;
 
-                //cursor behaviour
+                //cursor
                 Cursor.Hide();
                 CenterCursorInViewport();
             }
-
-            if (e.Button == MouseButtonsRight)
+            else if (e.Button == MouseButtonsLeft)
             {
                 selectObject(e.X, e.Y);
+
+                if (isDraggingGizmo) {
+                    isMouseDown = true;
+                    isMouseMove = true;
+                    myTimer.Enabled = true;
+                }
                 glControl.Invalidate();
             }
         }
@@ -376,11 +484,23 @@ namespace Re4QuadExtremeEditor
         /// </summary>
         private void selectObject(int mx, int my)
         {
-            NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), moveGizmo, camera, CurrentTool, CurrentGizmoSpace, true); // renderiza o ambiente GL no modo seleção.
+            NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), gizmo, camera, Globals.CurrentTool, Globals.CurrentGizmoSpace, true); // renderiza o ambiente GL no modo seleção.
 
             int h = glControl.Height;
             byte[] pixel = new byte[4];
             GL.ReadPixels(mx, h - my, 1, 1, PixelFormat.Rgba, PixelType.UnsignedByte, pixel);
+
+            //Editor.Console.Log($"Pixel read: R={pixel[0]}, G={pixel[1]}, B={pixel[2]}"); //debug selected object read
+
+            if (pixel[0] == 255 && DataBase.SelectedNodes.Count > 0)
+            {
+                isDraggingGizmo = true;
+                draggedGizmoAxis = (Gizmo.GizmoAxis)(pixel[1]); //g channel (1, 2, or 3) determines the axis.
+                lastMousePosition = new Point(mx, my);
+
+                objectControl.StartMove(MoveControlType.Square, lastMousePosition, MouseButtons.Left);
+                return;
+            }
 
             //Console.WriteLine("pixel[0]: " + pixel[0]); // lineID
             //Console.WriteLine("pixel[1]: " + pixel[1]); // lineID
@@ -398,115 +518,67 @@ namespace Re4QuadExtremeEditor
                 {
                     case (byte)GroupType.ESL:
                         int index1 = DataBase.NodeESL.Nodes.IndexOfKey(LineID.ToString());
-                        if (index1 > -1)
-                        {
-                            selected = DataBase.NodeESL.Nodes[index1];
-                        }
+                        if (index1 > -1) { selected = DataBase.NodeESL.Nodes[index1]; }
                         break;
                     case (byte)GroupType.ETS:
                         int index2 = DataBase.NodeETS.Nodes.IndexOfKey(LineID.ToString());
-                        if (index2 > -1)
-                        {
-                            selected = DataBase.NodeETS.Nodes[index2];
-                        }
+                        if (index2 > -1) { selected = DataBase.NodeETS.Nodes[index2]; }
                         break;
                     case (byte)GroupType.ITA:
                         int index3 = DataBase.NodeITA.Nodes.IndexOfKey(LineID.ToString());
-                        if (index3 > -1)
-                        {
-                            selected = DataBase.NodeITA.Nodes[index3];
-                        }
+                        if (index3 > -1) { selected = DataBase.NodeITA.Nodes[index3]; }
                         break;
                     case (byte)GroupType.AEV:
                         int index4 = DataBase.NodeAEV.Nodes.IndexOfKey(LineID.ToString());
-                        if (index4 > -1)
-                        {
-                            selected = DataBase.NodeAEV.Nodes[index4];
-                        }
+                        if (index4 > -1) { selected = DataBase.NodeAEV.Nodes[index4]; }
                         break;
                     case (byte)GroupType.EXTRAS:
                         int index5 = DataBase.NodeEXTRAS.Nodes.IndexOfKey(LineID.ToString());
-                        if (index5 > -1)
-                        {
-                            selected = DataBase.NodeEXTRAS.Nodes[index5];
-                        }
+                        if (index5 > -1) { selected = DataBase.NodeEXTRAS.Nodes[index5]; }
                         break;
                     case (byte)GroupType.EAR:
                         int index6 = DataBase.NodeEAR.Nodes.IndexOfKey(LineID.ToString());
-                        if (index6 > -1)
-                        {
-                            selected = DataBase.NodeEAR.Nodes[index6];
-                        }
+                        if (index6 > -1) { selected = DataBase.NodeEAR.Nodes[index6]; }
                         break;
                     case (byte)GroupType.SAR:
                         int index7 = DataBase.NodeSAR.Nodes.IndexOfKey(LineID.ToString());
-                        if (index7 > -1)
-                        {
-                            selected = DataBase.NodeSAR.Nodes[index7];
-                        }
+                        if (index7 > -1) { selected = DataBase.NodeSAR.Nodes[index7]; }
                         break;
                     case (byte)GroupType.EMI:
                         int index8 = DataBase.NodeEMI.Nodes.IndexOfKey(LineID.ToString());
-                        if (index8 > -1)
-                        {
-                            selected = DataBase.NodeEMI.Nodes[index8];
-                        }
+                        if (index8 > -1) { selected = DataBase.NodeEMI.Nodes[index8]; }
                         break;
                     case (byte)GroupType.ESE:
                         int index9 = DataBase.NodeESE.Nodes.IndexOfKey(LineID.ToString());
-                        if (index9 > -1)
-                        {
-                            selected = DataBase.NodeESE.Nodes[index9];
-                        }
+                        if (index9 > -1) { selected = DataBase.NodeESE.Nodes[index9]; }
                         break;
                     case (byte)GroupType.FSE:
                         int index10 = DataBase.NodeFSE.Nodes.IndexOfKey(LineID.ToString());
-                        if (index10 > -1)
-                        {
-                            selected = DataBase.NodeFSE.Nodes[index10];
-                        }
+                        if (index10 > -1) { selected = DataBase.NodeFSE.Nodes[index10]; }
                         break;
                     case (byte)GroupType.QUAD_CUSTOM:
                         int index11 = DataBase.NodeQuadCustom.Nodes.IndexOfKey(LineID.ToString());
-                        if (index11 > -1)
-                        {
-                            selected = DataBase.NodeQuadCustom.Nodes[index11];
-                        }
+                        if (index11 > -1) { selected = DataBase.NodeQuadCustom.Nodes[index11]; }
                         break;
                     case (byte)GroupType.LIT_ENTRYS:
                         int index12 = DataBase.NodeLIT_Entrys.Nodes.IndexOfKey(LineID.ToString());
-                        if (index12 > -1)
-                        {
-                            selected = DataBase.NodeLIT_Entrys.Nodes[index12];
-                        }
+                        if (index12 > -1) { selected = DataBase.NodeLIT_Entrys.Nodes[index12]; }
                         break;
                     case (byte)GroupType.EFF_EffectEntry:
                         int index13 = DataBase.NodeEFF_EffectEntry.Nodes.IndexOfKey(LineID.ToString());
-                        if (index13 > -1)
-                        {
-                            selected = DataBase.NodeEFF_EffectEntry.Nodes[index13];
-                        }
+                        if (index13 > -1) { selected = DataBase.NodeEFF_EffectEntry.Nodes[index13]; }
                         break;
                     case (byte)GroupType.EFF_Table7_Effect_0:
                         int index14 = DataBase.NodeEFF_Table7_Effect_0.Nodes.IndexOfKey(LineID.ToString());
-                        if (index14 > -1)
-                        {
-                            selected = DataBase.NodeEFF_Table7_Effect_0.Nodes[index14];
-                        }
+                        if (index14 > -1) { selected = DataBase.NodeEFF_Table7_Effect_0.Nodes[index14]; }
                         break;
                     case (byte)GroupType.EFF_Table8_Effect_1:
                         int index15 = DataBase.NodeEFF_Table8_Effect_1.Nodes.IndexOfKey(LineID.ToString());
-                        if (index15 > -1)
-                        {
-                            selected = DataBase.NodeEFF_Table8_Effect_1.Nodes[index15];
-                        }
+                        if (index15 > -1) { selected = DataBase.NodeEFF_Table8_Effect_1.Nodes[index15]; }
                         break;
                     case (byte)GroupType.EFF_Table9:
                         int index16 = DataBase.NodeEFF_Table9.Nodes.IndexOfKey(LineID.ToString());
-                        if (index16 > -1)
-                        {
-                            selected = DataBase.NodeEFF_Table9.Nodes[index16];
-                        }
+                        if (index16 > -1) { selected = DataBase.NodeEFF_Table9.Nodes[index16]; }
                         break;
                 }
 
@@ -525,10 +597,110 @@ namespace Re4QuadExtremeEditor
             }
         }
 
+        private void MoveGizmo(MouseEventArgs e)
+        {
+            if (DataBase.SelectedNodes.Count == 0) return;
+
+            //calculate drag
+            Point currentMousePosition = e.Location;
+            Vector2 mouseDelta = new Vector2(currentMousePosition.X - lastMousePosition.X, currentMousePosition.Y - lastMousePosition.Y);
+            lastMousePosition = currentMousePosition;
+
+            if (mouseDelta.LengthSquared < 0.001f) return; //invalid drag factor
+
+            //get gizmospace
+            Matrix4 objectRotation = Matrix4.Identity;
+            if (Globals.CurrentGizmoSpace == GizmoSpace.Local && DataBase.LastSelectNode is Object3D obj){
+                objectRotation = obj.GetRotationMatrix();
+            }
+
+            var gizmoPos = gizmo.Position;
+
+            //1D drag (translate and rotate)
+            if (draggedGizmoAxis == Gizmo.GizmoAxis.X || draggedGizmoAxis == Gizmo.GizmoAxis.Y || draggedGizmoAxis == Gizmo.GizmoAxis.Z){
+                Vector3 axisVector = Vector3.Zero;
+                switch (draggedGizmoAxis)
+                {
+                    case Gizmo.GizmoAxis.X: axisVector = Vector3.UnitX; break;
+                    case Gizmo.GizmoAxis.Y: axisVector = Vector3.UnitY; break;
+                    case Gizmo.GizmoAxis.Z: axisVector = Vector3.UnitZ; break;
+                }
+
+                axisVector = Vector3.TransformVector(axisVector, objectRotation);
+
+                var gizmoPos_screen_nullable = Camera.Project(gizmoPos, ProjMatrix, camMtx, glControl.ClientRectangle);
+                var axisEnd_screen_nullable = Camera.Project(gizmoPos + axisVector, ProjMatrix, camMtx, glControl.ClientRectangle);
+
+                if (!gizmoPos_screen_nullable.HasValue || !axisEnd_screen_nullable.HasValue) return;
+
+                var gizmoPos_screen = gizmoPos_screen_nullable.Value;
+                var axisEnd_screen = axisEnd_screen_nullable.Value;
+
+                Vector2 axisOnScreen = (axisEnd_screen.Xy - gizmoPos_screen.Xy);
+                if (axisOnScreen.LengthSquared < 0.001f) return;
+                axisOnScreen.Normalize();
+
+                float movementMagnitude = Vector2.Dot(mouseDelta, axisOnScreen);
+                float distance = (camera.Position - gizmoPos).Length;
+                float scaleFactor = distance * 0.002f;
+                movementMagnitude *= scaleFactor;
+
+                if (Globals.CurrentTool == EditorTool.Move)
+                {
+                    Vector3 translation = axisVector * movementMagnitude;
+                    objectControl.ApplyGizmoTranslation(translation);
+                }
+                else if (Globals.CurrentTool == EditorTool.Rotate)
+                {
+                    float angleDeg = movementMagnitude * 2f;
+                    objectControl.ApplyGizmoRotation(angleDeg, draggedGizmoAxis);
+                }
+            }
+            //2D drag (translate only)
+            else if (Globals.CurrentTool == EditorTool.Move && (draggedGizmoAxis == Gizmo.GizmoAxis.XY || draggedGizmoAxis == Gizmo.GizmoAxis.YZ || draggedGizmoAxis == Gizmo.GizmoAxis.XZ)){
+                Vector3 axis1 = Vector3.Zero, axis2 = Vector3.Zero;
+                switch (draggedGizmoAxis)
+                {
+                    case Gizmo.GizmoAxis.XY: axis1 = Vector3.UnitX; axis2 = Vector3.UnitY; break;
+                    case Gizmo.GizmoAxis.YZ: axis1 = Vector3.UnitY; axis2 = Vector3.UnitZ; break;
+                    case Gizmo.GizmoAxis.XZ: axis1 = Vector3.UnitX; axis2 = Vector3.UnitZ; break;
+                }
+
+                axis1 = Vector3.TransformVector(axis1, objectRotation);
+                axis2 = Vector3.TransformVector(axis2, objectRotation);
+
+                var gizmoPos_screen_nullable = Camera.Project(gizmoPos, ProjMatrix, camMtx, glControl.ClientRectangle);
+                var axis1_end_screen_nullable = Camera.Project(gizmoPos + axis1, ProjMatrix, camMtx, glControl.ClientRectangle);
+                var axis2_end_screen_nullable = Camera.Project(gizmoPos + axis2, ProjMatrix, camMtx, glControl.ClientRectangle);
+
+                if (!gizmoPos_screen_nullable.HasValue || !axis1_end_screen_nullable.HasValue || !axis2_end_screen_nullable.HasValue) return;
+
+                var gizmoPos_screen = gizmoPos_screen_nullable.Value.Xy;
+                Vector2 axis1_screen = (axis1_end_screen_nullable.Value.Xy - gizmoPos_screen);
+                Vector2 axis2_screen = (axis2_end_screen_nullable.Value.Xy - gizmoPos_screen);
+
+                if (axis1_screen.LengthSquared < 0.001f || axis2_screen.LengthSquared < 0.001f) return;
+
+                axis1_screen.Normalize(); axis2_screen.Normalize();
+
+                float move1 = Vector2.Dot(mouseDelta, axis1_screen);
+                float move2 = Vector2.Dot(mouseDelta, axis2_screen);
+
+                float distance = (camera.Position - gizmoPos).Length;
+                float scaleFactor = distance * 0.002f;
+                move1 *= scaleFactor;
+                move2 *= scaleFactor;
+
+                Vector3 translation = (axis1 * move1) + (axis2 * move2);
+                objectControl.ApplyGizmoTranslation(translation);
+            }
+        }
+
         private void GlControl_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isMouseDown && e.Button == MouseButtonsLeft)
-            {
+            if (isDraggingGizmo) {
+                MoveGizmo(e);
+            } else if (isMouseDown && e.Button == MouseButtonsRight) {
                 camera.updateCameraOffsetMatrixWithMouse(isControlDown, e.X, e.Y);
                 camMtx = camera.GetViewMatrix();
             }
@@ -611,6 +783,15 @@ namespace Re4QuadExtremeEditor
                 case Keys.E:
                     isEDown = true;
                     myTimer.Enabled = true;
+                    break;
+                case Keys.F:
+                    if (camera.CamMode == Camera.CameraMode.ORBIT) break;
+
+                    cameraControl.SetCameraMode(1); //switch to orbit
+                    camera.ResetOrbitToSelectedObject();
+                    camMtx = camera.GetViewMatrix();
+                    cameraControl.SetCameraMode(0); //switch back to fly
+                    glControl.Invalidate();
                     break;
             }
             if (isShiftDown)
@@ -712,7 +893,7 @@ namespace Re4QuadExtremeEditor
                 DataShader.StartLoad();
                 Utils.StartLoadObjsModels();
 
-                moveGizmo = new Gizmo();
+                gizmo = new Gizmo();
 
                 glControl.SwapBuffers();
 
@@ -722,21 +903,21 @@ namespace Re4QuadExtremeEditor
 
                 //force maximize
                 if (Globals.BackupConfigs.MaximizeEditorOnStartup)
-                this.WindowState = FormWindowState.Maximized;
+                    this.WindowState = FormWindowState.Maximized;
             }
 
         }
-      
+
 
         private void GlControl_Paint(object sender, PaintEventArgs e)
         {
             if (RenderSelectViewer)
             {
-                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), moveGizmo, camera, CurrentTool, CurrentGizmoSpace, true); // este é da seleção
+                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), gizmo, camera, Globals.CurrentTool, Globals.CurrentGizmoSpace, true); // este é da seleção
             }
             else
             {
-                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), moveGizmo, camera, CurrentTool, CurrentGizmoSpace); // rederiza todos os objetos do GL;
+                NewAgeTheRender.TheRender.AllRender(ref camMtx, ref ProjMatrix, camera.Position, camera.SelectedObjPosY(), gizmo, camera, Globals.CurrentTool, Globals.CurrentGizmoSpace); // rederiza todos os objetos do GL;
             }
             glControl.SwapBuffers();
         }
@@ -771,6 +952,7 @@ namespace Re4QuadExtremeEditor
         {
             UpdateTreeViewObjs();
             UpdatePropertyGrid();
+            UpdateTreeViewNodes();
             UpdateGL();
         }
 
@@ -824,6 +1006,7 @@ namespace Re4QuadExtremeEditor
                     }
                 }
                 TreeViewUpdateSelectedsClear();
+                UpdateTreeViewNodes();
                 glControl.Invalidate();
             }
         }
@@ -862,7 +1045,7 @@ namespace Re4QuadExtremeEditor
                     {
                         var Parent = item.Parent;
                         item.Remove();
-                        Parent.Nodes.Insert(index -1, item);
+                        Parent.Nodes.Insert(index - 1, item);
 
                         if (Parent is Editor.Class.Interfaces.IChangeAmountIndexFix nodeIndexFix)
                         {
@@ -905,10 +1088,10 @@ namespace Re4QuadExtremeEditor
                 {
                     int index = item.Index;
                     var Parent = item.Parent;
-                    if (index < Parent.GetNodeCount(false) -1)
+                    if (index < Parent.GetNodeCount(false) - 1)
                     {
                         item.Remove();
-                        Parent.Nodes.Insert(index +1, item);
+                        Parent.Nodes.Insert(index + 1, item);
 
                         if (Parent is Editor.Class.Interfaces.IChangeAmountIndexFix nodeIndexFix)
                         {
@@ -978,7 +1161,7 @@ namespace Re4QuadExtremeEditor
                 string text = Lang.GetText(eLang.SelectedRoom) + ": " + sender.ToString();
                 if (text.Length > 100)
                 {
-                    text = text.Substring(0,100);
+                    text = text.Substring(0, 100);
                     text += "...";
                 }
                 currentRoomLabelToggle(true, text);
@@ -1001,12 +1184,20 @@ namespace Re4QuadExtremeEditor
             }
         }
 
-        private void toolStripMenuItemSelectRoom_Click(object sender, EventArgs e)
+        private void SelectRoomWindow()
         {
             SelectRoomForm selectRoom = new SelectRoomForm();
+
+            if (Editor.Forms.SelectRoomForm.isFirstTimeLoading) Editor.Console.Log($"Loading JSON room lists for the first time...");
+
             selectRoom.onLoadButtonClick += SelectRoom_onLoadButtonClick;
             selectRoom.ShowDialog();
             glControl.Invalidate();
+        }
+
+        private void toolStripMenuItemSelectRoom_Click(object sender, EventArgs e)
+        {
+            SelectRoomWindow();
         }
 
         private void toolStripMenuItemClose_Click(object sender, EventArgs e)
@@ -1025,6 +1216,7 @@ namespace Re4QuadExtremeEditor
             OptionsForm form = new OptionsForm();
             form.OnOKButtonClick += OptionsForm_OnOKButtonClick;
             form.OnOKButtonClick += UpdateTreeViewObjs;
+            form.OnOKButtonClick += UpdateTreeViewNodes;
             form.OnOKButtonClick += UpdatePropertyGrid;
             form.ShowDialog();
             glControl.Invalidate();
@@ -1302,7 +1494,7 @@ namespace Re4QuadExtremeEditor
             {
                 treeViewObjs.Font = Globals.TreeNodeFontHex;
             }
-            else 
+            else
             {
                 treeViewObjs.Font = Globals.TreeNodeFontText;
             }
@@ -1451,11 +1643,11 @@ namespace Re4QuadExtremeEditor
         private void toolStripMenuItemRoomTextureNearestLinear_Click(object sender, EventArgs e)
         {
             NewAgeTheRender.RoomSelectedObj.LoadTextureLinear = !NewAgeTheRender.RoomSelectedObj.LoadTextureLinear;
-            
+
             toolStripMenuItemRoomTextureNearestLinear.Text =
                 NewAgeTheRender.RoomSelectedObj.LoadTextureLinear ?
                 Lang.GetText(eLang.toolStripMenuItemRoomTextureIsLinear) :
-                Lang.GetText(eLang.toolStripMenuItemRoomTextureIsNearest) ;
+                Lang.GetText(eLang.toolStripMenuItemRoomTextureIsNearest);
 
             DataBase.SelectedRoom?.ChangeTextureType();
 
@@ -1636,28 +1828,37 @@ namespace Re4QuadExtremeEditor
             return null;
         }
 
-        private void UpdateGL() 
+        private void UpdateGL()
         {
             glControl.Invalidate();
         }
 
-        private void UpdateCameraMatrix() 
+        private void UpdateCameraMatrix()
         {
             camMtx = camera.GetViewMatrix();
         }
 
-        private void UpdatePropertyGrid() 
+        private void UpdatePropertyGrid()
         {
             propertyGridObjs.Refresh();
             glControl.Update(); // Needed after calling propertyGridObjs.Refresh();
         }
+
+        public void UpdateProjectionMatrix()
+        {
+            if (glControl == null && glControl.IsHandleCreated) return;
+
+            ProjMatrix = ReturnNewProjMatrix();
+            glControl.Invalidate();
+        }
+
 
         private void UpdateTreeViewObjs()
         {
             treeViewObjs.Refresh();
         }
 
-        private void UpdateOrbitCamera() 
+        private void UpdateOrbitCamera()
         {
             if (camera.isOrbitCamera())
             {
@@ -1666,45 +1867,18 @@ namespace Re4QuadExtremeEditor
             }
         }
 
-        private void propertyGridObjs_Enter(object sender, EventArgs e)
-        {
-            InPropertyGrid = true;
-        }
 
-        private void propertyGridObjs_Leave(object sender, EventArgs e)
-        {
-            InPropertyGrid = false;
-        }
-
-        private void propertyGridObjs_PropertySortChanged(object sender, EventArgs e)
-        {
-            if (propertyGridObjs.PropertySort == PropertySort.CategorizedAlphabetical)
-               {propertyGridObjs.PropertySort = PropertySort.Categorized;}
-
-        }
-
-
-        private void propertyGridObjs_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            propertyGridObjs.Refresh();
-            treeViewObjs.Refresh();
-        }
-
-        private void propertyGridObjs_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
-        {
-        }
-
-
-        private void TreeViewUpdateSelectedsClear()
+        public void TreeViewUpdateSelectedsClear()
         {
             treeViewObjs.SelectedNodesClearNoRedraw();
-            propertyGridObjs.SelectedObject = none;
+            SetObjectToPropertyGrid(none);
+            UpdateAllMoveControls();
             objectMove.UpdateSelection();
             treeViewObjs.Refresh();
             propertyGridObjs.Refresh();
         }
 
-        private void TreeViewDisableDrawNode()
+        public void TreeViewDisableDrawNode()
         {
             treeViewObjs.Enabled = false;
             //treeViewObjs.Visible = false;
@@ -1712,13 +1886,90 @@ namespace Re4QuadExtremeEditor
             //propertyGridObjs.Visible = false;
         }
 
-        private void TreeViewEnableDrawNode()
+        public void TreeViewEnableDrawNode()
         {
             treeViewObjs.EnableDrawNode();
             //treeViewObjs.Visible = true;
             treeViewObjs.Enabled = true;
             //propertyGridObjs.Visible = true;
         }
+
+        private void SetObjectToPropertyGrid(object obj)
+        {
+            propertyGridOriginalObj = obj;
+            UpdatePropertyGridDisplay();
+        }
+
+        #region propertygrid filter
+
+        private void propertyGrid_searchField_TextChanged(object sender, EventArgs e)
+        {
+            UpdatePropertyGridDisplay();
+        }
+
+        #endregion
+
+        #region treeview filter (this is not working well for child items, mostly for root - TODO)
+
+        private void treeView_searchField_TextChanged(object sender, EventArgs e)
+        {
+            if (treeViewObjs.SelectedNode != null)
+            {
+                treeViewObjs.SelectedNode = null;
+            }
+
+            treeViewObjs.BeginUpdate();
+            ShowAllNodes();
+
+            string filter = treeView_searchField.Text;
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                FilterNodesRecursive(treeViewObjs.Nodes, filter.ToLowerInvariant());
+            }
+
+            treeViewObjs.EndUpdate();
+        }
+
+        private void FilterNodesRecursive(TreeNodeCollection collection, string filter)
+        {
+            for (int i = collection.Count - 1; i >= 0; i--)
+            {
+                var node = collection[i];
+                FilterNodesRecursive(node.Nodes, filter);
+                bool selfMatches = node.Text.ToLowerInvariant().Contains(filter);
+                bool hasVisibleChildren = node.Nodes.Count > 0;
+
+                if (!selfMatches && !hasVisibleChildren)
+                {
+                    _hiddenNodes[node] = (node.Parent, node.Index);
+                    collection.RemoveAt(i);
+                }
+            }
+        }
+
+        private void ShowAllNodes() {
+            if (_hiddenNodes.Count == 0)
+            {
+                return;
+            }
+            foreach (var entry in _hiddenNodes.OrderBy(kvp => kvp.Value.Index))
+            {
+                var nodeToRestore = entry.Key;
+                var parent = entry.Value.Parent;
+                var index = entry.Value.Index;
+
+                if (parent == null)
+                {
+                    treeViewObjs.Nodes.Insert(index, nodeToRestore);
+                }
+                else
+                {
+                    parent.Nodes.Insert(index, nodeToRestore);
+                }
+            }
+            _hiddenNodes.Clear();
+        }
+        #endregion
 
         private void treeViewObjs_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -1727,151 +1978,13 @@ namespace Re4QuadExtremeEditor
             //Console.WriteLine(treeViewObjs.SelectedNodes.Count);
             if (e.Node == null || e.Node.Parent == null || treeViewObjs.SelectedNodes.Count == 0)
             {
-                propertyGridObjs.SelectedObject = none;
+                SetObjectToPropertyGrid(none);
                 DataBase.LastSelectNode = null;
             }
             else if (treeViewObjs.SelectedNodes.Count == 1 && e.Node is Object3D node)
             {
                 DataBase.LastSelectNode = node;
-
-                if (node.Group == GroupType.ESL)
-                {
-                    EnemyProperty p = new EnemyProperty(node.ObjLineRef, updateMethods, ((EnemyNodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.ETS)
-                {
-                    EtcModelProperty p = new EtcModelProperty(node.ObjLineRef, updateMethods, ((EtcModelNodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.ITA)
-                {
-                    SpecialProperty p = new SpecialProperty(node.ObjLineRef, updateMethods, ((SpecialNodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.AEV)
-                {
-                    SpecialProperty p = new SpecialProperty(node.ObjLineRef, updateMethods, ((SpecialNodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EXTRAS)
-                {
-                    var r = DataBase.Extras.AssociationList[node.ObjLineRef];
-                    if (r.FileFormat == SpecialFileFormat.AEV)
-                    {
-                        SpecialProperty p = new SpecialProperty(r.LineID, updateMethods, DataBase.NodeAEV.PropertyMethods, true);
-                        propertyGridObjs.SelectedObject = p;
-                    }
-                    else if (r.FileFormat == SpecialFileFormat.ITA)
-                    {
-                        SpecialProperty p = new SpecialProperty(r.LineID, updateMethods, DataBase.NodeITA.PropertyMethods, true);
-                        propertyGridObjs.SelectedObject = p;
-                    }
-                    else
-                    {
-                        propertyGridObjs.SelectedObject = none;
-                    }
-                }
-                else if (node.Group == GroupType.DSE)
-                {
-                    NewAge_DSE_Property p = new NewAge_DSE_Property(node.ObjLineRef, updateMethods, ((NewAge_DSE_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.FSE)
-                {
-                    NewAge_FSE_Property p = new NewAge_FSE_Property(node.ObjLineRef, updateMethods, ((NewAge_FSE_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.SAR)
-                {
-                    NewAge_ESAR_Property p = new NewAge_ESAR_Property(node.ObjLineRef, updateMethods, ((NewAge_ESAR_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EAR)
-                {
-                    NewAge_ESAR_Property p = new NewAge_ESAR_Property(node.ObjLineRef, updateMethods, ((NewAge_ESAR_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.ESE)
-                {
-                    NewAge_ESE_Property p = new NewAge_ESE_Property(node.ObjLineRef, updateMethods, ((NewAge_ESE_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EMI)
-                {
-                    NewAge_EMI_Property p = new NewAge_EMI_Property(node.ObjLineRef, updateMethods, ((NewAge_EMI_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.LIT_ENTRYS)
-                {
-                    NewAge_LIT_Entry_Property p = new NewAge_LIT_Entry_Property(node.ObjLineRef, updateMethods, ((NewAge_LIT_Entrys_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.LIT_GROUPS)
-                {
-                    NewAge_LIT_Group_Property p = new NewAge_LIT_Group_Property(node.ObjLineRef, updateMethods, ((NewAge_LIT_Groups_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.QUAD_CUSTOM)
-                {
-                    QuadCustomProperty p = new QuadCustomProperty(node.ObjLineRef, updateMethods, ((QuadCustomNodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_EffectEntry) 
-                {
-                    EFF_TableEffectEntry_Property p = new EFF_TableEffectEntry_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_EffectEntry_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table0)
-                {
-                    EFF_Table0_Property p = new EFF_Table0_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table1)
-                {
-                    EFF_Table1_Property p = new EFF_Table1_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table2)
-                {
-                    EFF_Table2_Property p = new EFF_Table2_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table3)
-                {
-                    EFF_Table3_Property p = new EFF_Table3_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table4)
-                {
-                    EFF_Table4_Property p = new EFF_Table4_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table6)
-                {
-                    EFF_Table6_Property p = new EFF_Table6_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table7_Effect_0)
-                {
-                    EFF_TableEffectGroup_Property p = new EFF_TableEffectGroup_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_EffectGroup_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table8_Effect_1)
-                {
-                    EFF_TableEffectGroup_Property p = new EFF_TableEffectGroup_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_EffectGroup_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else if (node.Group == GroupType.EFF_Table9)
-                {
-                    EFF_Table9_Property p = new EFF_Table9_Property(node.ObjLineRef, updateMethods, ((NewAge_EFF_Table9Entry_NodeGroup)node.Parent).PropertyMethods);
-                    propertyGridObjs.SelectedObject = p;
-                }
-                else
-                {
-                    propertyGridObjs.SelectedObject = none;
-                    DataBase.LastSelectNode = null;
-                }
+                SetObjectToPropertyGrid(node.Property);
             }
             else if (treeViewObjs.SelectedNodes.Count > 1)
             {
@@ -1881,16 +1994,16 @@ namespace Re4QuadExtremeEditor
                 int count = p.LoadContent(treeViewObjs.SelectedNodes.Values.ToList());
                 if (count != 0)
                 {
-                    propertyGridObjs.SelectedObject = p;
+                    SetObjectToPropertyGrid(p);
                 }
-                else 
+                else
                 {
-                    propertyGridObjs.SelectedObject = none;
-                }  
+                    SetObjectToPropertyGrid(none);
+                }
             }
-            else 
+            else
             {
-                propertyGridObjs.SelectedObject = none;
+                SetObjectToPropertyGrid(none);
                 DataBase.LastSelectNode = null;
             }
             if (camera.isOrbitCamera())
@@ -1902,7 +2015,8 @@ namespace Re4QuadExtremeEditor
                 camera.UpdateCameraOrbitOnChangeObj();
                 camMtx = camera.GetViewMatrix();
             }
-            objectMove.UpdateSelection();
+            objectMove.UpdateSelection(); //legacy objectmove
+            UpdateAllMoveControls();
             glControl.Invalidate();
         }
 
@@ -2123,11 +2237,81 @@ namespace Re4QuadExtremeEditor
 
         #endregion
 
-        #region Gerenciamento de arquivos //open
+        #region OPEN
 
         private bool OpenIsUHD = false;
         private bool OpenIsPs4Ns_Adapted = false;
         private IsRe4Version OpenIsRe4Version = IsRe4Version.NULL;
+
+        private void OpenFile(CancelEventArgs e, OpenFileDialog dialog, Func<FileInfo, FileStream, bool> loadAction, Action clearAction, string filePathGlobal, bool isCamFile = false)
+        {
+            FileInfo fileInfo = null;
+            FileStream fileStream = null;
+            try
+            {
+                fileInfo = new FileInfo(dialog.FileName);
+
+                if (fileInfo.Length == 0)
+                {
+                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
+                    e.Cancel = true;
+                    return;
+                }
+
+                //specific size validation (16MB for most, 4 bytes for DSE/LIT)
+                if (fileInfo.Length > 0x1000000)
+                {
+                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
+                    e.Cancel = true;
+                    return;
+                }
+
+                //minimum size validation (16 bytes for majority, 4 for DSE/LIT)
+                int minSize = 16;
+                if (filePathGlobal.EndsWith(".DSE", StringComparison.OrdinalIgnoreCase) ||
+                    filePathGlobal.EndsWith(".LIT", StringComparison.OrdinalIgnoreCase))
+                {
+                    minSize = 4;
+                }
+
+                if (!isCamFile && fileInfo.Length < minSize)
+                {
+                    if (minSize == 4) MessageBox.Show(Lang.GetText(eLang.MessageBoxFile4Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
+                    else MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
+                    e.Cancel = true;
+                    return;
+                }
+
+                fileStream = fileInfo.OpenRead();
+
+                TreeViewUpdateSelectedsClear();
+                TreeViewDisableDrawNode();
+
+                if (loadAction(fileInfo, fileStream))
+                {
+                    // Atualiza o Globals.FilePath no método de chamada (FileOk)
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                clearAction();
+                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
+                e.Cancel = true;
+            }
+            finally
+            {
+                fileStream?.Close();
+                glControl.Invalidate();
+                TreeViewEnableDrawNode();
+                UpdateTreeViewNodes();
+                dialog.FileName = null;
+            }
+        }
+
         private void toolStripMenuItemOpenESL_Click(object sender, EventArgs e)
         {
             openFileDialogESL.ShowDialog();
@@ -2265,1170 +2449,189 @@ namespace Re4QuadExtremeEditor
             openFileDialogCAM.ShowDialog();
         }
 
-        private void openFileDialogESL_FileOk(object sender, CancelEventArgs e)
-        {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogESL.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            FileManager.LoadFileESL(file, fileInfo);
-                            Globals.FilePathESL = openFileDialogESL.FileName;
-                            openFileDialogESL.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearESL();
-                            Globals.FilePathESL = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
- 
-                }
-            }
-
-        }
         private void openFileDialogETS_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogETS.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
+            OpenFile(e, openFileDialogETS, (fileInfo, fileStream) => {
+                if (OpenIsUHD)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileETS_UHD(fileStream, fileInfo);
                 }
                 else
                 {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            if (OpenIsUHD)
-                            {
-                                FileManager.LoadFileETS_UHD(file, fileInfo);
-                            }
-                            else
-                            {
-                                FileManager.LoadFileETS_2007_PS2(file, fileInfo);
-                            }
-                            Globals.FilePathETS = openFileDialogETS.FileName;
-                            openFileDialogETS.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearETS();
-                            Globals.FilePathETS = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
+                    FileManager.LoadFileETS_2007_PS2(fileStream, fileInfo);
                 }
-            }
+                Globals.FilePathETS = openFileDialogETS.FileName;
+                return true;
+            }, FileManager.ClearETS, openFileDialogETS.FileName);
         }
+
         private void openFileDialogITA_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogITA.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
+            OpenFile(e, openFileDialogITA, (fileInfo, fileStream) => {
+                if (OpenIsPs4Ns_Adapted)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileITA_PS4_NS(fileStream, fileInfo);
                 }
-                else if (fileInfo.Length == 0)
+                else if (OpenIsUHD)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileITA_UHD(fileStream, fileInfo);
                 }
                 else
                 {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-
-                        try
-                        {
-                            if (OpenIsPs4Ns_Adapted)
-                            {
-                                FileManager.LoadFileITA_PS4_NS(file, fileInfo);
-                            }
-                            else if (OpenIsUHD)
-                            {
-                                FileManager.LoadFileITA_UHD(file, fileInfo);
-                            }
-                            else
-                            {
-                                FileManager.LoadFileITA_2007_PS2(file, fileInfo);
-                            }
-                            Globals.FilePathITA = openFileDialogITA.FileName;
-                            openFileDialogITA.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearITA();
-                            Globals.FilePathITA = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                       
-                    }
+                    FileManager.LoadFileITA_2007_PS2(fileStream, fileInfo);
                 }
-            }
+                Globals.FilePathITA = openFileDialogITA.FileName;
+                return true;
+            }, FileManager.ClearITA, openFileDialogITA.FileName);
         }
+
         private void openFileDialogAEV_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogAEV.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
+            OpenFile(e, openFileDialogAEV, (fileInfo, fileStream) => {
+                if (OpenIsPs4Ns_Adapted)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileAEV_PS4_NS(fileStream, fileInfo);
                 }
-                else if (fileInfo.Length == 0)
+                else if (OpenIsUHD)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileAEV_UHD(fileStream, fileInfo);
                 }
                 else
                 {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            if (OpenIsPs4Ns_Adapted)
-                            {
-                                FileManager.LoadFileAEV_PS4_NS(file, fileInfo);
-                            }
-                            else if (OpenIsUHD)
-                            {
-                                FileManager.LoadFileAEV_UHD(file, fileInfo);
-                            }
-                            else
-                            {
-                                FileManager.LoadFileAEV_2007_PS2(file, fileInfo);
-                            }
-                            Globals.FilePathAEV = openFileDialogAEV.FileName;
-                            openFileDialogAEV.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearAEV();
-                            Globals.FilePathAEV = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-
-                    }
+                    FileManager.LoadFileAEV_2007_PS2(fileStream, fileInfo);
                 }
-            }
+                Globals.FilePathAEV = openFileDialogAEV.FileName;
+                return true;
+            }, FileManager.ClearAEV, openFileDialogAEV.FileName);
         }
+
         private void openFileDialogDSE_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogDSE.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 4)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile4Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            FileManager.LoadFileDSE(file, fileInfo);
-                            Globals.FilePathDSE = openFileDialogDSE.FileName;
-                            openFileDialogDSE.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearDSE();
-                            Globals.FilePathDSE = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogDSE, (fileInfo, fileStream) => {
+                FileManager.LoadFileDSE(fileStream, fileInfo);
+                Globals.FilePathDSE = openFileDialogDSE.FileName;
+                return true;
+            }, FileManager.ClearDSE, openFileDialogDSE.FileName);
         }
+
         private void openFileDialogFSE_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogFSE.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-
-                        try
-                        {
-                            FileManager.LoadFileFSE(file, fileInfo);
-                            Globals.FilePathFSE = openFileDialogFSE.FileName;
-                            openFileDialogFSE.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearFSE();
-                            Globals.FilePathFSE = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogFSE, (fileInfo, fileStream) => {
+                FileManager.LoadFileFSE(fileStream, fileInfo);
+                Globals.FilePathFSE = openFileDialogFSE.FileName;
+                return true;
+            }, FileManager.ClearFSE, openFileDialogFSE.FileName);
         }
+
         private void openFileDialogSAR_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogSAR.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-
-                        try
-                        {
-                            FileManager.LoadFileSAR(file, fileInfo);
-                            Globals.FilePathSAR = openFileDialogSAR.FileName;
-                            openFileDialogSAR.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearSAR();
-                            Globals.FilePathSAR = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally 
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                       
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogSAR, (fileInfo, fileStream) => {
+                FileManager.LoadFileSAR(fileStream, fileInfo);
+                Globals.FilePathSAR = openFileDialogSAR.FileName;
+                return true;
+            }, FileManager.ClearSAR, openFileDialogSAR.FileName);
         }
+
         private void openFileDialogEAR_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogEAR.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-
-                        try
-                        {
-                            FileManager.LoadFileEAR(file, fileInfo);
-                            Globals.FilePathEAR = openFileDialogEAR.FileName;
-                            openFileDialogEAR.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearEAR();
-                            Globals.FilePathEAR = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogEAR, (fileInfo, fileStream) => {
+                FileManager.LoadFileEAR(fileStream, fileInfo);
+                Globals.FilePathEAR = openFileDialogEAR.FileName;
+                return true;
+            }, FileManager.ClearEAR, openFileDialogEAR.FileName);
         }
+
         private void openFileDialogEMI_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogEMI.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
+            OpenFile(e, openFileDialogEMI, (fileInfo, fileStream) => {
+                if (OpenIsUHD)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 4)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile4Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileEMI_UHD(fileStream, fileInfo);
                 }
                 else
                 {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            if (OpenIsUHD)
-                            {
-                                FileManager.LoadFileEMI_UHD(file, fileInfo);
-                            }
-                            else
-                            {
-                                FileManager.LoadFileEMI_2007_PS2(file, fileInfo);
-                            }
-                            Globals.FilePathEMI = openFileDialogEMI.FileName;
-                            openFileDialogEMI.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearEMI();
-                            Globals.FilePathEMI = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally 
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
+                    FileManager.LoadFileEMI_2007_PS2(fileStream, fileInfo);
                 }
-            }
+                Globals.FilePathEMI = openFileDialogEMI.FileName;
+                return true;
+            }, FileManager.ClearEMI, openFileDialogEMI.FileName);
         }
+
         private void openFileDialogESE_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogESE.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
+            OpenFile(e, openFileDialogESE, (fileInfo, fileStream) => {
+                if (OpenIsUHD)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileESE_UHD(fileStream, fileInfo);
                 }
                 else
                 {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-
-                        try
-                        {
-                            if (OpenIsUHD)
-                            {
-                                FileManager.LoadFileESE_UHD(file, fileInfo);
-                            }
-                            else
-                            {
-                                FileManager.LoadFileESE_2007_PS2(file, fileInfo);
-                            }
-                            Globals.FilePathESE = openFileDialogESE.FileName;
-                            openFileDialogESE.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearESE();
-                            Globals.FilePathESE = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally 
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                      
-                   
-                    }
+                    FileManager.LoadFileESE_2007_PS2(fileStream, fileInfo);
                 }
-            }
+                Globals.FilePathESE = openFileDialogESE.FileName;
+                return true;
+            }, FileManager.ClearESE, openFileDialogESE.FileName);
         }
+
         private void openFileDialogQuadCustom_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogQuadCustom.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                   
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-
-                        try
-                        {
-                            FileManager.LoadFileQuadCustom(file, fileInfo);
-                            Globals.FilePathQuadCustom = openFileDialogQuadCustom.FileName;
-                            openFileDialogQuadCustom.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearQuadCustom();
-                            Globals.FilePathQuadCustom = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally 
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
-
-                }
-            }
+            OpenFile(e, openFileDialogQuadCustom, (fileInfo, fileStream) => {
+                FileManager.LoadFileQuadCustom(fileStream, fileInfo);
+                Globals.FilePathQuadCustom = openFileDialogQuadCustom.FileName;
+                return true;
+            }, FileManager.ClearQuadCustom, openFileDialogQuadCustom.FileName);
         }
+
         private void openFileDialogLIT_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogLIT.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
+            OpenFile(e, openFileDialogLIT, (fileInfo, fileStream) => {
+                if (OpenIsUHD)
                 {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 4)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile4Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
+                    FileManager.LoadFileLIT_UHD(fileStream, fileInfo);
                 }
                 else
                 {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            if (OpenIsUHD)
-                            {
-                                FileManager.LoadFileLIT_UHD(file, fileInfo);
-                            }
-                            else
-                            {
-                                FileManager.LoadFileLIT_2007_PS2(file, fileInfo);
-                            }
-                            Globals.FilePathLIT = openFileDialogLIT.FileName;
-                            openFileDialogLIT.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearLIT();
-                            Globals.FilePathLIT = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally 
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-               
-                    }
+                    FileManager.LoadFileLIT_2007_PS2(fileStream, fileInfo);
                 }
-            }
+                Globals.FilePathLIT = openFileDialogLIT.FileName;
+                return true;
+            }, FileManager.ClearLIT, openFileDialogLIT.FileName);
         }
+
         private void openFileDialogEFFBLOB_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogEFFBLOB.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            FileManager.LoadFileEFFBLOB(file, Endianness.LittleEndian);
-                            Globals.FilePathEFFBLOB = openFileDialogEFFBLOB.FileName;
-                            openFileDialogEFFBLOB.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearEFFBLOB();
-                            Globals.FilePathEFFBLOB = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogEFFBLOB, (fileInfo, fileStream) => {
+                FileManager.LoadFileEFFBLOB(fileStream, Endianness.LittleEndian);
+                Globals.FilePathEFFBLOB = openFileDialogEFFBLOB.FileName;
+                return true;
+            }, FileManager.ClearEFFBLOB, openFileDialogEFFBLOB.FileName);
         }
+
         private void openFileDialogEFFBLOBBIG_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogEFFBLOBBIG.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            FileManager.LoadFileEFFBLOB(file, Endianness.BigEndian);
-                            Globals.FilePathEFFBLOB = openFileDialogEFFBLOBBIG.FileName;
-                            openFileDialogEFFBLOBBIG.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearEFFBLOB();
-                            Globals.FilePathEFFBLOB = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogEFFBLOBBIG, (fileInfo, fileStream) => {
+                FileManager.LoadFileEFFBLOB(fileStream, Endianness.BigEndian);
+                Globals.FilePathEFFBLOB = openFileDialogEFFBLOBBIG.FileName;
+                return true;
+            }, FileManager.ClearEFFBLOB, openFileDialogEFFBLOBBIG.FileName);
         }
+
         private void openFileDialogCAM_FileOk(object sender, CancelEventArgs e)
         {
-            FileInfo fileInfo;
-            try
-            {
-                fileInfo = new FileInfo(openFileDialogCAM.FileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                e.Cancel = true;
-                return;
-            }
-            if (fileInfo != null)
-            {
-                if (fileInfo.Length > 0x1000000)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length == 0)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile0MB), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else if (fileInfo.Length < 16)
-                {
-                    MessageBox.Show(Lang.GetText(eLang.MessageBoxFile16Bytes), Lang.GetText(eLang.MessageBoxWarningTitle), MessageBoxButtons.OK);
-                    e.Cancel = true;
-                    return;
-                }
-                else
-                {
-                    FileStream file;
-                    try
-                    {
-                        file = fileInfo.OpenRead();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                        e.Cancel = true;
-                        return;
-                    }
-                    if (file != null && fileInfo != null)
-                    {
-                        TreeViewUpdateSelectedsClear();
-                        TreeViewDisableDrawNode();
-                        try
-                        {
-                            FileManager.LoadFileCAM(file, OpenIsRe4Version);
-                            Globals.FilePathCAM = openFileDialogCAM.FileName;
-                            openFileDialogCAM.FileName = null;
-                        }
-                        catch (Exception ex)
-                        {
-                            FileManager.ClearCAM();
-                            Globals.FilePathCAM = null;
-                            MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                            e.Cancel = true;
-                            return;
-                        }
-                        finally
-                        {
-                            file.Close();
-                            glControl.Invalidate();
-                            TreeViewEnableDrawNode();
-                        }
-                    }
-                }
-            }
+            OpenFile(e, openFileDialogCAM, (fileInfo, fileStream) => {
+                FileManager.LoadFileCAM(fileStream, OpenIsRe4Version);
+                Globals.FilePathCAM = openFileDialogCAM.FileName;
+                return true;
+            }, FileManager.ClearCAM, openFileDialogCAM.FileName, true); //true for isCam
+        }
+
+        private void openFileDialogESL_FileOk(object sender, CancelEventArgs e)
+        {
+            OpenFile(e, openFileDialogESL, (fileInfo, fileStream) => {
+                FileManager.LoadFileESL(fileStream, fileInfo);
+                Globals.FilePathESL = openFileDialogESL.FileName;
+                return true;
+            }, FileManager.ClearESL, openFileDialogESL.FileName);
         }
 
         #endregion
@@ -3456,6 +2659,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearESL();
             Globals.FilePathESL = null;
             glControl.Invalidate();
@@ -3466,6 +2670,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearETS();
             Globals.FilePathETS = null;
             glControl.Invalidate();
@@ -3476,6 +2681,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearITA();
             Globals.FilePathITA = null;
             glControl.Invalidate();
@@ -3486,6 +2692,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearAEV();
             Globals.FilePathAEV = null;
             glControl.Invalidate();
@@ -3496,6 +2703,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearDSE();
             Globals.FilePathDSE = null;
             glControl.Invalidate();
@@ -3506,6 +2714,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearFSE();
             Globals.FilePathFSE = null;
             glControl.Invalidate();
@@ -3516,6 +2725,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearSAR();
             Globals.FilePathSAR = null;
             glControl.Invalidate();
@@ -3526,6 +2736,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearEAR();
             Globals.FilePathEAR = null;
             glControl.Invalidate();
@@ -3536,6 +2747,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearEMI();
             Globals.FilePathEMI = null;
             glControl.Invalidate();
@@ -3546,6 +2758,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearESE();
             Globals.FilePathESE = null;
             glControl.Invalidate();
@@ -3556,6 +2769,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearQuadCustom();
             Globals.FilePathQuadCustom = null;
             glControl.Invalidate();
@@ -3566,6 +2780,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearLIT();
             Globals.FilePathLIT = null;
             glControl.Invalidate();
@@ -3576,6 +2791,7 @@ namespace Re4QuadExtremeEditor
         {
             TreeViewUpdateSelectedsClear();
             TreeViewDisableDrawNode();
+            UpdateTreeViewNodes();
             FileManager.ClearEFFBLOB();
             Globals.FilePathEFFBLOB = null;
             glControl.Invalidate();
@@ -3610,7 +2826,7 @@ namespace Re4QuadExtremeEditor
             {
                 toolStripMenuItemSaveAsETS.Text = Lang.GetText(eLang.toolStripMenuItemSaveAsETS_UHD);
             }
-            else 
+            else
             {
                 toolStripMenuItemSaveAsETS.Text = Lang.GetText(eLang.toolStripMenuItemSaveAsETS);
             }
@@ -3782,7 +2998,7 @@ namespace Re4QuadExtremeEditor
                 saveFileDialogEFFBLOB.FileName = Globals.FilePathEFFBLOB;
                 saveFileDialogEFFBLOB.ShowDialog();
             }
-            else 
+            else
             {
                 saveFileDialogEFFBLOBBIG.FileName = Globals.FilePathEFFBLOB;
                 saveFileDialogEFFBLOBBIG.ShowDialog();
@@ -3816,7 +3032,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathESL = saveFileDialogESL.FileName;
@@ -3852,7 +3068,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathETS = saveFileDialogETS.FileName;
@@ -3888,7 +3104,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathITA = saveFileDialogITA.FileName;
@@ -3924,7 +3140,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathAEV = saveFileDialogAEV.FileName;
@@ -3960,7 +3176,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathDSE = saveFileDialogDSE.FileName;
@@ -3996,7 +3212,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathFSE = saveFileDialogFSE.FileName;
@@ -4033,7 +3249,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathSAR = saveFileDialogSAR.FileName;
@@ -4070,7 +3286,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathEAR = saveFileDialogEAR.FileName;
@@ -4106,7 +3322,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathEMI = saveFileDialogEMI.FileName;
@@ -4142,7 +3358,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathESE = saveFileDialogESE.FileName;
@@ -4178,7 +3394,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathQuadCustom = saveFileDialogQuadCustom.FileName;
@@ -4214,7 +3430,7 @@ namespace Re4QuadExtremeEditor
                     MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
                     return;
                 }
-                finally 
+                finally
                 {
                     stream.Close();
                     Globals.FilePathLIT = saveFileDialogLIT.FileName;
@@ -4223,7 +3439,7 @@ namespace Re4QuadExtremeEditor
             }
         }
 
-    
+
 
         private void saveFileDialogEFFBLOB_FileOk(object sender, CancelEventArgs e)
         {
@@ -4424,473 +3640,156 @@ namespace Re4QuadExtremeEditor
 
         }
 
-        private void toolStripMenuItemSaveESL_Click(object sender, EventArgs e)
+        #region EXPORT
+        private void ExportFile(Func<object> getFileAction, ref string filePath, SaveFileDialog saveDialog, Action<FileStream> saveAction)
         {
-            FileInfo file;
-            FileStream stream;
+            if (getFileAction() == null)
+            {
+                return;
+            }
+
+            string path = filePath;
+            bool pathIsValid = !string.IsNullOrEmpty(path);
+
+            if (!pathIsValid)
+            {
+                saveDialog.FileName = path;
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    path = saveDialog.FileName;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
             try
             {
-                file = new FileInfo(Globals.FilePathESL);
-                stream = file.Create();
+                using (FileStream stream = new FileInfo(path).Create())
+                {
+                    saveAction(stream);
+                }
+                filePath = path;
+                Editor.Console.Log($"File exported successfully: {Path.GetFileName(path)}");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogESL.FileName = Globals.FilePathESL;
-                saveFileDialogESL.ShowDialog();
-                return;
             }
+        }
 
-            if (file != null && stream != null)
+
+        private void ExportAllModifiedRoomFiles()
+        {
+            Editor.Console.Log("Exporting all modified room files...");
+
+            if (DataBase.FileETS != null && !string.IsNullOrEmpty(Globals.FilePathETS)) { ExportETS(); }
+            if (DataBase.FileITA != null && !string.IsNullOrEmpty(Globals.FilePathITA)) { ExportITA(); }
+            if (DataBase.FileAEV != null && !string.IsNullOrEmpty(Globals.FilePathAEV)) { ExportAEV(); }
+            if (DataBase.FileDSE != null && !string.IsNullOrEmpty(Globals.FilePathDSE)) { ExportDSE(); }
+            if (DataBase.FileFSE != null && !string.IsNullOrEmpty(Globals.FilePathFSE)) { ExportFSE(); }
+            if (DataBase.FileSAR != null && !string.IsNullOrEmpty(Globals.FilePathSAR)) { ExportSAR(); }
+            if (DataBase.FileEAR != null && !string.IsNullOrEmpty(Globals.FilePathEAR)) { ExportEAR(); }
+            if (DataBase.FileEMI != null && !string.IsNullOrEmpty(Globals.FilePathEMI)) { ExportEMI(); }
+            if (DataBase.FileESE != null && !string.IsNullOrEmpty(Globals.FilePathESE)) { ExportESE(); }
+            if (DataBase.FileLIT != null && !string.IsNullOrEmpty(Globals.FilePathLIT)) { ExportLIT(); }
+            if (DataBase.FileEFF != null && !string.IsNullOrEmpty(Globals.FilePathEFFBLOB)) { ExportEFFBLOB(); }
+            //ESL/quadcustom are not room specific, maybe later we can add smt to detect if esl/quad is related to current room
+        }
+
+        private void ExportESL() => ExportFile(() => DataBase.FileESL, ref Globals.FilePathESL, saveFileDialogESL, FileManager.SaveFileESL);
+        private void ExportETS() => ExportFile(() => DataBase.FileETS, ref Globals.FilePathETS, saveFileDialogETS, FileManager.SaveFileETS);
+        private void ExportITA() => ExportFile(() => DataBase.FileITA, ref Globals.FilePathITA, saveFileDialogITA, FileManager.SaveFileITA);
+        private void ExportAEV() => ExportFile(() => DataBase.FileAEV, ref Globals.FilePathAEV, saveFileDialogAEV, FileManager.SaveFileAEV);
+        private void ExportDSE() => ExportFile(() => DataBase.FileDSE, ref Globals.FilePathDSE, saveFileDialogDSE, FileManager.SaveFileDSE);
+        private void ExportFSE() => ExportFile(() => DataBase.FileFSE, ref Globals.FilePathFSE, saveFileDialogFSE, FileManager.SaveFileFSE);
+        private void ExportSAR() => ExportFile(() => DataBase.FileSAR, ref Globals.FilePathSAR, saveFileDialogSAR, FileManager.SaveFileSAR);
+        private void ExportEAR() => ExportFile(() => DataBase.FileEAR, ref Globals.FilePathEAR, saveFileDialogEAR, FileManager.SaveFileEAR);
+        private void ExportEMI() => ExportFile(() => DataBase.FileEMI, ref Globals.FilePathEMI, saveFileDialogEMI, FileManager.SaveFileEMI);
+        private void ExportESE() => ExportFile(() => DataBase.FileESE, ref Globals.FilePathESE, saveFileDialogESE, FileManager.SaveFileESE);
+        private void ExportLIT() => ExportFile(() => DataBase.FileLIT, ref Globals.FilePathLIT, saveFileDialogLIT, FileManager.SaveFileLIT);
+        private void ExportQuadCustom() => ExportFile(() => DataBase.FileQuadCustom, ref Globals.FilePathQuadCustom, saveFileDialogQuadCustom, FileManager.SaveFileQuadCustom);
+        private void ExportEFFBLOB()
+        {
+            if (DataBase.FileEFF == null) return;
+            if (DataBase.FileEFF.Endian == Endianness.LittleEndian)
             {
-                try
-                {
-                    FileManager.SaveFileESL(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
+                ExportFile(() => DataBase.FileEFF, ref Globals.FilePathEFFBLOB, saveFileDialogEFFBLOB, FileManager.SaveFileEFFBLOB);
             }
+            else
+            {
+                ExportFile(() => DataBase.FileEFF, ref Globals.FilePathEFFBLOB, saveFileDialogEFFBLOBBIG, FileManager.SaveFileEFFBLOB);
+            }
+        }
+
+        private void toolStripMenuItemSaveESL_Click(object sender, EventArgs e)
+        {
+            ExportESL();
         }
 
         private void toolStripMenuItemSaveETS_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathETS);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogETS.FileName = Globals.FilePathETS;
-                saveFileDialogETS.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileETS(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportETS();
         }
 
         private void toolStripMenuItemSaveITA_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathITA);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogITA.FileName = Globals.FilePathITA;
-                saveFileDialogITA.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileITA(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportITA();
         }
 
         private void toolStripMenuItemSaveAEV_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathAEV);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogAEV.FileName = Globals.FilePathAEV;
-                saveFileDialogAEV.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileAEV(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportAEV();
         }
 
         private void toolStripMenuItemSaveDSE_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathDSE);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogDSE.FileName = Globals.FilePathDSE;
-                saveFileDialogDSE.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileDSE(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportDSE();
         }
 
         private void toolStripMenuItemSaveFSE_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathFSE);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogFSE.FileName = Globals.FilePathFSE;
-                saveFileDialogFSE.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileFSE(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportFSE();
         }
 
         private void toolStripMenuItemSaveSAR_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathSAR);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogSAR.FileName = Globals.FilePathSAR;
-                saveFileDialogSAR.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileSAR(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportSAR();
         }
 
         private void toolStripMenuItemSaveEAR_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathEAR);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogEAR.FileName = Globals.FilePathEAR;
-                saveFileDialogEAR.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileEAR(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportEAR();
         }
 
         private void toolStripMenuItemSaveEMI_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathEMI);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogEMI.FileName = Globals.FilePathEMI;
-                saveFileDialogEMI.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileEMI(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportEMI();
         }
 
         private void toolStripMenuItemSaveESE_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathESE);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogESE.FileName = Globals.FilePathESE;
-                saveFileDialogESE.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileESE(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportESE();
         }
 
         private void toolStripMenuItemSaveQuadCustom_Click(object sender, EventArgs e)
         {
-            SaveQuadCustom();
-        }
-
-        private void SaveQuadCustom()
-        {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathQuadCustom);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogQuadCustom.FileName = Globals.FilePathQuadCustom;
-                saveFileDialogQuadCustom.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileQuadCustom(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportQuadCustom();
         }
 
         private void toolStripMenuItemSaveLIT_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathLIT);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                saveFileDialogLIT.FileName = Globals.FilePathLIT;
-                saveFileDialogLIT.ShowDialog();
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileLIT(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally 
-                {
-                    stream.Close();
-                }
-            }
+            ExportLIT();
         }
 
         private void toolStripMenuItemSaveEFFBLOB_Click(object sender, EventArgs e)
         {
-            FileInfo file;
-            FileStream stream;
-            try
-            {
-                file = new FileInfo(Globals.FilePathEFFBLOB);
-                stream = file.Create();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                if (DataBase.FileEFF.Endian == Endianness.LittleEndian)
-                {
-                    saveFileDialogEFFBLOB.FileName = Globals.FilePathEFFBLOB;
-                    saveFileDialogEFFBLOB.ShowDialog();
-                }
-                else
-                {
-                    saveFileDialogEFFBLOBBIG.FileName = Globals.FilePathEFFBLOB;
-                    saveFileDialogEFFBLOBBIG.ShowDialog();
-                }
-                return;
-            }
-
-            if (file != null && stream != null)
-            {
-                try
-                {
-                    FileManager.SaveFileEFFBLOB(stream);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Lang.GetText(eLang.MessageBoxErrorTitle), MessageBoxButtons.OK);
-                    return;
-                }
-                finally
-                {
-                    stream.Close();
-                }
-            }
+            ExportEFFBLOB();
         }
+
+        #endregion
+
 
         private void toolStripMenuItemSaveDirectories_DropDownOpening(object sender, EventArgs e)
         {
@@ -5140,68 +4039,243 @@ namespace Re4QuadExtremeEditor
             }
         }
 
-        //TOOLSTRIP BUTTONS
+        #region MAIN TOOLSTRIP
 
-        private void toolstrip_playButton_Click(object sender, EventArgs e)
-        {
-            const string processName = "bio4";
-            Process[] processes = Process.GetProcessesByName(processName);
+        private void PopulatePreferredVerDropdown() {
+            toolstrip_preferredVer.Text = Globals.BackupConfigs.PreferredVersion.ToString();
 
-            if (processes.Length > 0)
-            {
-                // If the process is already running, focus it.
-                IntPtr handle = processes[0].MainWindowHandle;
-                ShowWindow(handle, SW_RESTORE); // Restore if minimized.
-                SetForegroundWindow(handle);    // Bring to the front.
-                Editor.Console.Log("bio4.exe already running, focusing on game window.");
-            }
-            else
-            {
-                // If not running, launch the game.
-                string filePath = Globals.DirectoryUHDRE4 + @"\Bin32\bio4.exe";
-
-                if (File.Exists(filePath))
-                {
-                    try
-                    {
-                        Process.Start(filePath);
-                        Editor.Console.Log("Launching bio4.exe...");
-                    }
-                    catch (Exception ex)
-                    {
-                        Editor.Console.Error(ex.Message);
-                    }
-                }
-                else
-                {
-                    string warningLog = "The game path was not found. Check the path in \"options > setup\" or change the current version.";
-                    Editor.Console.Warning(warningLog);
-                }
+            foreach (EditorRe4Ver version in Enum.GetValues(typeof(EditorRe4Ver))) {
+                ToolStripMenuItem item = new ToolStripMenuItem(version.ToString());
+                item.Tag = version; // Store the enum value itself
+                item.Click += PreferredVer_Click;
+                toolstrip_preferredVer.DropDownItems.Add(item);
             }
         }
 
+        private void PreferredVer_Click(object sender, EventArgs e) {
+            if (sender is ToolStripMenuItem clickedItem && clickedItem.Tag is Editor.Class.Enums.EditorRe4Ver selectedVersion) {
+                PreferredVerSet((int)selectedVersion);
+            }
+        }
+
+        private void PreferredVerSet(int index) {
+            Globals.PreferredVersion = (EditorRe4Ver)index;
+            Globals.BackupConfigs.PreferredVersion = (EditorRe4Ver)index;
+            toolstrip_preferredVer.Text = Globals.BackupConfigs.PreferredVersion.ToString();
+        }
+
+        private void toolstrip_playButton_Click(object sender, EventArgs e)
+        {
+            if (Globals.PreferredVersion == EditorRe4Ver.None) //NO VERSION SELECTED
+            {
+                Editor.Console.Error("No current preferred version selected. Set one in \"Settings > General\".");
+            }
+            if (Globals.PreferredVersion == EditorRe4Ver.UHD) //UHD LAUNCH
+            {
+                const string processName = "bio4";
+                Process[] processes = Process.GetProcessesByName(processName);
+
+                if (processes.Length > 0)
+                {
+                    // If the process is already running, focus it.
+                    IntPtr handle = processes[0].MainWindowHandle;
+                    ShowWindow(handle, SW_RESTORE); // Restore if minimized.
+                    SetForegroundWindow(handle);    // Bring to the front.
+                    Editor.Console.Log("bio4.exe already running, focusing on game window.");
+                }
+                else
+                {
+                    // If not running, launch the game.
+                    string filePath = Globals.DirectoryUHDRE4 + @"\Bin32\bio4.exe";
+
+                    if (File.Exists(filePath))
+                    {
+                        try
+                        {
+                            Process.Start(filePath);
+                            Editor.Console.Log("Launching bio4.exe...");
+                        }
+                        catch (Exception ex)
+                        {
+                            Editor.Console.Error(ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        string warningLog = "The game executable path could not be found. Check the path in \"options > setup\" or change the current version.";
+                        Editor.Console.Warning(warningLog);
+                    }
+                }
+            }
+            if (Globals.PreferredVersion == EditorRe4Ver.SourceNext2007)
+            {
+            }
+        }
+
+        #endregion
+
+        #region Project Management
+
         private void toolstrip_saveEnv_Click(object sender, EventArgs e)
         {
-            //save all env data
+            if (string.IsNullOrEmpty(currentProjectPath))
+            {
+                //force saveas
+                SaveProjectAs();
+            }
+            else
+            {
+                SaveProject(currentProjectPath);
+            }
         }
 
         private void toolstrip_openEnv_Click(object sender, EventArgs e)
         {
-            //load from env data
+            //ask to save before opening a new proj
+            if (isProjectEmpty() == false)
+            {
+                var result = MessageBox.Show("You have unsaved changes. Do you want to save before opening a new project?", "Unsaved Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    toolstrip_saveEnv_Click(sender, e);
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "QuadX Project (*.quadx)|*.quadx";
+                openFileDialog.Title = "Open QuadX Project";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    LoadProject(openFileDialog.FileName);
+                }
+            }
         }
 
         private void toolstrip_newEnv_Click(object sender, EventArgs e)
         {
-            //clear all scene and loaded itens
             ResetEditorState();
+            currentProjectPath = null;
+            UpdateFormTitle();
         }
+
+
+        private void LoadProject(string path)
+        {
+            try
+            {
+                ResetEditorState();
+
+                string json = File.ReadAllText(path);
+                var project = JsonConvert.DeserializeObject<ProjectFile>(json);
+
+                if (project == null)throw new Exception("Failed to deserialize project file. It may be corrupt or in an old format.");
+
+                ProjectManager.LoadProjectData(project);
+
+                //load room logic here
+
+                buildTreeView();
+
+                currentProjectPath = path;
+                UpdateFormTitle();
+                UpdateTreeViewNodes();
+                UpdateGL();
+                Editor.Console.Log("Project loaded from: " + Path.GetFileName(path));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading project: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ResetEditorState();
+                currentProjectPath = null;
+                UpdateFormTitle();
+            }
+        }
+
+        private void SaveProject(string path)
+        {
+            try
+            {
+                var project = new ProjectFile();
+
+                project.FileESL = DataBase.FileESL;
+                project.FileETS = DataBase.FileETS;
+                project.FileITA = DataBase.FileITA;
+                project.FileAEV = DataBase.FileAEV;
+                project.FileDSE = DataBase.FileDSE;
+                project.FileEMI = DataBase.FileEMI;
+                project.FileSAR = DataBase.FileSAR;
+                project.FileEAR = DataBase.FileEAR;
+                project.FileESE = DataBase.FileESE;
+                project.FileFSE = DataBase.FileFSE;
+                project.FileLIT = DataBase.FileLIT;
+                project.FileQuadCustom = DataBase.FileQuadCustom;
+                project.FileEFF = DataBase.FileEFF;
+
+
+                if (DataBase.SelectedRoom != null)
+                    project.SelectedRoomID = DataBase.SelectedRoom.GetRoomId();
+
+
+                //serialize the project object to JSON and write to file
+                string json = JsonConvert.SerializeObject(project, Formatting.Indented);
+                File.WriteAllText(path, json);
+
+                currentProjectPath = path;
+                UpdateFormTitle();
+                Editor.Console.Log("Project saved to: " + Path.GetFileName(path));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving project: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void SaveProjectAs()
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "QuadX Project (*.quadx)|*.quadx";
+                saveFileDialog.Title = "Save QuadX Project";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    SaveProject(saveFileDialog.FileName);
+                }
+            }
+        }
+
+        private bool isProjectEmpty()
+        {
+            bool isEmpty = 
+            DataBase.FileESL == null &&
+            DataBase.FileETS == null &&
+            DataBase.FileITA == null &&
+            DataBase.FileAEV == null &&
+            DataBase.FileDSE == null &&
+            DataBase.FileFSE == null &&
+            DataBase.FileSAR == null &&
+            DataBase.FileEAR == null &&
+            DataBase.FileEMI == null &&
+            DataBase.FileESE == null && 
+            DataBase.FileLIT == null &&
+            DataBase.FileEFF == null &&
+            DataBase.FileQuadCustom == null && 
+            DataBase.SelectedRoom == null;
+
+            return isEmpty;
+        }
+
+        #endregion
 
         private void treeView_addButton_Click(object sender, EventArgs e)
         {
             addNewObject();
         }
 
-        //VIEWPORT TOOLSTRIP
+        #region viewport toolstrip
         private void viewportTools_tool_move_Click(object sender, EventArgs e)
         {
             selectTool(0);
@@ -5223,14 +4297,14 @@ namespace Re4QuadExtremeEditor
             //select new tool
             if (tool == 0)
             {
-                CurrentTool = EditorTool.Move;
+                Globals.CurrentTool = EditorTool.Move;
                 viewportTools_tool_move.Checked = true;
                 viewportTools_tool_move.CheckState = CheckState.Checked;
                 glControl.Invalidate(); // Redraw to show the correct gizmo
             }
             else if ( tool == 1)
             {
-                CurrentTool = EditorTool.Rotate;
+                Globals.CurrentTool = EditorTool.Rotate;
                 viewportTools_tool_rotate.Checked = true;
                 viewportTools_tool_rotate.CheckState = CheckState.Checked;
                 glControl.Invalidate(); // Redraw to show the correct gizmo
@@ -5245,7 +4319,7 @@ namespace Re4QuadExtremeEditor
         private void toggleGizmospace()
         {
             //toggle between world/local
-            if (CurrentGizmoSpace == GizmoSpace.World)
+            if (Globals.CurrentGizmoSpace == GizmoSpace.World)
             {
                 selectGizmospace(true);
             }
@@ -5258,128 +4332,509 @@ namespace Re4QuadExtremeEditor
         private void selectGizmospace(bool localSpace)
         {
             if (localSpace == true){
-                CurrentGizmoSpace = GizmoSpace.Local;
+                Globals.CurrentGizmoSpace = GizmoSpace.Local;
                 viewportTools_gizmospace.Text = "Local";
             }else{
-                CurrentGizmoSpace = GizmoSpace.World;
+                Globals.CurrentGizmoSpace = GizmoSpace.World;
                 viewportTools_gizmospace.Text = "World";
             }
 
             glControl.Invalidate();
         }
 
+        private SkyComboBox gizmoMoveMode;
+        private ToolStripControlHost gizmoMoveModeHost;
+        private void GenerateViewportUtility()
+        {
+            //gizmo control
+            ViewportGizmoDropdown objectControlDropdown = new ViewportGizmoDropdown(ref camera, objectControl, gizmo);
+            objectControlDropdown.Margin = Padding.Empty;
+            objectControlDropdown.Padding = Padding.Empty;
+
+            ToolStripControlHost gizmoHost = new ToolStripControlHost(objectControlDropdown)
+            {
+                Margin = Padding.Empty,
+                Padding = Padding.Empty,
+                AutoSize = false,
+                Size = objectControlDropdown.Size
+            };
+
+            ToolStripDropDown gizmoHostedDropDown = new ToolStripDropDown
+            {
+                Padding = Padding.Empty,
+                Margin = Padding.Empty,
+                AutoClose = true,
+                AutoSize = false
+            };
+            gizmoHostedDropDown.Items.Add(gizmoHost);
+            gizmoHostedDropDown.Size = objectControlDropdown.Size;
+
+            //gizmo dropdown button
+            ToolStripDropDownButton gizmoDropdown = new ToolStripDropDownButton("Gizmo");
+            gizmoDropdown.Alignment = ToolStripItemAlignment.Right;
+            gizmoDropdown.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            gizmoDropdown.Image = Properties.Resources.gizmo;
+            gizmoDropdown.ToolTipText = "Gizmo Controls";
+            gizmoDropdown.Width = 32;
+            gizmoDropdown.AutoSize = false;
+
+            //gizmo click event
+            gizmoDropdown.Click += (s, e) => {
+                var button = (ToolStripDropDownButton)s;
+                ToolStrip parent = button.GetCurrentParent();
+                Point screenPos = parent.PointToScreen(new Point(button.Bounds.Left, button.Bounds.Bottom));
+                gizmoHostedDropDown.Show(screenPos);
+            };
+
+            viewportToolstrip.Items.Add(gizmoDropdown);
+
+            //camera control
+            ViewportCameraDropdown cameraControlDropdown = new ViewportCameraDropdown(ref camera, cameraControl);
+            cameraControlDropdown.Margin = Padding.Empty;
+            cameraControlDropdown.Padding = Padding.Empty;
+
+            ToolStripControlHost cameraHost = new ToolStripControlHost(cameraControlDropdown)
+            {
+                Margin = Padding.Empty,
+                Padding = Padding.Empty,
+                AutoSize = false,
+                Size = cameraControlDropdown.Size
+            };
+
+            ToolStripDropDown cameraHostedDropDown = new ToolStripDropDown
+            {
+                Padding = Padding.Empty,
+                Margin = Padding.Empty,
+                AutoClose = true,
+                AutoSize = false
+            };
+            cameraHostedDropDown.Items.Add(cameraHost);
+            cameraHostedDropDown.Size = cameraControlDropdown.Size;
+
+            //camera dropdown
+            ToolStripDropDownButton cameraDropdown = new ToolStripDropDownButton("Camera");
+            cameraDropdown.Alignment = ToolStripItemAlignment.Right;
+            cameraDropdown.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            cameraDropdown.Image = Properties.Resources.cam;
+            cameraDropdown.ToolTipText = "Camera Controls";
+            cameraDropdown.Width = 32;
+            cameraDropdown.AutoSize = false;
+
+            //camera click
+            cameraDropdown.Click += (s, e) =>
+            {
+                cameraControlDropdown.UpdateLanguage();
+                var button = (ToolStripDropDownButton)s;
+                ToolStrip parent = button.GetCurrentParent();
+                Point screenPos = parent.PointToScreen(new Point(button.Bounds.Left, button.Bounds.Bottom));
+                cameraHostedDropDown.Show(screenPos);
+            };
+
+            viewportToolstrip.Items.Add(cameraDropdown);
+
+
+            //combobox
+            gizmoMoveMode = new SkyComboBox
+            {
+                BackColor = SystemColors.Control,
+                ForeColor = SystemColors.GrayText,
+                ListForeColor = SystemColors.GrayText,
+                Width = viewportToolstrip.Width / 4,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Cursor = Cursors.Default,
+                ItemHeight = 16,
+                IntegralHeight = false,
+                TriangleColorA = Color.Black,
+                TriangleColorB = Color.Black
+            };
+            gizmoMoveMode.SelectedIndexChanged += gizmoMoveMode_SelectedIndexChanged;
+
+            gizmoMoveModeHost = new ToolStripControlHost(gizmoMoveMode)
+            {
+                Alignment = ToolStripItemAlignment.Right,
+                Margin = new System.Windows.Forms.Padding(0, 0, 5, 0)
+            };
+
+            if (Globals.BackupConfigs.SelectedTheme != EditorTheme.Light) ThemeManager.ApplyTheme(gizmoMoveMode);
+
+            viewportToolstrip.Items.Add(gizmoMoveModeHost);
+        }
+
+        private void gizmoMoveMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //keep selection updated in legacy glcontrols
+            if (gizmoMoveMode.SelectedItem is MoveObjTypeObjForListBox obj){
+                objectControl.SetSelectedMoveMode(obj.ID);
+                objectMove.UpdateSelection();
+            }
+
+            if (gizmoMoveMode.SelectedItem is ManipulationTarget target)
+            {
+                objectControl.SetSelectedManipulationTarget(target);
+            }
+        }
+
+        private void UpdateAllMoveControls()
+        {
+            var availableTargets = objectControl.GetManipulationTargets();
+
+            gizmoMoveMode.SelectedIndexChanged -= gizmoMoveMode_SelectedIndexChanged;
+            gizmoMoveMode.DataSource = null;
+            gizmoMoveMode.DataSource = availableTargets;
+            gizmoMoveMode.DisplayMember = "DisplayName";
+
+            //reselect the previous target if it still exists
+            var currentTarget = objectControl.SelectedTarget;
+            int indexToSelect = -1;
+            if (currentTarget != null)
+            {
+                indexToSelect = availableTargets.FindIndex(t => t.Type == currentTarget.Type);
+            }
+
+            //if previous target doest exist in the new list, it will return "-1"
+            if (indexToSelect == -1){
+                indexToSelect = 0;
+            }
+
+            gizmoMoveMode.SelectedIndex = indexToSelect;
+
+            //update the objectcontrol state with the target we just selected
+            if (availableTargets.Count > 0 && indexToSelect >= 0){
+                objectControl.SetSelectedManipulationTarget(availableTargets[indexToSelect]);
+            }
+
+            gizmoMoveMode.SelectedIndexChanged += gizmoMoveMode_SelectedIndexChanged;
+
+            //legacy
+            objectMove.UpdateSelection();
+        }
+
+
+        #endregion
+
+        private void runSetupWizardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetupWizard form = new SetupWizard();
+            form.ShowDialog();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetEditorState();
+            //create new project here
+        }
+
+        private void openRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectRoomWindow();
+        }
+
+        private void toolstrip_openRoom_Click(object sender, EventArgs e)
+        {
+            SelectRoomWindow();
+        }
+
+        private void toolstrip_clearRoom_Click(object sender, EventArgs e)
+        {
+            if (DataBase.SelectedRoom == null) return;
+
+            DialogResult result = MessageBox.Show(
+                "Are you sure clear current room?",
+                "Clear room?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes) { 
+                Editor.Console.Log($"Clearing previously loaded room: {DataBase.SelectedRoom.GetRoomModel().Description} (ID: {DataBase.SelectedRoom.GetRoomModel().HexID})");
+                currentRoomLabelToggle(false);
+                DataBase.SelectedRoom.ClearGL();
+                DataBase.SelectedRoom = null;
+                GC.Collect();
+                UpdateGL();
+            }
+        }
+
+        private void clearEverythingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            clearAllObjects();
+            UpdateGL();
+        }
+
+        #region tool buttons
+
+        private void repackRoom_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                $"Do you want to repack room {currentRoomLabel.Text} with all existent files?",
+                "Repack Room",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                ExportAllModifiedRoomFiles();
+                ExternalToolManager.RepackCurrentRoomUdas();
+            }
+        }
+        #endregion
+
+
+#endregion
+
+        #region open root folders
+
+        private void openEditorRoot_Click(object sender, EventArgs e){
+            string path = AppContext.BaseDirectory;
+            OpenExplorer(path, "Editor Root");
+        }
+
+        private void openRE4root_Click(object sender, EventArgs e){
+            string path = GetRe4RootPath();
+            OpenExplorer(path, "RE4 Game Root");
+        }
+
+        private void openRoomRoot_Click(object sender, EventArgs e)
+        {
+            if (DataBase.SelectedRoom == null) {
+                Editor.Console.Warning("Selected room is null.");
+                return;
+            }
+
+            string path = Utils.GetCurrentRoomDirectory();
+            OpenExplorer(path, "Room Root");
+        }
+
+        private string GetRe4RootPath(){
+            switch (Globals.PreferredVersion){
+                case Editor.Class.Enums.EditorRe4Ver.UHD:
+                    return Globals.DirectoryUHDRE4;
+                case Editor.Class.Enums.EditorRe4Ver.SourceNext2007:
+                    return Globals.Directory2007RE4;
+                case Editor.Class.Enums.EditorRe4Ver.PS2:
+                    return Globals.DirectoryPS2RE4;
+                case Editor.Class.Enums.EditorRe4Ver.PS4NS:
+                    return Globals.DirectoryPS4NSRE4;
+                default:
+                    return null;
+            }
+        }
+
+        private void OpenExplorer(string path, string locationName){
+            if (string.IsNullOrEmpty(path)){
+                Editor.Console.Log(locationName + " directory is not set. Please check settings.");
+                return;
+            }
+            if (!Directory.Exists(path)){
+                Editor.Console.Log(locationName + " directory does not exist or the path is invalid: " + path);
+                return;
+            }
+
+            try
+            {
+                Process.Start(path);
+            }
+            catch (Exception ex)
+            {
+                Editor.Console.Error("Failed to open File Explorer for " + locationName + ". Error: " + ex.Message);
+            }
+        }
+
+        private void unpackAllRoomsUHDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool deleteLFS = false;
+
+            if (Globals.BackupConfigs.PreferredVersion == EditorRe4Ver.UHD || Globals.BackupConfigs.PreferredVersion == EditorRe4Ver.PS4NS)
+            {
+                var result = MessageBox.Show(
+                    "Would you like to delete original '.lfs' compressed files and keep only new uncompressed '.udas'?\n\n(Keeping original will significantly fill disk space)",
+                    "Delete uncompressed .lfs files?",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                    deleteLFS = true;
+            }
+
+            ExternalToolManager.UnpackAllRoomsUdas(deleteLFS);
+        }
+
+
+        private void unpackAllTexturesUHDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show(
+            "Choose the unpack mode:\n\nYes = ImagePackHD\nNo = ImagePack (SD)",
+            "Select Unpack Mode",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+
+            string imagepackType = null;
+
+            if (result == DialogResult.Yes){
+                imagepackType = "ImagePackHD";
+            }else if (result == DialogResult.No){
+                imagepackType = "ImagePack";
+            }
+            ExternalToolManager.UnpackAllPacks(imagepackType);
+        }
+
+        #endregion
+
+        #region Property Grid Toolstrip
+        private void propertyGridButton_Categorized_Click(object sender, EventArgs e)
+        {
+            propertyGridButton_Categorized.Checked = true;
+            propertyGridButton_Alphabetical.Checked = false;
+
+            UpdatePropertyGridDisplay();
+        }
+
+        private void propertyGridButton_Alphabetical_Click(object sender, EventArgs e)
+        {
+            propertyGridButton_Alphabetical.Checked = true;
+            propertyGridButton_Categorized.Checked = false;
+
+            UpdatePropertyGridDisplay();
+        }
+        private void propertyGridButton_ShowAll_Click(object sender, EventArgs e)
+        {
+            propertyGridButton_ShowAll.Checked = !propertyGridButton_ShowAll.Checked;
+            UpdatePropertyGridDisplay();
+        }
+
+
+        private void UpdatePropertyGridDisplay()
+        {
+            if (propertyGridOriginalObj == null){
+                propertyGridObjs.SelectedObject = null;
+                return;
+            }
+
+            object objectToDisplay = propertyGridOriginalObj;
+
+            //filter curated properties
+            if (!propertyGridButton_ShowAll.Checked && !(objectToDisplay is NoneProperty))
+            {
+                objectToDisplay = new PropertyFilterDescriptor(objectToDisplay);
+            }
+
+            //order filter
+            propertyGridObjs.PropertySort = propertyGridButton_Alphabetical.Checked
+                ? PropertySort.Alphabetical
+                : PropertySort.Categorized;
+
+            //search field text filter
+            string filterText = propertyGrid_searchField.Text;
+            if (!string.IsNullOrWhiteSpace(filterText))
+            {
+                propertyGridObjs.SelectedObject = new PropertyFilter(objectToDisplay, filterText);
+            }
+            else
+            {
+                propertyGridObjs.SelectedObject = objectToDisplay;
+            }
+        }
+
+        private void propertyGridObjs_PropertySortChanged(object sender, EventArgs e)
+        {
+            var sort = propertyGridObjs.PropertySort;
+            propertyGridButton_Categorized.Checked = (sort == PropertySort.Categorized || sort == PropertySort.CategorizedAlphabetical);
+            propertyGridButton_Alphabetical.Checked = (sort == PropertySort.Alphabetical);
+        }
+
+        private void propertyGridObjs_Enter(object sender, EventArgs e)
+        {
+            InPropertyGrid = true;
+        }
+
+        private void propertyGridObjs_Leave(object sender, EventArgs e)
+        {
+            InPropertyGrid = false;
+        }
+
+        private void propertyGridObjs_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            propertyGridObjs.Refresh();
+            treeViewObjs.Refresh();
+        }
+
+        private void support3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenWebsite("https://jaderlink.github.io/Donate/");
+        }
+
+
         #endregion
 
         #region MainForm events/ metodos
 
-        bool enable_splitContainerRight_Panel2_Resize = false;
-
-        private void splitContainerRight_Panel2_Resize(object sender, EventArgs e)
-        {
-            if (enable_splitContainerRight_Panel2_Resize)
+        public void OpenWebsite(string url){
+            try{
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
             {
-                int painel2Width = glControls_old.Width;
-                int quite = painel2Width / 2;
+                Editor.Console.Error($"Failed to open website: {ex.Message}");
             }
         }
 
-        private void DarkTheme()
+        private void splitContainerRight_Panel2_Resize(object sender, EventArgs e)
         {
-            var backgroundColor = ColorTranslator.FromHtml("#181818");
-            var darkBackgroundColor = ColorTranslator.FromHtml("#0d0d0d");
-            var splitterColor = ColorTranslator.FromHtml("#1F1F1F"); // divisor
-            var textColor = ColorTranslator.FromHtml("#BABABA"); //major texts
-            var darkerTextColor = ColorTranslator.FromHtml("#878787");
-            var textBoxColor = ColorTranslator.FromHtml("#101010");
-            var selectedHighlight = ColorTranslator.FromHtml("#4F4F4F");
+            int painel2Width = glControls_old.Width;
+            int quite = painel2Width / 2;
+        }
 
-            //MenuStrip (topbar)
-            menuStripMenu.BackColor = darkBackgroundColor;
-            menuStripMenu.ForeColor = textColor;
-
-            //toolstrip
-            toolStripContainer1.TopToolStripPanel.BackColor = darkBackgroundColor;
-            viewportToolstrip.BackColor = splitterColor;
-
-            // editor (mostly borders)
-            // this panel holds most of the bellow panels
-            editor.BackColor = backgroundColor;
-
-            // treeView
-            treeViewLabel.ForeColor = textColor;
-            treeView_searchBar.BackColor = textBoxColor;
-            treeView_searchField.BackColor = textBoxColor;
-            treeView_searchField.ForeColor = textColor;
-            treeViewObjs.BackColor = backgroundColor;
-            treeViewObjs.ForeColor = textColor;
-            treeViewObjs.SelectedNodeBackColor = selectedHighlight;
-            treeViewObjs.LineColor = ColorTranslator.FromHtml("#4A4A4A"); //treeview line
-            Globals.NodeColorEntry = textColor;
-
-            // PropertyGrid
-            propertyGridLabel.ForeColor = textColor;
-            propertyGrid_searchBar.BackColor = textBoxColor;
-            propertyGrid_searchField.BackColor = textBoxColor;
-            propertyGrid_searchField.ForeColor = textColor;
-            propertyGridObjs.ViewBackColor = backgroundColor;
-            propertyGridObjs.ViewForeColor = ColorTranslator.FromHtml("#DBDBDB");
-            propertyGridObjs.LineColor = ColorTranslator.FromHtml("#1C1C1C"); //category bg
-            propertyGridObjs.CategorySplitterColor = splitterColor;
-            propertyGridObjs.HelpBackColor = backgroundColor;
-            propertyGridObjs.HelpForeColor = darkerTextColor;
-            propertyGridObjs.HelpBorderColor = splitterColor;
-            propertyGridObjs.ViewBorderColor = splitterColor;
-            propertyGridObjs.BackColor = backgroundColor;
-            propertyGridObjs.SelectedItemWithFocusBackColor = selectedHighlight;
-            // Property Grid Content
-            propertyGridObjs.CategoryForeColor = Color.White;//category title
-            propertyGridObjs.DisabledItemForeColor = textColor;//content title
-            propertyGridObjs.SelectedItemWithFocusBackColor = ColorTranslator.FromHtml("#595959"); //selected
-            propertyGridObjs.SelectedItemWithFocusForeColor = Color.White; //selected
-
-            // Containers & splitters
-            splitContainerMain.BackColor = darkBackgroundColor;
-            glViewport.BackColor = darkBackgroundColor;
-            splitContainerRight.BackColor = darkBackgroundColor;
-            splitContainerLeft.BackColor = splitterColor;
-
-            //utility
-            splitContainerRight.Panel2.BackColor = backgroundColor;
-            splitContainerRight.Panel2.ForeColor = textColor;
-
-            if (utilityPanel != null)
-            {
-                //utilitypanel
-                utilityPanel.BackColor = splitterColor;
-                utilityPanel.BorderColor = splitterColor;
-                utilityPanel.ForeColor = textColor;
-
-                //utilitypanel button idle
-                utilityPanel.HeaderBackColorStart = splitterColor;
-                utilityPanel.HeaderBackColorEnd = splitterColor;
-                utilityPanel.HeaderForeColor = textColor;
-                //utilitypanel button selected
-                utilityPanel.HeaderSelectedBackColorStart = backgroundColor;
-                utilityPanel.HeaderSelectedBackColorEnd = backgroundColor;
-                utilityPanel.HeaderSelectedForeColor = textColor;
-
-                //tab content background
-                foreach (TabPage tabPage in utilityPanel.TabPages){
-                    tabPage.BackColor = backgroundColor;
-                }
-
-                //Console
-                consoleBox.BackColor = backgroundColor;
-                //consoleBox.ForeColor = textColor;
-
-                //Controls
-                cameraMove.BackColor = backgroundColor;
-                objectMove.BackColor = backgroundColor;
-                cameraMove.ForeColor = textColor;
-                objectMove.ForeColor = textColor;
-                glControls_old.BackColor = backgroundColor;
-                glControls_old.ForeColor = textColor;
+        public void ApplyTheme()
+        {
+            if (Globals.BackupConfigs.SelectedTheme == EditorTheme.Light){
+                return;
             }
+
+
+            ThemeManager.ApplyTheme(this);
+            ThemeManager.ApplyTheme(menuStripMenu);
+            ThemeManager.ApplyTheme(toolStripEditor);
+            ThemeManager.ApplyTheme(viewportToolstrip);
+            ThemeManager.ApplyTheme(editor);
+            ThemeManager.ApplyTheme(treeViewLabel);
+            ThemeManager.ApplyTheme(treeView_searchBar);
+            ThemeManager.ApplyTheme(treeView_searchField);
+            ThemeManager.ApplyTheme(treeViewObjs);
+            ThemeManager.ApplyTheme(propertyGridLabel);
+            ThemeManager.ApplyTheme(propertyGrid_searchBar);
+            ThemeManager.ApplyTheme(propertyGrid_searchField);
+            ThemeManager.ApplyTheme(propertyGridObjs);
+            ThemeManager.ApplyTheme(splitContainerMain);
+            ThemeManager.ApplyTheme(glViewport);
+            ThemeManager.ApplyTheme(splitContainerRight);
+            ThemeManager.ApplyTheme(splitContainerLeft);
+            ThemeManager.ApplyTheme(utilityPanel);
+            ThemeManager.ApplyTheme(consoleBox);
+            ThemeManager.ApplyTheme(cameraMove);
+            ThemeManager.ApplyTheme(objectMove);
+            ThemeManager.ApplyTheme(glControls_old);
+
+            //specific coloring
+            ColorPalette palette = ThemeManager.GetCurrentPalette();
+
+            //remove toolstrip weird white line
+            toolStripEditor.Renderer = new ThemeManager.CustomToolStripRenderer(palette);
+            viewportToolstrip.Renderer = new ThemeManager.CustomToolStripRenderer(palette);
+            treeView_addToolstrip.Renderer = new ThemeManager.CustomToolStripRenderer(palette);
+            toolStrip_propertyGrid.Renderer = new ThemeManager.CustomToolStripRenderer(palette);
+            viewportToolstrip.BackColor = palette.Border;
+            splitContainerLeft.BackColor = palette.Border;
+            treeView_searchBar.BackColor = palette.BackgroundDarker;
+            treeView_searchField.BackColor = palette.BackgroundDarker;
+            propertyGrid_searchBar.BackColor = palette.BackgroundDarker;
+            propertyGrid_searchField.BackColor = palette.BackgroundDarker;
+            toolStripContainer1.TopToolStripPanel.BackColor = palette.BackgroundDarker;
+            Globals.NodeColorEntry = palette.Text;
         }
 
 
@@ -5390,7 +4845,6 @@ namespace Re4QuadExtremeEditor
             toolStripMenuItemEdit.Text = Lang.GetText(eLang.toolStripMenuItemEdit);
             toolStripMenuItemView.Text = Lang.GetText(eLang.toolStripMenuItemView);
             toolStripMenuItemMisc.Text = Lang.GetText(eLang.toolStripMenuItemMisc);
-            toolStripMenuItemSelectRoom.Text = Lang.GetText(eLang.SelectRoom);
             //submenu File
             toolStripMenuItemNewFile.Text = Lang.GetText(eLang.toolStripMenuItemNewFile);
             toolStripMenuItemOpen.Text = Lang.GetText(eLang.toolStripMenuItemOpen);
@@ -5628,19 +5082,33 @@ namespace Re4QuadExtremeEditor
         {
             if (theAppLoadedWell)
             {
-                e.Cancel = true;
-                if (MessageBox.Show(Lang.GetText(eLang.MessageBoxFormClosingDialog), Lang.GetText(eLang.MessageBoxFormClosingTitle), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
-                {
-                    e.Cancel = false;
+                if (isProjectEmpty() == false) {
 
-                    DataBase.ItemsModels?.ClearGL();
-                    DataBase.EtcModels?.ClearGL();
-                    DataBase.EnemiesModels?.ClearGL();
-                    DataBase.InternalModels?.ClearGL();
-                    DataBase.QuadCustomModels?.ClearGL();
-                    DataBase.SelectedRoom?.ClearGL();
-                    DataShader.EndUnload();
+                    DialogResult result = MessageBox.Show(
+                        "You may have unsaved changes. Are you sure you want to exit?",
+                        "Exit Application?",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+
+                    if (result == DialogResult.No)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
                 }
+                else
+                {
+
+                }
+
+                DataBase.ItemsModels?.ClearGL();
+                DataBase.EtcModels?.ClearGL();
+                DataBase.EnemiesModels?.ClearGL();
+                DataBase.InternalModels?.ClearGL();
+                DataBase.QuadCustomModels?.ClearGL();
+                DataBase.SelectedRoom?.ClearGL();
+                DataShader.EndUnload();
             }
         }
 

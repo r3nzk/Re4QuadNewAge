@@ -1,11 +1,13 @@
-﻿using System;
+﻿using OpenTK;
+using Re4QuadExtremeEditor.Editor.Class;
+using Re4QuadExtremeEditor.Editor.Class.Enums;
+using Re4QuadExtremeEditor.Editor.Class.ObjMethods;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
-using OpenTK;
-using Re4QuadExtremeEditor.Editor.Class.Enums;
 
 namespace Re4QuadExtremeEditor.Editor
 {
@@ -14,10 +16,18 @@ namespace Re4QuadExtremeEditor.Editor
     /// </summary>
     public static class Globals
     {
+        //viewport
+        public static EditorTool CurrentTool { get; set; } = EditorTool.Move;
+        public static MoveObjType CurrentMoveObjType { get; set; } = MoveObjType.Null;
+        public static ManipulationTarget CurrentManipulationTarget { get; set; } = new ManipulationTarget { Type = ManipulationTargetType.None, DisplayName = "" };
+        public static GizmoSpace CurrentGizmoSpace { get; set; } = GizmoSpace.World;
+
+
+        public static UpdateMethods updateMethods;
 
         #region Configs
 
-        // diretorios
+        // game paths
         public static string DirectoryXFILE = @"";
         public static string Directory2007RE4 = @"";
         public static string DirectoryPS2RE4 = @"";
@@ -26,6 +36,11 @@ namespace Re4QuadExtremeEditor.Editor
         public static string DirectoryCustom1 = @"";
         public static string DirectoryCustom2 = @"";
         public static string DirectoryCustom3 = @"";
+        // tool paths
+        public static string ToolPathUDAS = "";
+        public static string ToolPathLFS = "";
+        public static string ToolPathPACK = "";
+        public static string ToolPathGCA = "";
 
         //listagens json
         public static string FileDiretoryItemsList = Consts.DefaultItemsListFileDirectory;
@@ -198,7 +213,7 @@ namespace Re4QuadExtremeEditor.Editor
         //treeview
         public static bool TreeViewHideEmptyRoot { get; set; } = true;
         //propertygrid
-        public static bool PropertyGridHideBloatElements { get; set; } = true;
+        public static bool PropertyGridShowAllByDefault { get; set; } = true;
         public static bool PropertyGridUseHexFloat = false;
 
         #endregion
@@ -231,6 +246,12 @@ namespace Re4QuadExtremeEditor.Editor
         //cam grid
         public static bool CamGridEnable = false;
         public static int CamGridvalue = 100;
+
+        //version
+        public static string PreferredRoomList = "";
+        public static EditorRe4Ver PreferredVersion;
+
+        public static EditorTheme SelectedTheme;
 
 
         // treenode fonts

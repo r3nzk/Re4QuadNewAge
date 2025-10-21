@@ -60,7 +60,7 @@ namespace NsCamera
         private CameraMode camMode = CameraMode.FLY;
         private LookDirection currentLookDirection;
 
-        public CameraMode CamMode { get { return camMode; } }
+        public CameraMode CamMode { get { return camMode; } set { } }
         public LookDirection CurrentLookDirection { get { return currentLookDirection; } }
 
         private Vector3 pos = Vector3.Zero;
@@ -204,7 +204,25 @@ namespace NsCamera
         }
 
 
+        public static Vector3? Project(Vector3 worldPos, Matrix4 projectionMatrix, Matrix4 viewMatrix, System.Drawing.Rectangle viewport)
+        {
+            Vector4 pos4 = new Vector4(worldPos, 1.0f);
+            Vector4 clipSpace = Vector4.Transform(pos4, viewMatrix * projectionMatrix);
 
+            if (clipSpace.W == 0.0f)
+                return null;
+
+            Vector3 ndc = clipSpace.Xyz / clipSpace.W;
+
+            if (clipSpace.W < 0)
+                return null;
+
+            float screenX = (ndc.X + 1.0f) / 2.0f * viewport.Width + viewport.X;
+            float screenY = (1.0f - (ndc.Y + 1.0f) / 2.0f) * viewport.Height + viewport.Y; //y inverted (screenspace only)
+            float screenZ = ndc.Z;
+
+            return new Vector3(screenX, screenY, screenZ);
+        }
 
         public Matrix4 GetViewMatrix()
         {

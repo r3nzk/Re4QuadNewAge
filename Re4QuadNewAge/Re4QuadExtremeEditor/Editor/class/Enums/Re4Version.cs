@@ -18,7 +18,16 @@ namespace Re4QuadExtremeEditor.Editor.Class.Enums
         NULL = 0,
         V2007PS2 = 1,
         UHD = 2,
-        PS4NS = 3, //caso tiver
+        PS4NS = 3,
         BIG_ENDIAN = 4
+    }
+
+    public enum EditorRe4Ver : byte
+    {
+        None = 0,
+        UHD = 1,
+        SourceNext2007 = 2,
+        PS2 = 3,
+        PS4NS = 4
     }
 }

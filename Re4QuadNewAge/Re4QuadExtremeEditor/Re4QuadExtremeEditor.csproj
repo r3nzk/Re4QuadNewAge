@@ -83,18 +83,24 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=3.3.3.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.3.3\lib\net20\OpenTK.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK.GLControl, Version=3.3.3.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.GLControl.3.3.3\lib\net20\OpenTK.GLControl.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PowerLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PowerLib.Winform.1.0.13\lib\net45\PowerLib.dll</HintPath>
     </Reference>
     <Reference Include="PowerLib.Winform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PowerLib.Winform.1.0.13\lib\net45\PowerLib.Winform.dll</HintPath>
+    </Reference>
+    <Reference Include="ReaLTaiizor, Version=3.8.1.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ReaLTaiizor.3.8.1.3\lib\net48\ReaLTaiizor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -115,6 +121,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Editor\Camera\Camera.cs" />
+    <Compile Include="Editor\class\Components\CameraControl.cs" />
+    <Compile Include="Editor\class\Components\ObjectControl.cs" />
+    <Compile Include="Editor\class\Components\ViiewportGizmoDropdown.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\class\Components\ViiewportGizmoDropdown.Designer.cs">
+      <DependentUpon>ViiewportGizmoDropdown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\class\Components\ViewportCameraDropdown.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Editor\class\Components\ViewportCameraDropdown.Designer.cs">
+      <DependentUpon>ViewportCameraDropdown.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\class\Files\ProjectManagement\ProjectFile.cs" />
+    <Compile Include="Editor\class\Files\ProjectManagement\ProjectManager.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\FocusNodeObjectEditor.cs" />
+    <Compile Include="Editor\class\MyProperty\CustomUITypeEditor\PropertyFilter.cs" />
+    <Compile Include="Editor\class\MyProperty\DynamicTypeDescriptor\PropertyFilterDescriptor.cs" />
     <Compile Include="Editor\Console.cs" />
     <Compile Include="Editor\class\Enums\aLang.cs" />
     <Compile Include="Editor\class\Enums\ConfigFrationalSymbol.cs" />
@@ -274,21 +299,29 @@
     <Compile Include="Editor\forms\CameraForm.Designer.cs">
       <DependentUpon>CameraForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\forms\controls\CameraMoveControl.cs">
+    <Compile Include="Editor\class\Components\Legacy\CameraMoveControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Editor\forms\controls\CameraMoveControl.Designer.cs">
+    <Compile Include="Editor\class\Components\Legacy\CameraMoveControl.Designer.cs">
       <DependentUpon>CameraMoveControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\forms\controls\EditorTool.cs" />
-    <Compile Include="Editor\forms\controls\Gizmo.cs" />
-    <Compile Include="Editor\forms\controls\ObjectMoveControl.cs">
+    <Compile Include="Editor\class\EditorTool.cs" />
+    <Compile Include="Editor\class\Gizmo.cs" />
+    <Compile Include="Editor\class\Components\Legacy\ObjectMoveControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Editor\forms\controls\ObjectMoveControl.Designer.cs">
+    <Compile Include="Editor\class\Components\Legacy\ObjectMoveControl.Designer.cs">
       <DependentUpon>ObjectMoveControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\ControlUtils\FloatBox.cs">
+    <Compile Include="Editor\class\Components\ThemeManager.cs" />
+    <Compile Include="Editor\forms\SetupWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\forms\SetupWizard.Designer.cs">
+      <DependentUpon>SetupWizard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\class\ExternalToolManager.cs" />
+    <Compile Include="Editor\Utils\FloatBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Editor\DataBase.cs" />
@@ -304,7 +337,6 @@
     <Compile Include="Editor\forms\CreditsForm.Designer.cs">
       <DependentUpon>CreditsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\forms\Custom\CustomComponents.cs" />
     <Compile Include="Editor\forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -467,13 +499,19 @@
     <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdBinDecoder.cs" />
     <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdTPL.cs" />
     <Compile Include="Tools\UHD\UHD_BIN_TPL\UhdTplDecoder.cs" />
+    <EmbeddedResource Include="Editor\class\Components\ViiewportGizmoDropdown.resx">
+      <DependentUpon>ViiewportGizmoDropdown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\class\Components\ViewportCameraDropdown.resx">
+      <DependentUpon>ViewportCameraDropdown.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editor\forms\CameraForm.resx">
       <DependentUpon>CameraForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\forms\controls\CameraMoveControl.resx">
+    <EmbeddedResource Include="Editor\class\Components\Legacy\CameraMoveControl.resx">
       <DependentUpon>CameraMoveControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\forms\controls\ObjectMoveControl.resx">
+    <EmbeddedResource Include="Editor\class\Components\Legacy\ObjectMoveControl.resx">
       <DependentUpon>ObjectMoveControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\forms\AddNewObjForm.resx">
@@ -481,6 +519,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\forms\CreditsForm.resx">
       <DependentUpon>CreditsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\MainForm.aa.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -497,6 +538,9 @@
     <EmbeddedResource Include="Editor\forms\SelectRoomForm.resx">
       <DependentUpon>SelectRoomForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Editor\forms\SetupWizard.resx">
+      <DependentUpon>SetupWizard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editor\forms\SplashScreenForm.resx">
       <DependentUpon>SplashScreenForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -507,8 +551,8 @@
     </EmbeddedResource>
     <None Include="Editor\Camera\Camera.projitems" />
     <None Include="Editor\Camera\CameraNewAge.shproj" />
-    <None Include="Editor\ControlUtils\ControlUtils.projitems" />
-    <None Include="Editor\ControlUtils\ControlUtils.shproj" />
+    <None Include="Editor\Utils\ControlUtils.projitems" />
+    <None Include="Editor\Utils\ControlUtils.shproj" />
     <None Include="Editor\JSON\JSON.projitems" />
     <None Include="Editor\JSON\JSON.shproj" />
     <None Include="Editor\ModelLoaderNewAge\ModelLoaderNewAge.projitems" />
@@ -623,6 +667,18 @@
     <None Include="Assets\img\dots.png" />
     <None Include="Assets\img\tool_move.png" />
     <None Include="Assets\img\tool_rotate.png" />
+    <None Include="Assets\img\openroot_editor.png" />
+    <None Include="Assets\img\openroot_game.png" />
+    <None Include="Assets\img\room_add.png" />
+    <None Include="Assets\img\room_export.png" />
+    <None Include="Assets\img\room_fav.png" />
+    <None Include="Assets\img\room_clear.png" />
+    <None Include="Assets\img\cam.png" />
+    <None Include="Assets\img\gizmo.png" />
+    <None Include="Assets\img\sort_alphabetical.png" />
+    <None Include="Assets\img\sort_category.png" />
+    <None Include="Assets\img\sort_curated.png" />
+    <None Include="Assets\img\openroot_room.png" />
     <Content Include="icon.ico" />
     <Content Include="libs\DDS_LIB\Credit.txt" />
     <Content Include="libs\TGA_LIB\Credit.txt" />

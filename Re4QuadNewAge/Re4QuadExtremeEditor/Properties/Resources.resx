@@ -127,17 +127,26 @@
   <data name="LitPointShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\LitPointShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="room_clear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\room_clear.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BoundaryBoxShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\BoundaryBoxShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ItemTrigggerRadius" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Hex3D\ItemTrigggerRadius.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="quad_splash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\quad_splash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="tool_rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\tool_rotate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ItemTrigggerRadiusShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\ItemTrigggerRadiusShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CircleTriggerZoneShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\CircleTriggerZoneShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gizmo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\gizmo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ItemTrigggerRadiusShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\ItemTrigggerRadiusShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -157,6 +166,12 @@
   <data name="Plane" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\Plane.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="room_export" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\room_export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="openroot_editor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\openroot_editor.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="CylinderDownX" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderDownX.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -168,6 +183,9 @@
   </data>
   <data name="RoomSelectModeShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\RoomSelectModeShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TriggerZoneShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Shader\TriggerZoneShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CylinderTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderTop.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -181,17 +199,26 @@
   <data name="ObjModelShaderPlusVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\ObjModelShaderPlusVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="CylinderFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Hex3D\CylinderFull.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="WhiteTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgGL\WhiteTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LitPointShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\LitPointShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="SquareRedLookVertical" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgControl\SquareRedLookVertical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ItemTrigggerRadius" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hex3D\ItemTrigggerRadius.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="RoomShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\RoomShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="cam" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\cam.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HorizontalYelow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgControl\HorizontalYelow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="room_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\room_add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LIT_Point" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\LIT_Point.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -199,17 +226,17 @@
   <data name="add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="WhiteTexture" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgGL\WhiteTexture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="GridShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Shader\GridShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SquareDisable" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgControl\SquareDisable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dots" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\dots.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgGL\Transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SquareRedLookHorisontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgControl\SquareRedLookHorisontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="PlaneZoneShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Shader\PlaneZoneShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="BoundaryBoxShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\BoundaryBoxShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -217,26 +244,29 @@
   <data name="ObjModelShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\ObjModelShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="tool_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\tool_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ObjModelShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\ObjModelShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CylinderSides" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderSides.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TriggerZoneShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shader\TriggerZoneShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgGL\Transparent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="VerticalDisable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImgControl\VerticalDisable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SquareDisable" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgControl\SquareDisable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="sort_alphabetical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\sort_alphabetical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="play_yellow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\img\play_yellow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="GridShaderFrag" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shader\GridShaderFrag.frag;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SquareRedLookHorisontal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgControl\SquareRedLookHorisontal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Box" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\Box.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -244,17 +274,23 @@
   <data name="GridShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\GridShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="PlaneZoneShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shader\PlaneZoneShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SquareRedLookVertical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ImgControl\SquareRedLookVertical.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="openroot_game" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\openroot_game.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HorizontalDisable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImgControl\HorizontalDisable.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="sort_curated" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\sort_curated.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BoundaryBoxShaderPlusVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\BoundaryBoxShaderPlusVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="HorizontalYelow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ImgControl\HorizontalYelow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CylinderFull" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hex3D\CylinderFull.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="SquareRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ImgControl\SquareRed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -265,16 +301,16 @@
   <data name="TriggerZoneShaderVert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Shader\TriggerZoneShaderVert.vert;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="quad_splash" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\img\quad_splash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="sort_category" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\sort_category.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="room_fav" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\room_fav.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CylinderDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hex3D\CylinderDown.hex;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="tool_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\img\tool_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="tool_rotate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\img\tool_rotate.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="openroot_room" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\img\openroot_room.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

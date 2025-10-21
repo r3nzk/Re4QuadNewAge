@@ -25,6 +25,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             entry["DirectoryCustom2"] = config.DirectoryCustom2;
             entry["DirectoryCustom3"] = config.DirectoryCustom3;
 
+            entry["ToolPathUDAS"] = config.ToolPathUDAS;
+            entry["ToolPathLFS"] = config.ToolPathLFS;
+            entry["ToolPathPACK"] = config.ToolPathPACK;
+            entry["ToolPathGCA"] = config.ToolPathGCA;
+
             entry["FileDiretoryEnemiesList"] = config.FileDiretoryEnemiesList;
             entry["FileDiretoryEtcModelsList"] = config.FileDiretoryEtcModelsList;
             entry["FileDiretoryItemsList"] = config.FileDiretoryItemsList;
@@ -40,10 +45,16 @@ namespace Re4QuadExtremeEditor.Editor.JSON
             entry["ItemRotationCalculationDivider"] = config.ItemRotationCalculationDivider;
             entry["ItemRotationCalculationMultiplier"] = config.ItemRotationCalculationMultiplier;
             entry["ItemRotationOrder"] = (int)config.ItemRotationOrder;
-            entry["UseDarkTheme"] = config.UseDarkTheme;
+
+            entry["SelectedTheme"] = (int)config.SelectedTheme;
+
+            //version control
+            entry["PreferredRoomList"] = config.PreferredRoomList;
+            entry["PreferredVersion"] = (int)config.PreferredVersion;
+
             entry["UseInvertedMouseButtons"] = config.UseInvertedMouseButtons;
             entry["MaximizeEditorOnStartup"] = config.MaximizeEditorOnStartup;
-            entry["PropertyGridHideBloatElements"] = config.PropertyGridHideBloatElements;
+            entry["PropertyGridShowAllByDefault"] = config.PropertyGridShowAllByDefault;
             entry["TreeViewHideEmptyRoot"] = config.TreeViewHideEmptyRoot;
             entry["LoadLangTranslation"] = config.LoadLangTranslation;
             entry["LangJsonFile"] = config.LangJsonFile;
@@ -84,6 +95,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                     config.DirectoryCustom1 = FixDirectory(oConfigs?["DirectoryCustom1"]?.ToString());
                     config.DirectoryCustom2 = FixDirectory(oConfigs?["DirectoryCustom2"]?.ToString());
                     config.DirectoryCustom3 = FixDirectory(oConfigs?["DirectoryCustom3"]?.ToString());
+
+                    config.ToolPathUDAS = oConfigs?["ToolPathUDAS"]?.ToString() ?? "";
+                    config.ToolPathLFS = oConfigs?["ToolPathLFS"]?.ToString() ?? "";
+                    config.ToolPathPACK = oConfigs?["ToolPathPACK"]?.ToString() ?? "";
+                    config.ToolPathGCA = oConfigs?["ToolPathGCA"]?.ToString() ?? "";
 
                     config.FileDiretoryEnemiesList = oConfigs?["FileDiretoryEnemiesList"]?.ToString() ?? Consts.DefaultEnemiesListFileDirectory;
                     config.FileDiretoryEtcModelsList = oConfigs?["FileDiretoryEtcModelsList"]?.ToString() ?? Consts.DefaultEtcModelsListFileDirectory;
@@ -229,14 +245,33 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                         config.ItemRotationOrder = (Class.Enums.ObjRotationOrder)value;
                     }
 
-                    if (oConfigs["UseDarkTheme"] != null)
+                    if (oConfigs["SelectedTheme"] != null)
                     {
                         try
                         {
-                            config.UseDarkTheme = bool.Parse(oConfigs["UseDarkTheme"].ToString());
+                            int themeIndex = int.Parse(oConfigs["SelectedTheme"].ToString());
+                            if (Enum.IsDefined(typeof(Editor.Class.EditorTheme), themeIndex))
+                            {
+                                config.SelectedTheme = (Editor.Class.EditorTheme)themeIndex;
+                            }
                         }
-                        catch (Exception)
+                        catch (Exception) { }
+                    }
+
+                    config.PreferredRoomList = oConfigs?["PreferredRoomList"]?.ToString() ?? "";
+
+                    if (oConfigs["PreferredVersion"] != null)
+                    {
+                        try
                         {
+                            byte value = byte.Parse(oConfigs["PreferredVersion"].ToString());
+
+                            if (Enum.IsDefined(typeof(Class.Enums.EditorRe4Ver), value))
+                            {
+                                config.PreferredVersion = (Class.Enums.EditorRe4Ver)value;
+                            }
+                        }
+                        catch (Exception) { 
                         }
                     }
 
@@ -273,11 +308,11 @@ namespace Re4QuadExtremeEditor.Editor.JSON
                         }
                     }
 
-                    if (oConfigs["PropertyGridHideBloatElements"] != null)
+                    if (oConfigs["PropertyGridShowAllByDefault"] != null)
                     {
                         try
                         {
-                            config.PropertyGridHideBloatElements = bool.Parse(oConfigs["PropertyGridHideBloatElements"].ToString());
+                            config.PropertyGridShowAllByDefault = bool.Parse(oConfigs["PropertyGridShowAllByDefault"].ToString());
                         }
                         catch (Exception)
                         {
