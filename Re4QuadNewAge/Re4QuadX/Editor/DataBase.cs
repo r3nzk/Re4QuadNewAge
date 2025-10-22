@@ -1,0 +1,92 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Re4QuadX.Editor.JSON;
+using Re4QuadX.Editor.Class;
+using Re4QuadX.Editor.Class.TreeNodeObj;
+using Re4QuadX.Editor.Class.Files;
+using Re4QuadX.Editor.Class.Enums;
+using Re4QuadX.Editor.Class.Shaders;
+using NewAgeTheRender;
+
+namespace Re4QuadX.Editor
+{
+    /// <summary>
+    /// Contem todo o conteudo da modelagem(3d), os conteudos dos arquivos carregados no programa, e as definições dos objetos;
+    /// </summary>
+    public static class DataBase
+    { 
+        //representa a Room (cenario) selecionada, e a ser renderizada
+        public static RoomSelectedObj SelectedRoom = null;
+    
+        // os grupos de objetos presentes no programa
+        public static ModelGroupContainer EnemiesModels; // modelos dos inimigos
+        public static ModelGroupContainer ItemsModels; // modelos dos itens
+        public static ModelGroupContainer EtcModels; // modelos da pasta "etcmodel"
+        public static ModelGroupContainer InternalModels; // modelos proprios para o programa
+        public static ModelGroupContainer QuadCustomModels; // QuadCustom File
+
+
+        // Dicionarios com os ids dos objetos no jogo
+        public static ObjectInfoList EnemiesIDs;
+        public static ObjectInfoList ItemsIDs;
+        public static ObjectInfoList EtcModelIDs;
+        public static QuadCustomInfoList QuadCustomIDs;
+
+        // aqui são os objetos que representa os arquivos no programa
+        public static FileEnemyEslGroup FileESL;
+        public static FileEtcModelEtsGroup FileETS;
+        public static FileSpecialGroup FileITA;
+        public static FileSpecialGroup FileAEV;
+        public static ExtraGroup Extras;
+        public static File_DSE_Group FileDSE;
+        public static File_EMI_Group FileEMI;
+        public static File_ESAR_Group FileSAR;
+        public static File_ESAR_Group FileEAR;
+        public static File_ESE_Group FileESE;
+        public static File_FSE_Group FileFSE;
+        public static File_LIT_Group FileLIT;
+        public static FileQuadCustomGroup FileQuadCustom;
+        public static File_EFFBLOB_Group FileEFF;
+
+        //conteudo do treeview
+        public static EnemyNodeGroup NodeESL;
+        public static EtcModelNodeGroup NodeETS;
+        public static SpecialNodeGroup NodeITA;
+        public static SpecialNodeGroup NodeAEV;
+        public static ExtraNodeGroup NodeEXTRAS;
+        public static NewAge_DSE_NodeGroup NodeDSE;
+        public static NewAge_EMI_NodeGroup NodeEMI;
+        public static NewAge_ESAR_NodeGroup NodeSAR;
+        public static NewAge_ESAR_NodeGroup NodeEAR;
+        public static NewAge_ESE_NodeGroup NodeESE;
+        public static NewAge_FSE_NodeGroup NodeFSE;
+        public static QuadCustomNodeGroup NodeQuadCustom;
+        public static NewAge_LIT_Groups_NodeGroup NodeLIT_Groups;
+        public static NewAge_LIT_Entrys_NodeGroup NodeLIT_Entrys;
+        //EFFNodes
+        public static NewAge_EFF_NodeGroup NodeEFF_Table0;
+        public static NewAge_EFF_NodeGroup NodeEFF_Table1;
+        public static NewAge_EFF_NodeGroup NodeEFF_Table2;
+        public static NewAge_EFF_NodeGroup NodeEFF_Table3;
+        public static NewAge_EFF_NodeGroup NodeEFF_Table4;
+        public static NewAge_EFF_NodeGroup NodeEFF_Table6;
+        public static NewAge_EFF_EffectGroup_NodeGroup NodeEFF_Table7_Effect_0;
+        public static NewAge_EFF_EffectGroup_NodeGroup NodeEFF_Table8_Effect_1;
+        public static NewAge_EFF_EffectEntry_NodeGroup NodeEFF_EffectEntry;
+        public static NewAge_EFF_Table9Entry_NodeGroup NodeEFF_Table9;
+
+        // lista de objetos selecionados na treeview
+        public static Dictionary<int, TreeNode> SelectedNodes;
+        // o ultimo node/objeto selecionado
+        public static TreeNode LastSelectNode = null;
+
+        //dicionario com a lista de diretorio para os models usar
+        //PathKey, diretorio
+        public static Dictionary<string, string> DirectoryDic;
+
+    }
+}
