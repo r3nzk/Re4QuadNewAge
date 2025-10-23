@@ -1,61 +1,56 @@
-# Re4QuadNewAge
-Re4 Quad Extreme Editor [NewAge] - The best Re4 editor
+# QuadX
 
-![](https://i.imgur.com/WvuAgHi.png)
+Standalone Modding tool made to edit Resident Evil 4 (2005) data and map/level files within a 3D Editor.
 
-**Info:**
-<br>License: MIT Licence
-<br>Language: C#
-<br>Platform: Windows
-<br>Dependency: Microsoft .NET Framework 4.8
-<br>Requires openGL 3.3 or higher
+[![Github license](https://img.shields.io/github/license/r3nzk/Re4QuadX.svg)](LICENSE) 
+[![GitHub release](https://img.shields.io/github/release/r3nzk/Re4QuadX.svg)](https://github.com/r3nzk/Re4QuadX-Project//releases/latest)
+[![Github All Releases](https://img.shields.io/github/downloads/r3nzk/Re4QuadX/total.svg)](https://github.com/r3nzk/Re4QuadX/releases/latest)
 
-**Translate from Portuguese Brazil**
+## About:
+QuadX is a comprehensive 3D editor built to intuitively modify core files for most versions of OG RE4. It features a fully integrated 3D viewport for real-time manipulation.
+This fork focuses on improving editing workflow, interfaces, automation, and overall editor stability.
 
-O "Re4 Quad Extreme Editor" é um programa voltado para a edição de arquivos do jogo "Resident Evil 4" (RE4). Ele permite a edição de vários arquivos ESL, ETS, ITA e AEV em um editor com visualização de cenário em 3D, compatível tanto com a versão clássica da Ubisoft (2005/2007), com a versão de PS2, quanto com a versão UHD da Steam (2014), e as versões de PS4 e Switch (NS)​. No qual agora conta com a visualização de modelos de cenários customizados/editados.
+<img width="1919" height="1056" alt="example1" src="https://github.com/user-attachments/assets/b459dc5a-12aa-4a01-8db5-0b05e7f45a45" />
 
-**Update 1.2.4**
-<br>Adicionado suporte parcial para edição do arquivo EFFBLOB (arquivo de Efeitos EFF);
+## Fork Upgrades
+* General interface/logic/structure rework with modern components and unified visual style.
+* Renderer mipmap generation and new render loop for smoother 3D view.
+* New GIZMO based object translation and rotation supporting local and worldspace.
+* Built-in automation to extract, import and repack entire room files with 1 click.
+* Console tab that displays editor actions with deeper setup logs and sanity checks.
+* Search and Filter bars to multiple panels for easier element selection.
+* Dark and Light theme support (Custom themes in the future).
+* More options and preferences.
 
-**Update 1.2.3**
-<br>Adicionado suporte parcial para edição do arquivo LIT;
+Check full changelog [here](https://github.com/r3nzk/RE4QuadX/commits/main).
 
-**Update 1.2.2**
-<br>Implementadas as últimas mudanças do "JADERLINK_MODEL_VIEWER" da V.1.0.6;
-<br>Adicionado suporte para carregar modelos e cenários da versão de PS4 e NS do Re4;
-<br>Adicionado suporte parcial (adaptado) para os arquivos AEV/ITA da versão de PS4/NS;
-<br>Feitos pequenas mudanças/melhorias.
+## Usage
+This editor is designed to be as intuitive and straightforward as possible. However, since it works with closed-source game, some of RE4’s file formats, structures, or engine quirks can be a bit unclear. If you need guidance, check the project [Wiki](https://github.com/r3nzk/Re4QuadX/wiki) for setup instructions and general usage tips.
 
-**Update 1.2.1**
-<br>Adicionado suporte para os arquivos .DSE e .QuadCustom
-<br>Adicionado suporte parcial para os arquivos FSE, EAR, SAR, ESE e EMI.
-<br>O arquivo "QuadCustom" é um arquivo próprio do programa, nele você pode ver a posição de objetos dos arquivos que o programa não pode abrir, além de possibilitar visualizar modelos personalizados.
+To use the program properly, make sure you have the game files for your target version available. You can follow the step-by-step Setup Wizard that runs on first launch (or open it anytime from Misc > Setup Wizard). It will help you configure all required game directories and tool paths.
 
-# Re4QuadExtremeEditor.exe
+## Supported Versions
+The application currently supports:
+- Resident Evil 4 Ultimate HD Edition (UHD)
+- Resident Evil 4 Sourcenext/Ubisoft (2007)
+- Resident Evil 4 for Playstation 2
+- Resident Evil 4 for Playstation 4/Nintendo Switch (Partialy)
 
-Para abrir o programa, é necessário que sua placa de vídeo (GPU) tenha o OpenGL versão 3.3 ou superior. Caso sua versão seja inferior à requerida, o programa mostrará uma mensagem de erro.
+## Libraries/Packages Utilized
+* [JADERLINK_MODEL_VIEWER](https://github.com/JADERLINK/JADERLINK_MODEL_VIEWER)
+* [TGASharpLib](https://github.com/ALEXGREENALEX/TGASharpLib)
+* [DDSReaderSharp](https://github.com/ALEXGREENALEX/DDSReaderSharp)
+* [ScarletLibrary](https://github.com/xdanieldzd/Scarlet)
+* [Newtonsoft Json.NET](https://www.newtonsoft.com/json)
+* [OpenTK](https://www.nuget.org/packages/OpenTK/)
+* [OpenTK.GLControl](https://www.nuget.org/packages/OpenTK.GLControl)
+* [PowerLib.Winform](https://www.nuget.org/packages/PowerLib.Winform)
+* [RealTaiizor](https://github.com/Taiizor/ReaLTaiizor)
 
-# Para Desenvolvedores:
+## Credits
+QuadX is a fork of the [RE4QuadNewAge](https://github.com/JADERLINK/Re4QuadNewAge) Editor created by [JADERLINK](https://github.com/JADERLINK/).
+Most of the heavy lifting, research, and reverse-engineering work were done by him and the RE4 modding community.
+This fork mainly focuses on improving usability, adding quality-of-life features, and modernizing the interface, while keeping the original core and logic built entirely by jaderlink.
 
-**Como compilar a partir do código-fonte:**
-
-Requisitos: Visual Studio 2019 ou 2022, com suporte a Csharp;
-<br>O projeto conta com três .dlls externas que são baixadas via NuGet, as quais são:
-<br> OpenTK, versão: 3.3.3
-<br> OpenTK.GLControl, versão: 3.3.3
-<br> Newtonsoft.Json, versão: 13.0.3
-<br> Aviso: as outras dependências já estão presentes no código-fonte.
-
-# Código de terceiro:
-
-[JADERLINK_MODEL_VIEWER](https://github.com/JADERLINK/JADERLINK_MODEL_VIEWER).
-<br>[TGASharpLib by ALEXGREENALEX](https://github.com/ALEXGREENALEX/TGASharpLib).
-<br>[DDSReaderSharp by ALEXGREENALEX](https://github.com/ALEXGREENALEX/DDSReaderSharp).
-<br>[ScarletLibrary](https://github.com/xdanieldzd/Scarlet)
-<br>[OpenTK](https://github.com/opentk/opentk/blob/master/LICENSE.md).
-<br>[Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md).
-<br>[Code Project](https://www.codeproject.com/info/cpol10.aspx)
-
------
-**At.te: JADERLINK**
-<br>2024-11-30
+## License
+MIT License – Free to use, modify, and distribute.
