@@ -7,11 +7,13 @@ using Re4QuadX.Editor.Class.TreeNodeObj;
 using Re4QuadX.Editor.JSON;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Re4QuadX.Editor
 {
@@ -98,6 +100,23 @@ namespace Re4QuadX.Editor
             }
 
             return roomInfoList;
+        }
+
+        public static void OpenLink(string url)
+        {
+            try
+            {
+                Process.Start(url);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open the link: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static string FixDirectory(string dir)
+        {
+            return dir != null && dir.Length > 0 ? (dir + (dir.Last() != '\\' ? "\\" : "")) : "";
         }
 
 

@@ -58,6 +58,7 @@ namespace Re4QuadX.Editor.JSON
         public bool MaximizeEditorOnStartup { get; set; }
         public bool PropertyGridShowAllByDefault { get; set; }
         public bool TreeViewHideEmptyRoot{ get; set; }
+        public bool checkUpdates { get; set; }
 
         public EditorRe4Ver PreferredVersion { get; set; }
         public string PreferredRoomList { get; set; }
@@ -95,7 +96,7 @@ namespace Re4QuadX.Editor.JSON
             configs.FileDiretoryItemsList = Consts.DefaultItemsListFileDirectory;
             configs.FileDiretoryQuadCustomList = Consts.DefaultQuadCustomModelsListFileDirectory;
 
-            configs.SkyColor = Color.FromArgb(0xFF, 0x94, 0xD2, 0xFF);
+            configs.SkyColor = ColorTranslator.FromHtml("#FF414141");
             // colocar novas configurões aqui;
             configs.FrationalAmount = 9;
             configs.FrationalSymbol = ConfigFrationalSymbol.AcceptsCommaAndPeriod_OutputPeriod;
@@ -112,7 +113,8 @@ namespace Re4QuadX.Editor.JSON
             configs.UseInvertedMouseButtons = false;
             configs.MaximizeEditorOnStartup = true;
             configs.PropertyGridShowAllByDefault = true;
-            configs.TreeViewHideEmptyRoot = true;
+            configs.TreeViewHideEmptyRoot = false;
+            configs.checkUpdates = true;
             configs.LoadLangTranslation = false;
             configs.LangJsonFile = "";
 
@@ -147,6 +149,16 @@ namespace Re4QuadX.Editor.JSON
                 Globals.ToolPathPACK = configs.ToolPathPACK;
                 Globals.ToolPathGCA = configs.ToolPathGCA;
 
+                //if no directory, will also consider as first boot
+                if (string.IsNullOrEmpty(configs.DirectoryXFILE) &&
+                    string.IsNullOrEmpty(configs.Directory2007RE4) &&
+                    string.IsNullOrEmpty(configs.DirectoryPS2RE4) &&
+                    string.IsNullOrEmpty(configs.DirectoryUHDRE4) &&
+                    string.IsNullOrEmpty(configs.DirectoryPS4NSRE4))
+                {
+                    Globals.firstBoot = true;
+                }
+
                 Globals.FileDiretoryEnemiesList = configs.FileDiretoryEnemiesList;
                 Globals.FileDiretoryEtcModelsList = configs.FileDiretoryEtcModelsList;
                 Globals.FileDiretoryItemsList = configs.FileDiretoryItemsList;
@@ -164,6 +176,7 @@ namespace Re4QuadX.Editor.JSON
                 Globals.SelectedTheme = configs.SelectedTheme;
                 Globals.PropertyGridShowAllByDefault = configs.PropertyGridShowAllByDefault;
                 Globals.TreeViewHideEmptyRoot = configs.TreeViewHideEmptyRoot;
+                Globals.checkUpdates = configs.checkUpdates;
 
                 Globals.ItemDisableRotationAll = configs.ItemDisableRotationAll;
                 Globals.ItemDisableRotationIfXorYorZequalZero = configs.ItemDisableRotationIfXorYorZequalZero;
@@ -176,6 +189,8 @@ namespace Re4QuadX.Editor.JSON
             {
                 // para caso o arquivo não consiga ser gravado
                 try { ConfigsFile.writeConfigsFile(Consts.ConfigsFileDirectory, GetDefaultConfigs()); } catch (Exception) { }
+
+                Globals.firstBoot = true;
 
                 Globals.BackupConfigs = GetDefaultConfigs();
             }

@@ -339,9 +339,6 @@ namespace Re4QuadX.Editor.Forms
                     isUhd = true;
                     isPs4NsAdapted = true;
                     break;
-                default:
-                    Editor.Console.Warning($"The selected room list's game version '{gameVersion}' is not supported for auto-loading files.");
-                    return;
             }
 
             //find the room directory (combine root game path + /bio4 for UHD)

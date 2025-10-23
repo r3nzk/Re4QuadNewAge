@@ -107,7 +107,6 @@ namespace Re4QuadX.Editor.Forms
             this.colorDialogColors = new System.Windows.Forms.ColorDialog();
             this.tabControlConfigs = new PowerLib.Winform.Controls.XTabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
-            this.tableLayoutPage1 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.preferredVersionDropdown = new System.Windows.Forms.ComboBox();
@@ -139,6 +138,10 @@ namespace Re4QuadX.Editor.Forms
             this.toolButton_pack = new PowerLib.Winform.Controls.XButton();
             this.toolLabel_pack = new System.Windows.Forms.Label();
             this.toolTextbox_pack = new PowerLib.Winform.Controls.XTextBox();
+            this.toolPanel_gca = new System.Windows.Forms.Panel();
+            this.toolButton_gca = new PowerLib.Winform.Controls.XButton();
+            this.toolLabel_gca = new System.Windows.Forms.Label();
+            this.toolTextbox_gca = new PowerLib.Winform.Controls.XTextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPageLists = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -149,10 +152,9 @@ namespace Re4QuadX.Editor.Forms
             this.tabPageAdvanced = new System.Windows.Forms.TabPage();
             this.buttonOK = new PowerLib.Winform.Controls.XButton();
             this.buttonCancel = new PowerLib.Winform.Controls.XButton();
-            this.toolPanel_gca = new System.Windows.Forms.Panel();
-            this.toolButton_gca = new PowerLib.Winform.Controls.XButton();
-            this.toolLabel_gca = new System.Windows.Forms.Label();
-            this.toolTextbox_gca = new PowerLib.Winform.Controls.XTextBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkboxCheckUpdates = new System.Windows.Forms.CheckBox();
             this.groupBoxInvertedMouseButtons.SuspendLayout();
             this.groupBoxLanguage.SuspendLayout();
             this.groupBoxColors.SuspendLayout();
@@ -170,7 +172,6 @@ namespace Re4QuadX.Editor.Forms
             this.groupBoxFractionalPart.SuspendLayout();
             this.tabControlConfigs.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
-            this.tableLayoutPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPageAppearance.SuspendLayout();
             this.tableLayoutPage2.SuspendLayout();
@@ -186,11 +187,13 @@ namespace Re4QuadX.Editor.Forms
             this.toolPanel_udas.SuspendLayout();
             this.toolPanel_lfs.SuspendLayout();
             this.toolPanel_pack.SuspendLayout();
+            this.toolPanel_gca.SuspendLayout();
             this.tabPageLists.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPageAdvanced.SuspendLayout();
-            this.toolPanel_gca.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxInvertedMouseButtons
@@ -203,7 +206,7 @@ namespace Re4QuadX.Editor.Forms
             this.groupBoxInvertedMouseButtons.Controls.Add(this.checkBoxMaximizeEditorOnStartup);
             this.groupBoxInvertedMouseButtons.Controls.Add(this.checkBoxUseInvertedMouseButtons);
             this.groupBoxInvertedMouseButtons.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.groupBoxInvertedMouseButtons.Location = new System.Drawing.Point(3, 162);
+            this.groupBoxInvertedMouseButtons.Location = new System.Drawing.Point(3, 154);
             this.groupBoxInvertedMouseButtons.Name = "groupBoxInvertedMouseButtons";
             this.groupBoxInvertedMouseButtons.Size = new System.Drawing.Size(679, 147);
             this.groupBoxInvertedMouseButtons.TabIndex = 6;
@@ -273,7 +276,7 @@ namespace Re4QuadX.Editor.Forms
             this.groupBoxLanguage.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.groupBoxLanguage.Location = new System.Drawing.Point(3, 3);
             this.groupBoxLanguage.Name = "groupBoxLanguage";
-            this.groupBoxLanguage.Size = new System.Drawing.Size(679, 75);
+            this.groupBoxLanguage.Size = new System.Drawing.Size(679, 70);
             this.groupBoxLanguage.TabIndex = 4;
             this.groupBoxLanguage.TabStop = false;
             this.groupBoxLanguage.Text = "Language";
@@ -585,7 +588,7 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxDirectoryCustom3.Location = new System.Drawing.Point(12, 102);
             this.textBoxDirectoryCustom3.Name = "textBoxDirectoryCustom3";
             this.textBoxDirectoryCustom3.PlaceHolder = null;
-            this.textBoxDirectoryCustom3.Size = new System.Drawing.Size(606, 23);
+            this.textBoxDirectoryCustom3.Size = new System.Drawing.Size(134, 23);
             this.textBoxDirectoryCustom3.TabIndex = 25;
             // 
             // textBoxDirectoryCustom2
@@ -600,7 +603,7 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxDirectoryCustom2.Location = new System.Drawing.Point(12, 61);
             this.textBoxDirectoryCustom2.Name = "textBoxDirectoryCustom2";
             this.textBoxDirectoryCustom2.PlaceHolder = null;
-            this.textBoxDirectoryCustom2.Size = new System.Drawing.Size(606, 23);
+            this.textBoxDirectoryCustom2.Size = new System.Drawing.Size(134, 23);
             this.textBoxDirectoryCustom2.TabIndex = 24;
             // 
             // textBoxDirectoryCustom1
@@ -615,13 +618,13 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxDirectoryCustom1.Location = new System.Drawing.Point(12, 22);
             this.textBoxDirectoryCustom1.Name = "textBoxDirectoryCustom1";
             this.textBoxDirectoryCustom1.PlaceHolder = null;
-            this.textBoxDirectoryCustom1.Size = new System.Drawing.Size(606, 23);
+            this.textBoxDirectoryCustom1.Size = new System.Drawing.Size(134, 23);
             this.textBoxDirectoryCustom1.TabIndex = 7;
             // 
             // buttonDirectoryCustom3
             // 
             this.buttonDirectoryCustom3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom3.Location = new System.Drawing.Point(621, 101);
+            this.buttonDirectoryCustom3.Location = new System.Drawing.Point(149, 101);
             this.buttonDirectoryCustom3.Name = "buttonDirectoryCustom3";
             this.buttonDirectoryCustom3.Size = new System.Drawing.Size(33, 25);
             this.buttonDirectoryCustom3.TabIndex = 23;
@@ -642,7 +645,7 @@ namespace Re4QuadX.Editor.Forms
             // buttonDirectoryCustom2
             // 
             this.buttonDirectoryCustom2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom2.Location = new System.Drawing.Point(621, 60);
+            this.buttonDirectoryCustom2.Location = new System.Drawing.Point(149, 60);
             this.buttonDirectoryCustom2.Name = "buttonDirectoryCustom2";
             this.buttonDirectoryCustom2.Size = new System.Drawing.Size(33, 25);
             this.buttonDirectoryCustom2.TabIndex = 20;
@@ -653,7 +656,7 @@ namespace Re4QuadX.Editor.Forms
             // buttonDirectoryCustom1
             // 
             this.buttonDirectoryCustom1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom1.Location = new System.Drawing.Point(621, 21);
+            this.buttonDirectoryCustom1.Location = new System.Drawing.Point(149, 21);
             this.buttonDirectoryCustom1.Name = "buttonDirectoryCustom1";
             this.buttonDirectoryCustom1.Size = new System.Drawing.Size(33, 25);
             this.buttonDirectoryCustom1.TabIndex = 17;
@@ -1155,31 +1158,13 @@ namespace Re4QuadX.Editor.Forms
             // tabPageGeneral
             // 
             this.tabPageGeneral.BackColor = System.Drawing.Color.Transparent;
-            this.tabPageGeneral.Controls.Add(this.tableLayoutPage1);
+            this.tabPageGeneral.Controls.Add(this.flowLayoutPanel2);
             this.tabPageGeneral.Location = new System.Drawing.Point(129, 4);
             this.tabPageGeneral.Name = "tabPageGeneral";
             this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageGeneral.Size = new System.Drawing.Size(691, 410);
             this.tabPageGeneral.TabIndex = 1;
             this.tabPageGeneral.Text = "General";
-            // 
-            // tableLayoutPage1
-            // 
-            this.tableLayoutPage1.ColumnCount = 1;
-            this.tableLayoutPage1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPage1.Controls.Add(this.groupBox2, 0, 1);
-            this.tableLayoutPage1.Controls.Add(this.groupBoxInvertedMouseButtons, 0, 2);
-            this.tableLayoutPage1.Controls.Add(this.groupBoxLanguage, 0, 0);
-            this.tableLayoutPage1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPage1.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPage1.Margin = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPage1.Name = "tableLayoutPage1";
-            this.tableLayoutPage1.RowCount = 3;
-            this.tableLayoutPage1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.04951F));
-            this.tableLayoutPage1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.55445F));
-            this.tableLayoutPage1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60.39604F));
-            this.tableLayoutPage1.Size = new System.Drawing.Size(685, 404);
-            this.tableLayoutPage1.TabIndex = 10;
             // 
             // groupBox2
             // 
@@ -1188,9 +1173,9 @@ namespace Re4QuadX.Editor.Forms
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.preferredVersionDropdown);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.groupBox2.Location = new System.Drawing.Point(3, 84);
+            this.groupBox2.Location = new System.Drawing.Point(3, 79);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(679, 72);
+            this.groupBox2.Size = new System.Drawing.Size(679, 69);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Version";
@@ -1646,6 +1631,67 @@ namespace Re4QuadX.Editor.Forms
             this.toolTextbox_pack.Size = new System.Drawing.Size(475, 23);
             this.toolTextbox_pack.TabIndex = 15;
             // 
+            // toolPanel_gca
+            // 
+            this.toolPanel_gca.BackColor = System.Drawing.SystemColors.Control;
+            this.toolPanel_gca.Controls.Add(this.toolButton_gca);
+            this.toolPanel_gca.Controls.Add(this.toolLabel_gca);
+            this.toolPanel_gca.Controls.Add(this.toolTextbox_gca);
+            this.toolPanel_gca.Location = new System.Drawing.Point(0, 99);
+            this.toolPanel_gca.Margin = new System.Windows.Forms.Padding(0);
+            this.toolPanel_gca.Name = "toolPanel_gca";
+            this.toolPanel_gca.Size = new System.Drawing.Size(661, 33);
+            this.toolPanel_gca.TabIndex = 20;
+            // 
+            // toolButton_gca
+            // 
+            this.toolButton_gca.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.toolButton_gca.CheckedEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(128)))), ((int)(((byte)(252)))));
+            this.toolButton_gca.CheckedForeColor = System.Drawing.Color.White;
+            this.toolButton_gca.CheckedStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(169)))), ((int)(((byte)(255)))));
+            this.toolButton_gca.DefaultButtonBorderWidth = 2;
+            this.toolButton_gca.EndColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
+            this.toolButton_gca.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolButton_gca.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.toolButton_gca.HoldingEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(128)))), ((int)(((byte)(252)))));
+            this.toolButton_gca.HoldingForeColor = System.Drawing.Color.White;
+            this.toolButton_gca.HoldingImage = null;
+            this.toolButton_gca.HoldingStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(169)))), ((int)(((byte)(255)))));
+            this.toolButton_gca.Image = null;
+            this.toolButton_gca.Location = new System.Drawing.Point(591, 5);
+            this.toolButton_gca.Name = "toolButton_gca";
+            this.toolButton_gca.Size = new System.Drawing.Size(62, 23);
+            this.toolButton_gca.StartColor = System.Drawing.Color.White;
+            this.toolButton_gca.TabIndex = 16;
+            this.toolButton_gca.Text = "Browse...";
+            this.toolButton_gca.Click += new System.EventHandler(this.toolButton_gca_Click);
+            // 
+            // toolLabel_gca
+            // 
+            this.toolLabel_gca.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.toolLabel_gca.AutoSize = true;
+            this.toolLabel_gca.BackColor = System.Drawing.Color.Transparent;
+            this.toolLabel_gca.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolLabel_gca.Location = new System.Drawing.Point(7, 10);
+            this.toolLabel_gca.Name = "toolLabel_gca";
+            this.toolLabel_gca.Size = new System.Drawing.Size(60, 15);
+            this.toolLabel_gca.TabIndex = 3;
+            this.toolLabel_gca.Text = "GCA Tool:";
+            this.toolLabel_gca.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // toolTextbox_gca
+            // 
+            this.toolTextbox_gca.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.toolTextbox_gca.BackColor = System.Drawing.Color.White;
+            this.toolTextbox_gca.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.toolTextbox_gca.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolTextbox_gca.ForeColor = System.Drawing.Color.Black;
+            this.toolTextbox_gca.Location = new System.Drawing.Point(110, 5);
+            this.toolTextbox_gca.Name = "toolTextbox_gca";
+            this.toolTextbox_gca.PlaceHolder = null;
+            this.toolTextbox_gca.Size = new System.Drawing.Size(475, 23);
+            this.toolTextbox_gca.TabIndex = 15;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -1783,66 +1829,41 @@ namespace Re4QuadX.Editor.Forms
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // toolPanel_gca
+            // flowLayoutPanel2
             // 
-            this.toolPanel_gca.BackColor = System.Drawing.SystemColors.Control;
-            this.toolPanel_gca.Controls.Add(this.toolButton_gca);
-            this.toolPanel_gca.Controls.Add(this.toolLabel_gca);
-            this.toolPanel_gca.Controls.Add(this.toolTextbox_gca);
-            this.toolPanel_gca.Location = new System.Drawing.Point(0, 99);
-            this.toolPanel_gca.Margin = new System.Windows.Forms.Padding(0);
-            this.toolPanel_gca.Name = "toolPanel_gca";
-            this.toolPanel_gca.Size = new System.Drawing.Size(661, 33);
-            this.toolPanel_gca.TabIndex = 20;
+            this.flowLayoutPanel2.Controls.Add(this.groupBoxLanguage);
+            this.flowLayoutPanel2.Controls.Add(this.groupBox2);
+            this.flowLayoutPanel2.Controls.Add(this.groupBoxInvertedMouseButtons);
+            this.flowLayoutPanel2.Controls.Add(this.groupBox5);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(685, 404);
+            this.flowLayoutPanel2.TabIndex = 11;
             // 
-            // toolButton_gca
+            // groupBox5
             // 
-            this.toolButton_gca.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.toolButton_gca.CheckedEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(128)))), ((int)(((byte)(252)))));
-            this.toolButton_gca.CheckedForeColor = System.Drawing.Color.White;
-            this.toolButton_gca.CheckedStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(169)))), ((int)(((byte)(255)))));
-            this.toolButton_gca.DefaultButtonBorderWidth = 2;
-            this.toolButton_gca.EndColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
-            this.toolButton_gca.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolButton_gca.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.toolButton_gca.HoldingEndColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(128)))), ((int)(((byte)(252)))));
-            this.toolButton_gca.HoldingForeColor = System.Drawing.Color.White;
-            this.toolButton_gca.HoldingImage = null;
-            this.toolButton_gca.HoldingStartColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(169)))), ((int)(((byte)(255)))));
-            this.toolButton_gca.Image = null;
-            this.toolButton_gca.Location = new System.Drawing.Point(591, 5);
-            this.toolButton_gca.Name = "toolButton_gca";
-            this.toolButton_gca.Size = new System.Drawing.Size(62, 23);
-            this.toolButton_gca.StartColor = System.Drawing.Color.White;
-            this.toolButton_gca.TabIndex = 16;
-            this.toolButton_gca.Text = "Browse...";
-            this.toolButton_gca.Click += new System.EventHandler(this.toolButton_gca_Click);
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.checkboxCheckUpdates);
+            this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.groupBox5.Location = new System.Drawing.Point(3, 307);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(679, 54);
+            this.groupBox5.TabIndex = 10;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Update";
             // 
-            // toolLabel_gca
+            // checkboxCheckUpdates
             // 
-            this.toolLabel_gca.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.toolLabel_gca.AutoSize = true;
-            this.toolLabel_gca.BackColor = System.Drawing.Color.Transparent;
-            this.toolLabel_gca.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolLabel_gca.Location = new System.Drawing.Point(7, 10);
-            this.toolLabel_gca.Name = "toolLabel_gca";
-            this.toolLabel_gca.Size = new System.Drawing.Size(60, 15);
-            this.toolLabel_gca.TabIndex = 3;
-            this.toolLabel_gca.Text = "GCA Tool:";
-            this.toolLabel_gca.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // toolTextbox_gca
-            // 
-            this.toolTextbox_gca.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.toolTextbox_gca.BackColor = System.Drawing.Color.White;
-            this.toolTextbox_gca.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.toolTextbox_gca.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolTextbox_gca.ForeColor = System.Drawing.Color.Black;
-            this.toolTextbox_gca.Location = new System.Drawing.Point(110, 5);
-            this.toolTextbox_gca.Name = "toolTextbox_gca";
-            this.toolTextbox_gca.PlaceHolder = null;
-            this.toolTextbox_gca.Size = new System.Drawing.Size(475, 23);
-            this.toolTextbox_gca.TabIndex = 15;
+            this.checkboxCheckUpdates.AutoSize = true;
+            this.checkboxCheckUpdates.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.checkboxCheckUpdates.Location = new System.Drawing.Point(12, 22);
+            this.checkboxCheckUpdates.Name = "checkboxCheckUpdates";
+            this.checkboxCheckUpdates.Size = new System.Drawing.Size(122, 19);
+            this.checkboxCheckUpdates.TabIndex = 2;
+            this.checkboxCheckUpdates.Text = "Check for updates";
+            this.checkboxCheckUpdates.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -1890,7 +1911,6 @@ namespace Re4QuadX.Editor.Forms
             this.groupBoxFractionalPart.PerformLayout();
             this.tabControlConfigs.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
-            this.tableLayoutPage1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.tabPageAppearance.ResumeLayout(false);
@@ -1913,13 +1933,16 @@ namespace Re4QuadX.Editor.Forms
             this.toolPanel_lfs.PerformLayout();
             this.toolPanel_pack.ResumeLayout(false);
             this.toolPanel_pack.PerformLayout();
+            this.toolPanel_gca.ResumeLayout(false);
+            this.toolPanel_gca.PerformLayout();
             this.tabPageLists.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tabPageAdvanced.ResumeLayout(false);
-            this.toolPanel_gca.ResumeLayout(false);
-            this.toolPanel_gca.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2023,7 +2046,6 @@ namespace Re4QuadX.Editor.Forms
         private System.Windows.Forms.Label currentThemeLabel;
         private ReaLTaiizor.Controls.SkyComboBox themeDropdown;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPage1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPage2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
@@ -2049,5 +2071,8 @@ namespace Re4QuadX.Editor.Forms
         private PowerLib.Winform.Controls.XButton toolButton_gca;
         private System.Windows.Forms.Label toolLabel_gca;
         private PowerLib.Winform.Controls.XTextBox toolTextbox_gca;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox checkboxCheckUpdates;
     }
 }

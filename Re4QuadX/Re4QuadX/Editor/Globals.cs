@@ -16,6 +16,8 @@ namespace Re4QuadX.Editor
     /// </summary>
     public static class Globals
     {
+        public static bool firstBoot { get; set; } = false;
+
         //viewport
         public static EditorTool CurrentTool { get; set; } = EditorTool.Move;
         public static MoveObjType CurrentMoveObjType { get; set; } = MoveObjType.Null;
@@ -211,10 +213,13 @@ namespace Re4QuadX.Editor
 
         //behaviour
         //treeview
-        public static bool TreeViewHideEmptyRoot { get; set; } = true;
+        public static bool TreeViewHideEmptyRoot { get; set; } = false;
         //propertygrid
         public static bool PropertyGridShowAllByDefault { get; set; } = true;
         public static bool PropertyGridUseHexFloat = false;
+
+        //update
+        public static bool checkUpdates { get; set; } = true;
 
         #endregion
 

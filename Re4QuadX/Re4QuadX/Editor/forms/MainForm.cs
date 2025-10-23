@@ -24,6 +24,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -214,15 +215,30 @@ namespace Re4QuadX
             //project setup
             UpdateFormTitle();
 
-            if (Globals.BackupConfigs.UseInvertedMouseButtons)
-            {
+            if (Globals.BackupConfigs.UseInvertedMouseButtons){
                 MouseButtonsRight = MouseButtons.Left;
                 MouseButtonsLeft = MouseButtons.Right;
             }
 
+        }
+        protected override async void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
 
+            if (Globals.firstBoot)
+            {
+                Editor.Console.Clear();
 
-            Editor.Console.Log("Finished setup, you are running RE4QuadX ver 1.0");
+                await Task.Delay(50);
+
+                using (var setupWizard = new Re4QuadX.Editor.forms.SetupWizard())
+                    setupWizard.ShowDialog();
+
+                Editor.Console.Log("Completed SetupWizard.");
+            }
+
+            float gameVer = 1.0f;
+            Editor.Console.Log($"Finished setup, you are running RE4QuadX ver. {gameVer.ToString("F1", CultureInfo.InvariantCulture)}!");
         }
 
         public void RenderLoop(object sender, EventArgs e)
@@ -4634,7 +4650,7 @@ namespace Re4QuadX
         {
             bool deleteLFS = false;
 
-            if (Globals.BackupConfigs.PreferredVersion == EditorRe4Ver.UHD || Globals.BackupConfigs.PreferredVersion == EditorRe4Ver.PS4NS)
+            if (Globals.PreferredVersion == EditorRe4Ver.UHD || Globals.PreferredVersion == EditorRe4Ver.PS4NS)
             {
                 var result = MessageBox.Show(
                     "Would you like to delete original '.lfs' compressed files and keep only new uncompressed '.udas'?\n\n(Keeping original will significantly fill disk space)",
@@ -4750,7 +4766,7 @@ namespace Re4QuadX
 
         private void support3ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenWebsite("https://jaderlink.github.io/Donate/");
+            Utils.OpenLink("https://jaderlink.github.io/Donate/");
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4768,20 +4784,6 @@ namespace Re4QuadX
         #endregion
 
         #region MainForm events/ metodos
-
-        public void OpenWebsite(string url){
-            try{
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = url,
-                    UseShellExecute = true
-                });
-            }
-            catch (Exception ex)
-            {
-                Editor.Console.Error($"Failed to open website: {ex.Message}");
-            }
-        }
 
         private void splitContainerRight_Panel2_Resize(object sender, EventArgs e)
         {
@@ -5077,8 +5079,6 @@ namespace Re4QuadX
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Idle -= RenderLoop;
-
             if (theAppLoadedWell)
             {
                 if (isProjectEmpty() == false) {
@@ -5100,6 +5100,8 @@ namespace Re4QuadX
                 {
 
                 }
+
+                Application.Idle -= RenderLoop;
 
                 DataBase.ItemsModels?.ClearGL();
                 DataBase.EtcModels?.ClearGL();

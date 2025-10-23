@@ -30,13 +30,22 @@ namespace Re4QuadX.Editor
             outputControl.Font = new Font("Consolas", 9.75F);
             outputControl.Clear();
 
-            if (earlyLogCache.Count > 0){
-                foreach (var log in earlyLogCache)
-                {
-                    LogInternal(log.message, log.level, isFromCache: true);
-                }
-                earlyLogCache.Clear();
+            if (!Globals.firstBoot)
+                FlushEarlyLogs();
+        }
+
+        public static void FlushEarlyLogs()
+        {
+            if (outputControl == null || earlyLogCache.Count == 0)
+            {
+                return;
             }
+
+            foreach (var log in earlyLogCache)
+            {
+                LogInternal(log.message, log.level, isFromCache: true);
+            }
+            earlyLogCache.Clear();
         }
 
         public static void Clear(){

@@ -230,11 +230,29 @@ namespace Re4QuadX
             this.toolStripSeparatorSubMenuEffect2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemDisableGroupPositionEFF = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparatorView2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemNodeDisplayNameInHex = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparatorView3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemMisc = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemCameraMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemResetCamera = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemRenderSelectViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.unpackAllRoomsUHDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unpackAllTexturesUHDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this.lateralToolStripMenuItemLateralMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.objectsMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemShowLateralMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.utilityMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.erToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gLControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItemShowUtilityMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -371,26 +389,7 @@ namespace Re4QuadX
             this.toolstrip_playButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolstrip_openEditorRoot = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.toolstrip_openRE4root = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-            this.lateralToolStripMenuItemLateralMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemShowLateralMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-            this.objectsMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.propertiesMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.utilityMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.erToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemShowUtilityMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-            this.gLControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemCameraMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemResetCamera = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemRefresh = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemRenderSelectViewer = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemNodeDisplayNameInHex = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
             this.treeViewObjs = new NsMultiselectTreeView.MultiselectTreeView();
             this.menuStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).BeginInit();
@@ -1960,7 +1959,7 @@ namespace Re4QuadX
             // toolStripMenuItemEtcModelUseScale
             // 
             this.toolStripMenuItemEtcModelUseScale.Name = "toolStripMenuItemEtcModelUseScale";
-            this.toolStripMenuItemEtcModelUseScale.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemEtcModelUseScale.Size = new System.Drawing.Size(176, 22);
             this.toolStripMenuItemEtcModelUseScale.Text = "EtcModel Use Scale";
             this.toolStripMenuItemEtcModelUseScale.Click += new System.EventHandler(this.toolStripMenuItemEtcModelUseScale_Click);
             // 
@@ -2137,6 +2136,13 @@ namespace Re4QuadX
             this.toolStripSeparatorView2.Name = "toolStripSeparatorView2";
             this.toolStripSeparatorView2.Size = new System.Drawing.Size(202, 6);
             // 
+            // toolStripMenuItemNodeDisplayNameInHex
+            // 
+            this.toolStripMenuItemNodeDisplayNameInHex.Name = "toolStripMenuItemNodeDisplayNameInHex";
+            this.toolStripMenuItemNodeDisplayNameInHex.Size = new System.Drawing.Size(205, 22);
+            this.toolStripMenuItemNodeDisplayNameInHex.Text = "Display Obj Name In Hex";
+            this.toolStripMenuItemNodeDisplayNameInHex.Click += new System.EventHandler(this.toolStripMenuItemNodeDisplayNameInHex_Click);
+            // 
             // toolStripSeparatorView3
             // 
             this.toolStripSeparatorView3.Name = "toolStripSeparatorView3";
@@ -2157,6 +2163,49 @@ namespace Re4QuadX
             this.toolStripMenuItemMisc.Name = "toolStripMenuItemMisc";
             this.toolStripMenuItemMisc.Size = new System.Drawing.Size(44, 23);
             this.toolStripMenuItemMisc.Text = "Misc";
+            // 
+            // toolStripMenuItemCameraMenu
+            // 
+            this.toolStripMenuItemCameraMenu.Name = "toolStripMenuItemCameraMenu";
+            this.toolStripMenuItemCameraMenu.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.toolStripMenuItemCameraMenu.Size = new System.Drawing.Size(262, 22);
+            this.toolStripMenuItemCameraMenu.Text = "Camera Menu";
+            this.toolStripMenuItemCameraMenu.Click += new System.EventHandler(this.toolStripMenuItemCameraMenu_Click);
+            // 
+            // toolStripMenuItemResetCamera
+            // 
+            this.toolStripMenuItemResetCamera.Name = "toolStripMenuItemResetCamera";
+            this.toolStripMenuItemResetCamera.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.toolStripMenuItemResetCamera.Size = new System.Drawing.Size(262, 22);
+            this.toolStripMenuItemResetCamera.Text = "Reset Camera";
+            this.toolStripMenuItemResetCamera.Click += new System.EventHandler(this.toolStripMenuItemResetCamera_Click);
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(259, 6);
+            // 
+            // toolStripMenuItemRefresh
+            // 
+            this.toolStripMenuItemRefresh.Name = "toolStripMenuItemRefresh";
+            this.toolStripMenuItemRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.toolStripMenuItemRefresh.Size = new System.Drawing.Size(262, 22);
+            this.toolStripMenuItemRefresh.Text = "Refresh Editor";
+            this.toolStripMenuItemRefresh.Click += new System.EventHandler(this.toolStripMenuItemRefresh_Click);
+            // 
+            // toolStripMenuItemRenderSelectViewer
+            // 
+            this.toolStripMenuItemRenderSelectViewer.Enabled = false;
+            this.toolStripMenuItemRenderSelectViewer.Name = "toolStripMenuItemRenderSelectViewer";
+            this.toolStripMenuItemRenderSelectViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.toolStripMenuItemRenderSelectViewer.Size = new System.Drawing.Size(262, 22);
+            this.toolStripMenuItemRenderSelectViewer.Text = "Debug Render Select Viewer";
+            this.toolStripMenuItemRenderSelectViewer.Visible = false;
+            // 
+            // toolStripSeparator17
+            // 
+            this.toolStripSeparator17.Name = "toolStripSeparator17";
+            this.toolStripSeparator17.Size = new System.Drawing.Size(259, 6);
             // 
             // unpackAllRoomsUHDToolStripMenuItem
             // 
@@ -2181,6 +2230,88 @@ namespace Re4QuadX
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 23);
             this.windowToolStripMenuItem.Text = "Window";
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(140, 6);
+            // 
+            // lateralToolStripMenuItemLateralMenu
+            // 
+            this.lateralToolStripMenuItemLateralMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.objectsMenuToolStripMenuItem,
+            this.propertiesMenuToolStripMenuItem,
+            this.toolStripSeparator14,
+            this.toolStripMenuItemShowLateralMenu});
+            this.lateralToolStripMenuItemLateralMenu.Name = "lateralToolStripMenuItemLateralMenu";
+            this.lateralToolStripMenuItemLateralMenu.Size = new System.Drawing.Size(143, 22);
+            this.lateralToolStripMenuItemLateralMenu.Text = "Lateral Menu";
+            // 
+            // objectsMenuToolStripMenuItem
+            // 
+            this.objectsMenuToolStripMenuItem.Name = "objectsMenuToolStripMenuItem";
+            this.objectsMenuToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.objectsMenuToolStripMenuItem.Text = "Show Objects Menu";
+            // 
+            // propertiesMenuToolStripMenuItem
+            // 
+            this.propertiesMenuToolStripMenuItem.Name = "propertiesMenuToolStripMenuItem";
+            this.propertiesMenuToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.propertiesMenuToolStripMenuItem.Text = "Show Properties Menu";
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(218, 6);
+            // 
+            // toolStripMenuItemShowLateralMenu
+            // 
+            this.toolStripMenuItemShowLateralMenu.Checked = true;
+            this.toolStripMenuItemShowLateralMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemShowLateralMenu.Name = "toolStripMenuItemShowLateralMenu";
+            this.toolStripMenuItemShowLateralMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F8)));
+            this.toolStripMenuItemShowLateralMenu.Size = new System.Drawing.Size(221, 22);
+            this.toolStripMenuItemShowLateralMenu.Text = "Show Lateral Menu";
+            this.toolStripMenuItemShowLateralMenu.Click += new System.EventHandler(this.toolStripMenuItemShowLateralMenu_Click);
+            // 
+            // utilityMenuToolStripMenuItem
+            // 
+            this.utilityMenuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.erToolStripMenuItem,
+            this.gLControlsToolStripMenuItem,
+            this.toolStripSeparator15,
+            this.toolStripMenuItemShowUtilityMenu});
+            this.utilityMenuToolStripMenuItem.Name = "utilityMenuToolStripMenuItem";
+            this.utilityMenuToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.utilityMenuToolStripMenuItem.Text = "Utility Menu";
+            // 
+            // erToolStripMenuItem
+            // 
+            this.erToolStripMenuItem.Name = "erToolStripMenuItem";
+            this.erToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.erToolStripMenuItem.Text = "Include Console";
+            // 
+            // gLControlsToolStripMenuItem
+            // 
+            this.gLControlsToolStripMenuItem.Name = "gLControlsToolStripMenuItem";
+            this.gLControlsToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
+            this.gLControlsToolStripMenuItem.Text = "Include GLControls";
+            // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(246, 6);
+            // 
+            // toolStripMenuItemShowUtilityMenu
+            // 
+            this.toolStripMenuItemShowUtilityMenu.Checked = true;
+            this.toolStripMenuItemShowUtilityMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemShowUtilityMenu.Name = "toolStripMenuItemShowUtilityMenu";
+            this.toolStripMenuItemShowUtilityMenu.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.F8)));
+            this.toolStripMenuItemShowUtilityMenu.Size = new System.Drawing.Size(249, 22);
+            this.toolStripMenuItemShowUtilityMenu.Text = "Show Utility Menu";
+            this.toolStripMenuItemShowUtilityMenu.Click += new System.EventHandler(this.toolStripMenuItemShowUtilityMenu_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -2207,42 +2338,42 @@ namespace Re4QuadX
             // documentationToolStripMenuItem
             // 
             this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
-            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.documentationToolStripMenuItem.Text = "Documentation";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(154, 6);
             // 
             // runSetupWizardToolStripMenuItem
             // 
             this.runSetupWizardToolStripMenuItem.Name = "runSetupWizardToolStripMenuItem";
-            this.runSetupWizardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.runSetupWizardToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.runSetupWizardToolStripMenuItem.Text = "Setup Wizard";
             this.runSetupWizardToolStripMenuItem.Click += new System.EventHandler(this.runSetupWizardToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(154, 6);
             // 
             // sendFeedbackToolStripMenuItem
             // 
             this.sendFeedbackToolStripMenuItem.Name = "sendFeedbackToolStripMenuItem";
-            this.sendFeedbackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sendFeedbackToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.sendFeedbackToolStripMenuItem.Text = "Send Feedback";
             // 
             // support3ToolStripMenuItem
             // 
             this.support3ToolStripMenuItem.Name = "support3ToolStripMenuItem";
-            this.support3ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.support3ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.support3ToolStripMenuItem.Text = "Support <3";
             this.support3ToolStripMenuItem.Click += new System.EventHandler(this.support3ToolStripMenuItem_Click);
             // 
@@ -2250,7 +2381,7 @@ namespace Re4QuadX
             // 
             this.toolStripMenuItemCredits.Name = "toolStripMenuItemCredits";
             this.toolStripMenuItemCredits.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.toolStripMenuItemCredits.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCredits.Size = new System.Drawing.Size(157, 22);
             this.toolStripMenuItemCredits.Text = "Credits";
             this.toolStripMenuItemCredits.Click += new System.EventHandler(this.toolStripMenuItemCredits_Click);
             // 
@@ -3403,13 +3534,12 @@ namespace Re4QuadX
             this.toolstrip_playButton,
             this.toolStripSeparator9,
             this.toolstrip_openEditorRoot,
-            this.toolStripSeparator10,
             this.toolstrip_openRE4root});
             this.toolStripEditor.Location = new System.Drawing.Point(3, 0);
             this.toolStripEditor.Name = "toolStripEditor";
             this.toolStripEditor.Padding = new System.Windows.Forms.Padding(0, 2, 1, 0);
             this.toolStripEditor.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStripEditor.Size = new System.Drawing.Size(386, 27);
+            this.toolStripEditor.Size = new System.Drawing.Size(380, 27);
             this.toolStripEditor.TabIndex = 0;
             // 
             // toolstrip_newEnv
@@ -3546,11 +3676,6 @@ namespace Re4QuadX
             this.toolstrip_openEditorRoot.Text = "Open Editor Root Folder";
             this.toolstrip_openEditorRoot.Click += new System.EventHandler(this.openEditorRoot_Click);
             // 
-            // toolStripSeparator10
-            // 
-            this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolstrip_openRE4root
             // 
             this.toolstrip_openRE4root.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -3560,138 +3685,6 @@ namespace Re4QuadX
             this.toolstrip_openRE4root.Size = new System.Drawing.Size(23, 22);
             this.toolstrip_openRE4root.Text = "Open RE4 Root Folder";
             this.toolstrip_openRE4root.Click += new System.EventHandler(this.openRE4root_Click);
-            // 
-            // toolStripSeparator13
-            // 
-            this.toolStripSeparator13.Name = "toolStripSeparator13";
-            this.toolStripSeparator13.Size = new System.Drawing.Size(140, 6);
-            // 
-            // lateralToolStripMenuItemLateralMenu
-            // 
-            this.lateralToolStripMenuItemLateralMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.objectsMenuToolStripMenuItem,
-            this.propertiesMenuToolStripMenuItem,
-            this.toolStripSeparator14,
-            this.toolStripMenuItemShowLateralMenu});
-            this.lateralToolStripMenuItemLateralMenu.Name = "lateralToolStripMenuItemLateralMenu";
-            this.lateralToolStripMenuItemLateralMenu.Size = new System.Drawing.Size(143, 22);
-            this.lateralToolStripMenuItemLateralMenu.Text = "Lateral Menu";
-            // 
-            // toolStripMenuItemShowLateralMenu
-            // 
-            this.toolStripMenuItemShowLateralMenu.Checked = true;
-            this.toolStripMenuItemShowLateralMenu.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMenuItemShowLateralMenu.Name = "toolStripMenuItemShowLateralMenu";
-            this.toolStripMenuItemShowLateralMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F8)));
-            this.toolStripMenuItemShowLateralMenu.Size = new System.Drawing.Size(221, 22);
-            this.toolStripMenuItemShowLateralMenu.Text = "Show Lateral Menu";
-            this.toolStripMenuItemShowLateralMenu.Click += new System.EventHandler(this.toolStripMenuItemShowLateralMenu_Click);
-            // 
-            // toolStripSeparator14
-            // 
-            this.toolStripSeparator14.Name = "toolStripSeparator14";
-            this.toolStripSeparator14.Size = new System.Drawing.Size(218, 6);
-            // 
-            // objectsMenuToolStripMenuItem
-            // 
-            this.objectsMenuToolStripMenuItem.Name = "objectsMenuToolStripMenuItem";
-            this.objectsMenuToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.objectsMenuToolStripMenuItem.Text = "Show Objects Menu";
-            // 
-            // propertiesMenuToolStripMenuItem
-            // 
-            this.propertiesMenuToolStripMenuItem.Name = "propertiesMenuToolStripMenuItem";
-            this.propertiesMenuToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.propertiesMenuToolStripMenuItem.Text = "Show Properties Menu";
-            // 
-            // utilityMenuToolStripMenuItem
-            // 
-            this.utilityMenuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.erToolStripMenuItem,
-            this.gLControlsToolStripMenuItem,
-            this.toolStripSeparator15,
-            this.toolStripMenuItemShowUtilityMenu});
-            this.utilityMenuToolStripMenuItem.Name = "utilityMenuToolStripMenuItem";
-            this.utilityMenuToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.utilityMenuToolStripMenuItem.Text = "Utility Menu";
-            // 
-            // erToolStripMenuItem
-            // 
-            this.erToolStripMenuItem.Name = "erToolStripMenuItem";
-            this.erToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
-            this.erToolStripMenuItem.Text = "Include Console";
-            // 
-            // toolStripMenuItemShowUtilityMenu
-            // 
-            this.toolStripMenuItemShowUtilityMenu.Checked = true;
-            this.toolStripMenuItemShowUtilityMenu.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMenuItemShowUtilityMenu.Name = "toolStripMenuItemShowUtilityMenu";
-            this.toolStripMenuItemShowUtilityMenu.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.F8)));
-            this.toolStripMenuItemShowUtilityMenu.Size = new System.Drawing.Size(249, 22);
-            this.toolStripMenuItemShowUtilityMenu.Text = "Show Utility Menu";
-            this.toolStripMenuItemShowUtilityMenu.Click += new System.EventHandler(this.toolStripMenuItemShowUtilityMenu_Click);
-            // 
-            // toolStripSeparator15
-            // 
-            this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(246, 6);
-            // 
-            // gLControlsToolStripMenuItem
-            // 
-            this.gLControlsToolStripMenuItem.Name = "gLControlsToolStripMenuItem";
-            this.gLControlsToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
-            this.gLControlsToolStripMenuItem.Text = "Include GLControls";
-            // 
-            // toolStripSeparator12
-            // 
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(259, 6);
-            // 
-            // toolStripMenuItemCameraMenu
-            // 
-            this.toolStripMenuItemCameraMenu.Name = "toolStripMenuItemCameraMenu";
-            this.toolStripMenuItemCameraMenu.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.toolStripMenuItemCameraMenu.Size = new System.Drawing.Size(262, 22);
-            this.toolStripMenuItemCameraMenu.Text = "Camera Menu";
-            this.toolStripMenuItemCameraMenu.Click += new System.EventHandler(this.toolStripMenuItemCameraMenu_Click);
-            // 
-            // toolStripMenuItemResetCamera
-            // 
-            this.toolStripMenuItemResetCamera.Name = "toolStripMenuItemResetCamera";
-            this.toolStripMenuItemResetCamera.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.toolStripMenuItemResetCamera.Size = new System.Drawing.Size(262, 22);
-            this.toolStripMenuItemResetCamera.Text = "Reset Camera";
-            this.toolStripMenuItemResetCamera.Click += new System.EventHandler(this.toolStripMenuItemResetCamera_Click);
-            // 
-            // toolStripMenuItemRefresh
-            // 
-            this.toolStripMenuItemRefresh.Name = "toolStripMenuItemRefresh";
-            this.toolStripMenuItemRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.toolStripMenuItemRefresh.Size = new System.Drawing.Size(262, 22);
-            this.toolStripMenuItemRefresh.Text = "Refresh Editor";
-            this.toolStripMenuItemRefresh.Click += new System.EventHandler(this.toolStripMenuItemRefresh_Click);
-            // 
-            // toolStripMenuItemRenderSelectViewer
-            // 
-            this.toolStripMenuItemRenderSelectViewer.Enabled = false;
-            this.toolStripMenuItemRenderSelectViewer.Name = "toolStripMenuItemRenderSelectViewer";
-            this.toolStripMenuItemRenderSelectViewer.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.toolStripMenuItemRenderSelectViewer.Size = new System.Drawing.Size(262, 22);
-            this.toolStripMenuItemRenderSelectViewer.Text = "Debug Render Select Viewer";
-            this.toolStripMenuItemRenderSelectViewer.Visible = false;
-            // 
-            // toolStripMenuItemNodeDisplayNameInHex
-            // 
-            this.toolStripMenuItemNodeDisplayNameInHex.Name = "toolStripMenuItemNodeDisplayNameInHex";
-            this.toolStripMenuItemNodeDisplayNameInHex.Size = new System.Drawing.Size(205, 22);
-            this.toolStripMenuItemNodeDisplayNameInHex.Text = "Display Obj Name In Hex";
-            this.toolStripMenuItemNodeDisplayNameInHex.Click += new System.EventHandler(this.toolStripMenuItemNodeDisplayNameInHex_Click);
-            // 
-            // toolStripSeparator17
-            // 
-            this.toolStripSeparator17.Name = "toolStripSeparator17";
-            this.toolStripSeparator17.Size = new System.Drawing.Size(259, 6);
             // 
             // treeViewObjs
             // 
@@ -4110,7 +4103,6 @@ namespace Re4QuadX
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripButton toolstrip_openEditorRoot;
         private System.Windows.Forms.ToolStripButton toolstrip_openRE4root;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripButton toolstrip_repackRoom;
         private System.Windows.Forms.ToolStripMenuItem unpackAllRoomsUHDToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unpackAllTexturesUHDToolStripMenuItem;

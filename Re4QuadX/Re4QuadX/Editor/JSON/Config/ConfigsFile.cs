@@ -56,6 +56,7 @@ namespace Re4QuadX.Editor.JSON
             entry["MaximizeEditorOnStartup"] = config.MaximizeEditorOnStartup;
             entry["PropertyGridShowAllByDefault"] = config.PropertyGridShowAllByDefault;
             entry["TreeViewHideEmptyRoot"] = config.TreeViewHideEmptyRoot;
+            entry["checkUpdates"] = config.checkUpdates;
             entry["LoadLangTranslation"] = config.LoadLangTranslation;
             entry["LangJsonFile"] = config.LangJsonFile;
 
@@ -302,6 +303,17 @@ namespace Re4QuadX.Editor.JSON
                         try
                         {
                             config.TreeViewHideEmptyRoot = bool.Parse(oConfigs["TreeViewHideEmptyRoot"].ToString());
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+
+                    if (oConfigs["checkUpdates"] != null)
+                    {
+                        try
+                        {
+                            config.checkUpdates = bool.Parse(oConfigs["checkUpdates"].ToString());
                         }
                         catch (Exception)
                         {

@@ -148,8 +148,9 @@ namespace Re4QuadX.Editor.Forms
             themeDropdown.SelectedIndex = (int)Globals.BackupConfigs.SelectedTheme;
             checkBoxUseInvertedMouseButtons.Checked = Globals.BackupConfigs.UseInvertedMouseButtons;
             checkBoxMaximizeEditorOnStartup.Checked = Globals.BackupConfigs.MaximizeEditorOnStartup;
-           // checkBoxPropertyGridShowAllByDefault.Checked = Globals.BackupConfigs.PropertyGridShowAllByDefault;
+            checkBoxPropertyGridShowAllByDefault.Checked = Globals.BackupConfigs.PropertyGridShowAllByDefault;
             checkboxTreeViewHideEmptyRoot.Checked = Globals.BackupConfigs.TreeViewHideEmptyRoot;
+            checkboxCheckUpdates.Checked = Globals.BackupConfigs.checkUpdates;
 
 
             //preferred version
@@ -212,22 +213,17 @@ namespace Re4QuadX.Editor.Forms
             Close();
         }
 
-        private string FixDirectory(string dir)
-        {
-            return dir != null && dir.Length > 0 ? (dir + (dir.Last() != '\\' ? "\\" : "")) : "";
-        }
-
         private void buttonOK_Click(object sender, EventArgs e)
         {
 
-            Globals.DirectoryXFILE = FixDirectory(textBoxDiretoryXFILE.Text);
-            Globals.Directory2007RE4 = FixDirectory(textBoxDirectory2007RE4.Text);
-            Globals.DirectoryPS2RE4 = FixDirectory(textBoxDirectoryPS2RE4.Text);
-            Globals.DirectoryUHDRE4 = FixDirectory(textBoxDirectoryUHDRE4.Text);
-            Globals.DirectoryPS4NSRE4 = FixDirectory(textBoxDirectoryPS4NSRE4.Text);
-            Globals.DirectoryCustom1 = FixDirectory(textBoxDirectoryCustom1.Text);
-            Globals.DirectoryCustom2 = FixDirectory(textBoxDirectoryCustom2.Text);
-            Globals.DirectoryCustom3 = FixDirectory(textBoxDirectoryCustom3.Text);
+            Globals.DirectoryXFILE = Utils.FixDirectory(textBoxDiretoryXFILE.Text);
+            Globals.Directory2007RE4 = Utils.FixDirectory(textBoxDirectory2007RE4.Text);
+            Globals.DirectoryPS2RE4 = Utils.FixDirectory(textBoxDirectoryPS2RE4.Text);
+            Globals.DirectoryUHDRE4 = Utils.FixDirectory(textBoxDirectoryUHDRE4.Text);
+            Globals.DirectoryPS4NSRE4 = Utils.FixDirectory(textBoxDirectoryPS4NSRE4.Text);
+            Globals.DirectoryCustom1 = Utils.FixDirectory(textBoxDirectoryCustom1.Text);
+            Globals.DirectoryCustom2 = Utils.FixDirectory(textBoxDirectoryCustom2.Text);
+            Globals.DirectoryCustom3 = Utils.FixDirectory(textBoxDirectoryCustom3.Text);
 
             Globals.ToolPathUDAS = toolTextbox_udas.Text;
             Globals.ToolPathLFS = toolTextbox_lfs.Text;
@@ -304,6 +300,7 @@ namespace Re4QuadX.Editor.Forms
             Globals.BackupConfigs.MaximizeEditorOnStartup = checkBoxMaximizeEditorOnStartup.Checked;
             Globals.BackupConfigs.PropertyGridShowAllByDefault = checkBoxPropertyGridShowAllByDefault.Checked;
             Globals.BackupConfigs.TreeViewHideEmptyRoot = checkboxTreeViewHideEmptyRoot.Checked;
+            Globals.BackupConfigs.checkUpdates = checkboxCheckUpdates.Checked;
 
             if (comboBoxLanguage.SelectedIndex <= 0)
             {
