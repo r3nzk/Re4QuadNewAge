@@ -774,7 +774,7 @@ namespace Re4QuadX.Editor.Forms
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*";
-                openFileDialog.Title = "Select UDAS Tool";
+                openFileDialog.Title = "Select DAT/UDAS Tool";
                 openFileDialog.CheckFileExists = true;
                 openFileDialog.CheckPathExists = true;
 

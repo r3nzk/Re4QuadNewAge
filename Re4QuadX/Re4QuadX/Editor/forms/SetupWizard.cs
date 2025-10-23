@@ -221,7 +221,7 @@ namespace Re4QuadX.Editor.forms
         #region automation
         private void toolButton_udas_Click(object sender, EventArgs e)
         {
-            SelectFile(toolTextbox_udas, "Select UDAS Tool", (path) => Globals.BackupConfigs.ToolPathUDAS = path);
+            SelectFile(toolTextbox_udas, "Select DAT/UDAS Tool", (path) => Globals.BackupConfigs.ToolPathUDAS = path);
         }
 
         private void toolButton_lfs_Click(object sender, EventArgs e)
@@ -326,6 +326,8 @@ namespace Re4QuadX.Editor.forms
             DialogResult result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.No) return;
+
+            Close();
 
             bool deleteLFS = false;
 
