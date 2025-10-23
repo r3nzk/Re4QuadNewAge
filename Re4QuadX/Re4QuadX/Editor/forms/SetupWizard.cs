@@ -133,6 +133,8 @@ namespace Re4QuadX.Editor.forms
 
         private void HandleWizardCompletion()
         {
+            Globals.BackupConfigs.PreferredVersion = (EditorRe4Ver)preferredVerComboBox.SelectedIndex;
+            MainForm.instance.PreferredVerSet(preferredVerComboBox.SelectedIndex);
             //apply unchanged settings
             ConfigsFile.writeConfigsFile(Consts.ConfigsFileDirectory, Globals.BackupConfigs);
 
@@ -310,7 +312,7 @@ namespace Re4QuadX.Editor.forms
 
         private void preferredVerComboBox_SelectionIndexChanged(object sender, EventArgs e)
         {
-            Globals.PreferredVersion = (EditorRe4Ver)preferredVerComboBox.SelectedIndex; //only set in globals and not write in config yet
+            Globals.PreferredVersion = (EditorRe4Ver)preferredVerComboBox.SelectedIndex;
         }
         private async void unpackAllButton_Click(object sender, EventArgs e)
         {

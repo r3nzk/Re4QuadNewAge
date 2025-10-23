@@ -229,7 +229,7 @@ namespace Re4QuadX
             {
                 Editor.Console.Clear();
 
-                await Task.Delay(50);
+                await Task.Delay(100);
 
                 using (var setupWizard = new Re4QuadX.Editor.forms.SetupWizard())
                     setupWizard.ShowDialog();
@@ -4063,7 +4063,7 @@ namespace Re4QuadX
             }
         }
 
-        private void PreferredVerSet(int index) {
+        public void PreferredVerSet(int index) {
             Globals.PreferredVersion = (EditorRe4Ver)index;
             Globals.BackupConfigs.PreferredVersion = (EditorRe4Ver)index;
             toolstrip_preferredVer.Text = Globals.BackupConfigs.PreferredVersion.ToString();
