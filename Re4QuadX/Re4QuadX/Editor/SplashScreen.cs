@@ -11,6 +11,7 @@ namespace Re4QuadX.Editor
     public static class SplashScreen
     {
         public static SplashScreenContainer Container { get; set; }
+
         private static void SplashScreenShow()
         {
             Application.Run(new SplashScreenForm(Container));
@@ -32,5 +33,13 @@ namespace Re4QuadX.Editor
         public bool FormIsClosed = false;
         public Action<int> SetProgress;
         public Action<string> SetStatusText;
+
+        //safety check
+        public Action SetReady;
+        public bool isReady = false;
+
+        public SplashScreenContainer(){
+            SetReady = () => {isReady = true;};
+        }
     }
 }

@@ -104,6 +104,7 @@ namespace Re4QuadX.Editor.Class
             else if (control is RichTextBox richTextBox) { ApplyRichTextBoxTheme(richTextBox, palette); }
             else if (control is TextBox textBox) { ApplyTextBoxTheme(textBox, palette); }
             else if (control is ListBox listBox) { ApplyListBoxTheme(listBox, palette); }
+            else if (control is System.Windows.Forms.CheckBox checkBox) { ApplyCheckBoxTheme(checkBox, palette); }
             else if (control is Label label) { label.ForeColor = palette.Text; label.BackColor = Color.Transparent; }
             else if (control is System.Windows.Forms.Panel panel) { panel.BackColor = palette.Background; }
             else if (control is Form form) { form.BackColor = palette.FormBackground; }
@@ -133,6 +134,12 @@ namespace Re4QuadX.Editor.Class
             button.CheckedEndColor = palette.Highlight;
             button.CheckedForeColor = palette.TextOnHighlight;
             button.DefaultButtonBorderColor = palette.Highlight;
+        }
+
+        private static void ApplyCheckBoxTheme(System.Windows.Forms.CheckBox checkBox, ColorPalette palette)
+        {
+            checkBox.ForeColor = palette.Text;
+            checkBox.BackColor = Color.Transparent;
         }
 
         private static void ApplyComboBoxTheme(SkyComboBox comboBox, ColorPalette palette)

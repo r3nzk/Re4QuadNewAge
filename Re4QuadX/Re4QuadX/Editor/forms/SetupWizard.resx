@@ -117,15 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label15.Text" xml:space="preserve">
-    <value>For the best performance, QuadX defaults to using the lightweight 3D models from the original 2007 PC version to display objects in the 3D viewport. These models are conveniently packed inside a single file called "xFile".</value>
-  </data>
   <data name="label21.Text" xml:space="preserve">
     <value>Most of the game's files are packed in compressed files that can't be edited directly and require external tools to be readable. QuadX can automate the entire process of unpacking (extracting) and repacking these files for you.
 
 By setting these tools now, you'll be able to use one-click extract/repack actions that manage these files in the background, saving you from a lot of manual work.
 
 This step is optional, but highly recommended. If you skip it, you will need to unpack and repack all files by hand every time you make a change.</value>
+  </data>
+  <data name="label15.Text" xml:space="preserve">
+    <value>For the best performance, QuadX defaults to using the lightweight 3D models from the original 2007 PC version to display objects in the 3D viewport. These models are conveniently packed inside a single file called "xFile".</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

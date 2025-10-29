@@ -211,6 +211,19 @@ namespace Re4QuadX.Editor
         public static bool EFF_RenderTable9 = true;
         public static bool EFF_Use_Group_Position = true;
 
+        //select room include objects
+        public static bool includeAEV = true;
+        public static bool includeDSE = true;
+        public static bool includeEAR = true;
+        public static bool includeEMI = true;
+        public static bool includeESE = true;
+        public static bool includeETS = true;
+        public static bool includeFSE = true;
+        public static bool includeITA = true;
+        public static bool includeLIT = true;
+        public static bool includeSAR = true;
+
+
         //behaviour
         //treeview
         public static bool TreeViewHideEmptyRoot { get; set; } = false;

@@ -63,7 +63,7 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxSearch.Location = new System.Drawing.Point(2, 3);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(664, 21);
+            this.textBoxSearch.Size = new System.Drawing.Size(647, 23);
             this.textBoxSearch.TabIndex = 0;
             this.textBoxSearch.WordWrap = false;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
@@ -71,13 +71,14 @@ namespace Re4QuadX.Editor.Forms
             // 
             // checkBoxFilterMode
             // 
+            this.checkBoxFilterMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxFilterMode.AutoSize = true;
-            this.checkBoxFilterMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxFilterMode.Location = new System.Drawing.Point(670, 5);
+            this.checkBoxFilterMode.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxFilterMode.Location = new System.Drawing.Point(657, 6);
             this.checkBoxFilterMode.Name = "checkBoxFilterMode";
-            this.checkBoxFilterMode.Size = new System.Drawing.Size(99, 19);
+            this.checkBoxFilterMode.Size = new System.Drawing.Size(133, 19);
             this.checkBoxFilterMode.TabIndex = 2;
-            this.checkBoxFilterMode.Text = "Filter Mode";
+            this.checkBoxFilterMode.Text = "Hide Non-Matching";
             this.checkBoxFilterMode.UseVisualStyleBackColor = true;
             this.checkBoxFilterMode.CheckedChanged += new System.EventHandler(this.checkBoxFilterMode_CheckedChanged);
             // 
@@ -89,9 +90,8 @@ namespace Re4QuadX.Editor.Forms
             this.Controls.Add(this.checkBoxFilterMode);
             this.Controls.Add(this.listBoxCont);
             this.Controls.Add(this.textBoxSearch);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 274);
             this.Name = "SearchForm";

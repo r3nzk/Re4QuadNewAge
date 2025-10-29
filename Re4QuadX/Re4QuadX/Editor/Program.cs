@@ -27,7 +27,15 @@ namespace Re4QuadX
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
             SplashScreen.StartSplashScreen();
-            Thread.Sleep(100);
+
+            int timeoutMs = 500;
+            int sleepMs = 10;
+            //added satefy loop to wait for SetStatusText action to be assigned
+            while (timeoutMs > 0 && !(SplashScreen.Container?.isReady ?? false)){
+                Thread.Sleep(sleepMs);
+                timeoutMs -= sleepMs;
+            }
+
             try
             {
                 // A list of loading tasks to be completed.

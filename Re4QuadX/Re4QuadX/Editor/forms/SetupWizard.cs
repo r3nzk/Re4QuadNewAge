@@ -345,7 +345,7 @@ namespace Re4QuadX.Editor.forms
 
             await ExternalToolManager.UnpackAllRoomsUdas(deleteLFS);
 
-            if (gameVersion == EditorRe4Ver.SourceNext2007) return; //only does textures for uhd or ps4/ns
+            /*if (gameVersion == EditorRe4Ver.SourceNext2007) return; //only does textures for uhd or ps4/ns
 
             await Task.Delay(1);
 
@@ -365,7 +365,7 @@ namespace Re4QuadX.Editor.forms
             {
                 imagepackType = "ImagePack";
             }
-            ExternalToolManager.UnpackAllPacks(imagepackType);
+            ExternalToolManager.UnpackAllPacks(imagepackType);*/
         }
     }
 }

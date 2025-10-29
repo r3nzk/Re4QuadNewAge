@@ -239,6 +239,9 @@ namespace Re4QuadX
             this.toolStripMenuItemRefresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemRenderSelectViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
+            this.repackRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unpackRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
             this.unpackAllRoomsUHDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unpackAllTexturesUHDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -260,7 +263,7 @@ namespace Re4QuadX
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.runSetupWizardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.sendFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.support3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCredits = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialogESL = new System.Windows.Forms.OpenFileDialog();
@@ -349,6 +352,7 @@ namespace Re4QuadX
             this.toolStripSeparatorNew7 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItemNewQuadCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.treeView_addButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeViewObjs = new NsMultiselectTreeView.MultiselectTreeView();
             this.propertyGridPanel = new System.Windows.Forms.TableLayoutPanel();
             this.propertyGridTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.propertyGridObjs = new System.Windows.Forms.PropertyGrid();
@@ -390,7 +394,6 @@ namespace Re4QuadX
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.toolstrip_openEditorRoot = new System.Windows.Forms.ToolStripButton();
             this.toolstrip_openRE4root = new System.Windows.Forms.ToolStripButton();
-            this.treeViewObjs = new NsMultiselectTreeView.MultiselectTreeView();
             this.menuStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerRight)).BeginInit();
             this.splitContainerRight.Panel1.SuspendLayout();
@@ -2158,11 +2161,14 @@ namespace Re4QuadX
             this.toolStripMenuItemRefresh,
             this.toolStripMenuItemRenderSelectViewer,
             this.toolStripSeparator17,
+            this.repackRoomToolStripMenuItem,
+            this.unpackRoomToolStripMenuItem,
+            this.toolStripSeparator10,
             this.unpackAllRoomsUHDToolStripMenuItem,
             this.unpackAllTexturesUHDToolStripMenuItem});
             this.toolStripMenuItemMisc.Name = "toolStripMenuItemMisc";
-            this.toolStripMenuItemMisc.Size = new System.Drawing.Size(44, 23);
-            this.toolStripMenuItemMisc.Text = "Misc";
+            this.toolStripMenuItemMisc.Size = new System.Drawing.Size(42, 23);
+            this.toolStripMenuItemMisc.Text = "Tool";
             // 
             // toolStripMenuItemCameraMenu
             // 
@@ -2206,6 +2212,25 @@ namespace Re4QuadX
             // 
             this.toolStripSeparator17.Name = "toolStripSeparator17";
             this.toolStripSeparator17.Size = new System.Drawing.Size(259, 6);
+            // 
+            // repackRoomToolStripMenuItem
+            // 
+            this.repackRoomToolStripMenuItem.Name = "repackRoomToolStripMenuItem";
+            this.repackRoomToolStripMenuItem.Size = new System.Drawing.Size(262, 22);
+            this.repackRoomToolStripMenuItem.Text = "Repack room";
+            this.repackRoomToolStripMenuItem.Click += new System.EventHandler(this.repackRoomToolStripMenuItem_Click);
+            // 
+            // unpackRoomToolStripMenuItem
+            // 
+            this.unpackRoomToolStripMenuItem.Name = "unpackRoomToolStripMenuItem";
+            this.unpackRoomToolStripMenuItem.Size = new System.Drawing.Size(262, 22);
+            this.unpackRoomToolStripMenuItem.Text = "Unpack room";
+            this.unpackRoomToolStripMenuItem.Click += new System.EventHandler(this.unpackRoomToolStripMenuItemoolStripMenuItem_Click);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(259, 6);
             // 
             // unpackAllRoomsUHDToolStripMenuItem
             // 
@@ -2328,7 +2353,7 @@ namespace Re4QuadX
             this.toolStripSeparator6,
             this.runSetupWizardToolStripMenuItem,
             this.toolStripSeparator5,
-            this.sendFeedbackToolStripMenuItem,
+            this.checkUpdateToolStripMenuItem,
             this.support3ToolStripMenuItem,
             this.toolStripMenuItemCredits});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
@@ -2338,50 +2363,51 @@ namespace Re4QuadX
             // documentationToolStripMenuItem
             // 
             this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
-            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentationToolStripMenuItem.Text = "Documentation";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(154, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(177, 6);
             // 
             // runSetupWizardToolStripMenuItem
             // 
             this.runSetupWizardToolStripMenuItem.Name = "runSetupWizardToolStripMenuItem";
-            this.runSetupWizardToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.runSetupWizardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.runSetupWizardToolStripMenuItem.Text = "Setup Wizard";
             this.runSetupWizardToolStripMenuItem.Click += new System.EventHandler(this.runSetupWizardToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(154, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
-            // sendFeedbackToolStripMenuItem
+            // checkUpdateToolStripMenuItem
             // 
-            this.sendFeedbackToolStripMenuItem.Name = "sendFeedbackToolStripMenuItem";
-            this.sendFeedbackToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.sendFeedbackToolStripMenuItem.Text = "Send Feedback";
+            this.checkUpdateToolStripMenuItem.Name = "checkUpdateToolStripMenuItem";
+            this.checkUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkUpdateToolStripMenuItem.Text = "Check Updates";
+            this.checkUpdateToolStripMenuItem.Click += new System.EventHandler(this.checkUpdateToolStripMenuItem_Click);
             // 
             // support3ToolStripMenuItem
             // 
             this.support3ToolStripMenuItem.Name = "support3ToolStripMenuItem";
-            this.support3ToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
-            this.support3ToolStripMenuItem.Text = "Support <3";
+            this.support3ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.support3ToolStripMenuItem.Text = "Support";
             this.support3ToolStripMenuItem.Click += new System.EventHandler(this.support3ToolStripMenuItem_Click);
             // 
             // toolStripMenuItemCredits
             // 
             this.toolStripMenuItemCredits.Name = "toolStripMenuItemCredits";
             this.toolStripMenuItemCredits.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.toolStripMenuItemCredits.Size = new System.Drawing.Size(157, 22);
+            this.toolStripMenuItemCredits.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemCredits.Text = "Credits";
             this.toolStripMenuItemCredits.Click += new System.EventHandler(this.toolStripMenuItemCredits_Click);
             // 
@@ -2732,7 +2758,7 @@ namespace Re4QuadX
             this.glControls_old.Location = new System.Drawing.Point(0, 0);
             this.glControls_old.Margin = new System.Windows.Forms.Padding(0);
             this.glControls_old.Name = "glControls_old";
-            this.glControls_old.Size = new System.Drawing.Size(681, 173);
+            this.glControls_old.Size = new System.Drawing.Size(681, 171);
             this.glControls_old.TabIndex = 2;
             // 
             // treeView_searchBar
@@ -2883,6 +2909,7 @@ namespace Re4QuadX
             this.treeView_moreButton.Size = new System.Drawing.Size(23, 23);
             this.treeView_moreButton.TabIndex = 6;
             this.treeView_moreButton.UseVisualStyleBackColor = true;
+            this.treeView_moreButton.Click += new System.EventHandler(this.treeView_moreButton_Click);
             // 
             // treeViewLabel
             // 
@@ -3205,6 +3232,24 @@ namespace Re4QuadX
             this.treeView_addButton.Size = new System.Drawing.Size(174, 22);
             this.treeView_addButton.Text = "Add New Object(s)";
             this.treeView_addButton.Click += new System.EventHandler(this.treeView_addButton_Click);
+            // 
+            // treeViewObjs
+            // 
+            this.treeViewObjs.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.treeViewObjs.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeViewObjs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewObjs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this.treeViewObjs.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.treeViewObjs.HideSelection = false;
+            this.treeViewObjs.LineColor = System.Drawing.Color.White;
+            this.treeViewObjs.Location = new System.Drawing.Point(3, 32);
+            this.treeViewObjs.Name = "treeViewObjs";
+            this.treeViewObjs.SelectedNodeBackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.treeViewObjs.SelectedNodes = ((System.Collections.Generic.Dictionary<int, System.Windows.Forms.TreeNode>)(resources.GetObject("treeViewObjs.SelectedNodes")));
+            this.treeViewObjs.ShowNodeToolTips = true;
+            this.treeViewObjs.Size = new System.Drawing.Size(195, 174);
+            this.treeViewObjs.TabIndex = 0;
+            this.treeViewObjs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewObjs_AfterSelect);
             // 
             // propertyGridPanel
             // 
@@ -3686,24 +3731,6 @@ namespace Re4QuadX
             this.toolstrip_openRE4root.Text = "Open RE4 Root Folder";
             this.toolstrip_openRE4root.Click += new System.EventHandler(this.openRE4root_Click);
             // 
-            // treeViewObjs
-            // 
-            this.treeViewObjs.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.treeViewObjs.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeViewObjs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewObjs.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
-            this.treeViewObjs.Font = new System.Drawing.Font("Segoe UI", 9.25F);
-            this.treeViewObjs.HideSelection = false;
-            this.treeViewObjs.LineColor = System.Drawing.Color.White;
-            this.treeViewObjs.Location = new System.Drawing.Point(3, 32);
-            this.treeViewObjs.Name = "treeViewObjs";
-            this.treeViewObjs.SelectedNodeBackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.treeViewObjs.SelectedNodes = ((System.Collections.Generic.Dictionary<int, System.Windows.Forms.TreeNode>)(resources.GetObject("treeViewObjs.SelectedNodes")));
-            this.treeViewObjs.ShowNodeToolTips = true;
-            this.treeViewObjs.Size = new System.Drawing.Size(195, 174);
-            this.treeViewObjs.TabIndex = 0;
-            this.treeViewObjs.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewObjs_AfterSelect);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4093,7 +4120,7 @@ namespace Re4QuadX
         private System.Windows.Forms.ToolStripMenuItem runSetupWizardToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem documentationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sendFeedbackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolstrip_openRoom;
         private System.Windows.Forms.ToolStripButton toolstrip_clearRoom;
@@ -4134,6 +4161,9 @@ namespace Re4QuadX
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCameraMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
+        private System.Windows.Forms.ToolStripMenuItem unpackRoomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem repackRoomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
     }
 }
 

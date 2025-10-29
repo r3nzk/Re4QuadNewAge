@@ -112,7 +112,7 @@ namespace Re4QuadX.Editor.JSON
 
             configs.UseInvertedMouseButtons = false;
             configs.MaximizeEditorOnStartup = true;
-            configs.PropertyGridShowAllByDefault = true;
+            configs.PropertyGridShowAllByDefault = false;
             configs.TreeViewHideEmptyRoot = false;
             configs.checkUpdates = true;
             configs.LoadLangTranslation = false;

@@ -1,19 +1,26 @@
-﻿using System;
+﻿using Re4QuadX.Editor.Class;
+using Re4QuadX.Editor.Class.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Re4QuadX.Editor.Class.Enums;
 
 namespace Re4QuadX.Editor.Forms
 {
     public partial class SearchForm : Form
     {
         public event Re4QuadX.Editor.Class.CustomDelegates.ReturnSearch Search;
+
+        //searchbar placeholder
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+        private const int EM_SETCUEBANNER = 0x1501;
 
         object[] List = new object[0];
         object selected = null;
@@ -48,9 +55,28 @@ namespace Re4QuadX.Editor.Forms
             checkBoxFilterMode.Checked = Globals.SearchFilterMode;
             checkBoxFilterMode.ResumeLayout();
 
+
             if (Lang.LoadedTranslation)
             {
                 StartUpdateTranslation();
+            }
+
+            if (Globals.BackupConfigs.SelectedTheme != EditorTheme.Light)
+            {
+                ThemeManager.ApplyThemeRecursive(this);
+
+                var palette = ThemeManager.GetCurrentPalette();
+                textBoxSearch.BackColor = palette.BackgroundDarker;
+            }
+
+            //SetPlaceholder(textBoxSearch, "Filter: name or ID");
+        }
+
+        public static void SetPlaceholder(Control control, string text)
+        {
+            if (control is TextBox)
+            {
+                SendMessage(control.Handle, EM_SETCUEBANNER, 0, text);
             }
         }
 

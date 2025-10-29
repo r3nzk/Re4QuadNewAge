@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Re4QuadX.Editor.Class
 {
@@ -196,23 +197,73 @@ namespace Re4QuadX.Editor.Class
 
 
         #region UDAS TOOL
-        public static async Task RepackCurrentRoomUdas(){
-            if (DataBase.SelectedRoom == null){
-                Editor.Console.Warning("No room is currently loaded. Cannot perform repack.");
-                return;
-            }
-
+        public static async Task RepackRoomUdas(bool repackCurrent = false)
+        {
             if (string.IsNullOrEmpty(Globals.ToolPathUDAS)){
                 Editor.Console.Error("'UDAS Tool' path is not assigned. Please set it in the 'settings' menu.");
                 return;
             }
 
-            string roomDirectory = Utils.GetCurrentRoomDirectory();
-            if (roomDirectory == null){
-                Editor.Console.Error($"Could not find the path for the current room. Repack aborted.");
-                return;
+            string roomDirectory;
+
+            if (repackCurrent){
+                if (DataBase.SelectedRoom == null){
+                    Editor.Console.Warning("No room is currently loaded. Cannot perform repack.");
+                    return;
+                }
+
+                roomDirectory = Utils.GetCurrentRoomDirectory();
+                if (roomDirectory == null){
+                    Editor.Console.Error($"Could not find the path for the current room. Repack aborted.");
+                    return;
+                }
+            }
+            else
+            {
+                using (var dialog = new OpenFileDialog())
+                {
+                    dialog.Title = "Select the unpacked room folder to repack";
+                    dialog.FileName = "Select Folder";
+                    dialog.ValidateNames = false;
+                    dialog.CheckFileExists = false;
+                    dialog.CheckPathExists = true;
+
+                    string initialDir = "";
+                    switch (Globals.PreferredVersion)
+                    {
+                        case EditorRe4Ver.UHD:
+                            initialDir = Globals.DirectoryUHDRE4 + "BIO4";
+                            break;
+                        case EditorRe4Ver.SourceNext2007:
+                            initialDir = Globals.Directory2007RE4;
+                            break;
+                        case EditorRe4Ver.PS2:
+                            initialDir = Globals.DirectoryPS2RE4;
+                            break;
+                        case EditorRe4Ver.PS4NS:
+                            initialDir = Globals.DirectoryPS4NSRE4 + "BIO4";
+                            break;
+                    }
+
+                    if (!string.IsNullOrEmpty(initialDir) && Directory.Exists(initialDir)){
+                        dialog.InitialDirectory = initialDir;
+                    }
+                    if (dialog.ShowDialog() == DialogResult.OK){
+                        roomDirectory = Path.GetDirectoryName(dialog.FileName);
+                    }
+
+                    else
+                    {
+                        Editor.Console.Log("Room repack operation was cancelled by the user.");
+                        return;
+                    }
+                }
             }
 
+            if (string.IsNullOrEmpty(roomDirectory) || !Directory.Exists(roomDirectory)) {
+                Editor.Console.Error($"The specified room directory is invalid. Repack aborted.");
+                return;
+            }
 
             //get room unpacked folder
             string parentDirectory = Directory.GetParent(roomDirectory).FullName;
@@ -242,34 +293,53 @@ namespace Re4QuadX.Editor.Class
 
         public static async Task UnpackRoomUdas()
         {
-            //TODO
-            //add some a dialog window to select desired room here
-            string roomDirectory = Utils.GetCurrentRoomDirectory(); //gets "current" room for now but this is kinda useless
-
-            if (string.IsNullOrEmpty(Globals.ToolPathUDAS))
-            {
+            if (string.IsNullOrEmpty(Globals.ToolPathUDAS)){
                 Editor.Console.Error("UDAS Tool path is not configured. Please set it in the options menu.");
                 return;
             }
-            if (roomDirectory != null)
-            {
-                string roomName = new DirectoryInfo(roomDirectory).Name;
-                string stageDirectory = Directory.GetParent(roomDirectory).FullName;
-                string udasPath = Path.Combine(stageDirectory, roomName + ".udas");
 
-                if (File.Exists(udasPath))
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Select .udas File to Unpack";
+                dialog.Filter = "UDAS/DAT Room File (*.udas, *.dat)|*.udas;*.dat|All Files (*.*)|*.*";
+                dialog.CheckFileExists = true;
+                dialog.CheckPathExists = true;
+
+                string initialDir = "";
+                switch (Globals.PreferredVersion)
                 {
-                    await UnpackFileAsync(Globals.ToolPathUDAS, udasPath);
+                    case EditorRe4Ver.UHD: initialDir = Globals.DirectoryUHDRE4 + "BIO4";
+                        break;
+                    case EditorRe4Ver.SourceNext2007: initialDir = Globals.Directory2007RE4;
+                        break;
+                    case EditorRe4Ver.PS2: initialDir = Globals.DirectoryPS2RE4;
+                        break;
+                    case EditorRe4Ver.PS4NS: initialDir = Globals.DirectoryPS4NSRE4 + "BIO4";
+                        break;
+                }
+
+                if (!string.IsNullOrEmpty(initialDir) && Directory.Exists(initialDir))
+                    dialog.InitialDirectory = initialDir;
+
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    string udasPath = dialog.FileName;
+
+                    if (File.Exists(udasPath))
+                    {
+                        await UnpackFileAsync(Globals.ToolPathUDAS, udasPath);
+                    }
+                    else
+                    {
+                        Editor.Console.Error($"Could not find .udas file at '{udasPath}'. Unpack aborted.");
+                    }
                 }
                 else
                 {
-                    Editor.Console.Error($"Could not find .udas file at '{udasPath}'. Unpack aborted.");
+                    Editor.Console.Error($"Could not find the directory for the current room. Unpack aborted.");
                 }
             }
-             else
-             {
-                 Editor.Console.Error($"Could not find the directory for the current room. Unpack aborted.");
-             }
         }
 
         public static async Task UnpackAllRoomsUdas(bool deleteLFS = true)

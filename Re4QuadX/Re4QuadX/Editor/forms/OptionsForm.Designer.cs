@@ -107,9 +107,12 @@ namespace Re4QuadX.Editor.Forms
             this.colorDialogColors = new System.Windows.Forms.ColorDialog();
             this.tabControlConfigs = new PowerLib.Winform.Controls.XTabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.preferredVersionDropdown = new System.Windows.Forms.ComboBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.checkboxCheckUpdates = new System.Windows.Forms.CheckBox();
             this.tabPageAppearance = new System.Windows.Forms.TabPage();
             this.tableLayoutPage2 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -152,9 +155,6 @@ namespace Re4QuadX.Editor.Forms
             this.tabPageAdvanced = new System.Windows.Forms.TabPage();
             this.buttonOK = new PowerLib.Winform.Controls.XButton();
             this.buttonCancel = new PowerLib.Winform.Controls.XButton();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.checkboxCheckUpdates = new System.Windows.Forms.CheckBox();
             this.groupBoxInvertedMouseButtons.SuspendLayout();
             this.groupBoxLanguage.SuspendLayout();
             this.groupBoxColors.SuspendLayout();
@@ -172,7 +172,9 @@ namespace Re4QuadX.Editor.Forms
             this.groupBoxFractionalPart.SuspendLayout();
             this.tabControlConfigs.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.tabPageAppearance.SuspendLayout();
             this.tableLayoutPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -192,8 +194,6 @@ namespace Re4QuadX.Editor.Forms
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPageAdvanced.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxInvertedMouseButtons
@@ -588,7 +588,7 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxDirectoryCustom3.Location = new System.Drawing.Point(12, 102);
             this.textBoxDirectoryCustom3.Name = "textBoxDirectoryCustom3";
             this.textBoxDirectoryCustom3.PlaceHolder = null;
-            this.textBoxDirectoryCustom3.Size = new System.Drawing.Size(134, 23);
+            this.textBoxDirectoryCustom3.Size = new System.Drawing.Size(131, 23);
             this.textBoxDirectoryCustom3.TabIndex = 25;
             // 
             // textBoxDirectoryCustom2
@@ -603,7 +603,7 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxDirectoryCustom2.Location = new System.Drawing.Point(12, 61);
             this.textBoxDirectoryCustom2.Name = "textBoxDirectoryCustom2";
             this.textBoxDirectoryCustom2.PlaceHolder = null;
-            this.textBoxDirectoryCustom2.Size = new System.Drawing.Size(134, 23);
+            this.textBoxDirectoryCustom2.Size = new System.Drawing.Size(131, 23);
             this.textBoxDirectoryCustom2.TabIndex = 24;
             // 
             // textBoxDirectoryCustom1
@@ -618,13 +618,13 @@ namespace Re4QuadX.Editor.Forms
             this.textBoxDirectoryCustom1.Location = new System.Drawing.Point(12, 22);
             this.textBoxDirectoryCustom1.Name = "textBoxDirectoryCustom1";
             this.textBoxDirectoryCustom1.PlaceHolder = null;
-            this.textBoxDirectoryCustom1.Size = new System.Drawing.Size(134, 23);
+            this.textBoxDirectoryCustom1.Size = new System.Drawing.Size(131, 23);
             this.textBoxDirectoryCustom1.TabIndex = 7;
             // 
             // buttonDirectoryCustom3
             // 
             this.buttonDirectoryCustom3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom3.Location = new System.Drawing.Point(149, 101);
+            this.buttonDirectoryCustom3.Location = new System.Drawing.Point(143, 101);
             this.buttonDirectoryCustom3.Name = "buttonDirectoryCustom3";
             this.buttonDirectoryCustom3.Size = new System.Drawing.Size(33, 25);
             this.buttonDirectoryCustom3.TabIndex = 23;
@@ -645,7 +645,7 @@ namespace Re4QuadX.Editor.Forms
             // buttonDirectoryCustom2
             // 
             this.buttonDirectoryCustom2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom2.Location = new System.Drawing.Point(149, 60);
+            this.buttonDirectoryCustom2.Location = new System.Drawing.Point(143, 60);
             this.buttonDirectoryCustom2.Name = "buttonDirectoryCustom2";
             this.buttonDirectoryCustom2.Size = new System.Drawing.Size(33, 25);
             this.buttonDirectoryCustom2.TabIndex = 20;
@@ -656,7 +656,7 @@ namespace Re4QuadX.Editor.Forms
             // buttonDirectoryCustom1
             // 
             this.buttonDirectoryCustom1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDirectoryCustom1.Location = new System.Drawing.Point(149, 21);
+            this.buttonDirectoryCustom1.Location = new System.Drawing.Point(143, 21);
             this.buttonDirectoryCustom1.Name = "buttonDirectoryCustom1";
             this.buttonDirectoryCustom1.Size = new System.Drawing.Size(33, 25);
             this.buttonDirectoryCustom1.TabIndex = 17;
@@ -1166,6 +1166,18 @@ namespace Re4QuadX.Editor.Forms
             this.tabPageGeneral.TabIndex = 1;
             this.tabPageGeneral.Text = "General";
             // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.groupBoxLanguage);
+            this.flowLayoutPanel2.Controls.Add(this.groupBox2);
+            this.flowLayoutPanel2.Controls.Add(this.groupBoxInvertedMouseButtons);
+            this.flowLayoutPanel2.Controls.Add(this.groupBox5);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(685, 404);
+            this.flowLayoutPanel2.TabIndex = 11;
+            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1208,6 +1220,30 @@ namespace Re4QuadX.Editor.Forms
             this.preferredVersionDropdown.Name = "preferredVersionDropdown";
             this.preferredVersionDropdown.Size = new System.Drawing.Size(655, 23);
             this.preferredVersionDropdown.TabIndex = 8;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.checkboxCheckUpdates);
+            this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.groupBox5.Location = new System.Drawing.Point(3, 307);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(679, 54);
+            this.groupBox5.TabIndex = 10;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Update";
+            // 
+            // checkboxCheckUpdates
+            // 
+            this.checkboxCheckUpdates.AutoSize = true;
+            this.checkboxCheckUpdates.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.checkboxCheckUpdates.Location = new System.Drawing.Point(12, 22);
+            this.checkboxCheckUpdates.Name = "checkboxCheckUpdates";
+            this.checkboxCheckUpdates.Size = new System.Drawing.Size(122, 19);
+            this.checkboxCheckUpdates.TabIndex = 2;
+            this.checkboxCheckUpdates.Text = "Check for updates";
+            this.checkboxCheckUpdates.UseVisualStyleBackColor = true;
             // 
             // tabPageAppearance
             // 
@@ -1353,6 +1389,7 @@ namespace Re4QuadX.Editor.Forms
             this.buttonXFileHelp.TabIndex = 6;
             this.buttonXFileHelp.Text = "Help";
             this.buttonXFileHelp.UseVisualStyleBackColor = true;
+            this.buttonXFileHelp.Click += new System.EventHandler(this.buttonXFileHelp_Click);
             // 
             // textBoxDiretoryXFILE
             // 
@@ -1829,42 +1866,6 @@ namespace Re4QuadX.Editor.Forms
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.groupBoxLanguage);
-            this.flowLayoutPanel2.Controls.Add(this.groupBox2);
-            this.flowLayoutPanel2.Controls.Add(this.groupBoxInvertedMouseButtons);
-            this.flowLayoutPanel2.Controls.Add(this.groupBox5);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(685, 404);
-            this.flowLayoutPanel2.TabIndex = 11;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.Controls.Add(this.checkboxCheckUpdates);
-            this.groupBox5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.groupBox5.Location = new System.Drawing.Point(3, 307);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(679, 54);
-            this.groupBox5.TabIndex = 10;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Update";
-            // 
-            // checkboxCheckUpdates
-            // 
-            this.checkboxCheckUpdates.AutoSize = true;
-            this.checkboxCheckUpdates.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.checkboxCheckUpdates.Location = new System.Drawing.Point(12, 22);
-            this.checkboxCheckUpdates.Name = "checkboxCheckUpdates";
-            this.checkboxCheckUpdates.Size = new System.Drawing.Size(122, 19);
-            this.checkboxCheckUpdates.TabIndex = 2;
-            this.checkboxCheckUpdates.Text = "Check for updates";
-            this.checkboxCheckUpdates.UseVisualStyleBackColor = true;
-            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1883,6 +1884,7 @@ namespace Re4QuadX.Editor.Forms
             this.Name = "OptionsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "QuadX Settings";
+            this.Load += new System.EventHandler(this.OptionsForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OptionsForm_KeyDown);
             this.groupBoxInvertedMouseButtons.ResumeLayout(false);
             this.groupBoxInvertedMouseButtons.PerformLayout();
@@ -1911,8 +1913,11 @@ namespace Re4QuadX.Editor.Forms
             this.groupBoxFractionalPart.PerformLayout();
             this.tabControlConfigs.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.tabPageAppearance.ResumeLayout(false);
             this.tableLayoutPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1940,9 +1945,6 @@ namespace Re4QuadX.Editor.Forms
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tabPageAdvanced.ResumeLayout(false);
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

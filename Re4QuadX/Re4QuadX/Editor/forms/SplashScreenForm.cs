@@ -78,9 +78,8 @@ namespace Re4QuadX.Editor.Forms
             try { System.Diagnostics.Process.Start("explorer.exe", url); } catch (Exception) { }
         }
 
-        private void SplashScreenForm_Load(object sender, EventArgs e)
-        {
-
+        private void SplashScreenForm_Load(object sender, EventArgs e){
+            container.SetReady?.Invoke();
         }
     }
 }

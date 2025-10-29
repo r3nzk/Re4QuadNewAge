@@ -1,12 +1,15 @@
-﻿using Re4QuadX.Editor.Class;
+﻿using NsCamera;
+using OpenTK;
+using Re4QuadX.Editor.Class;
 using Re4QuadX.Editor.Class.Enums;
 using System;
 using System.Text;
+using System.Web.UI;
 using System.Windows.Forms;
 
 namespace Re4QuadX.Editor.Controls
 {
-    public partial class CameraMoveControl : UserControl
+    public partial class CameraMoveControl : System.Windows.Forms.UserControl
     {
         private readonly CameraControl CameraControl;
         private readonly ObjectControl ObjectControl;
@@ -79,7 +82,7 @@ namespace Re4QuadX.Editor.Controls
             }
         }
 
-        private void textBoxGridSize_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBoxGridSize_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if (char.IsDigit(e.KeyChar))
             {
@@ -107,6 +110,7 @@ namespace Re4QuadX.Editor.Controls
             {
                 CameraControl.PerformStrafe(e.X, e.Y, isControlDown);
             }
+            MainForm.instance.UpdateCameraMatrix();
         }
 
         private void pictureBoxMoveCamStrafe_MouseUp(object sender, MouseEventArgs e)
@@ -136,6 +140,7 @@ namespace Re4QuadX.Editor.Controls
             {
                 CameraControl.PerformZoom(e.Y);
             }
+            MainForm.instance.UpdateCameraMatrix();
         }
 
         private void pictureBoxMoveCamInOut_MouseUp(object sender, MouseEventArgs e)

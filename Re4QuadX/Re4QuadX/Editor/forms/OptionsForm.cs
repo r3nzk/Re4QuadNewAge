@@ -831,5 +831,15 @@ namespace Re4QuadX.Editor.Forms
                 }
             }
         }
+
+        private void OptionsForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonXFileHelp_Click(object sender, EventArgs e)
+        {
+            Utils.OpenLink("https://github.com/r3nzk/Re4QuadX/wiki/Setup#getting-xfile");
+        }
     }
 }

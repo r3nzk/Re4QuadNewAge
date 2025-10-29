@@ -43,6 +43,14 @@ namespace Re4QuadX.Editor.Controls
             comboBoxMoveMode_IsChangeable = false;
             comboBoxMoveMode.Items.Add(new MoveObjTypeObjForListBox(MoveObjType.Null, ""));
             comboBoxMoveMode.SelectedIndex = 0;
+
+            if (Globals.BackupConfigs.SelectedTheme != EditorTheme.Light)
+            {
+                ThemeManager.ApplyThemeRecursive(this);
+
+                var palette = ThemeManager.GetCurrentPalette();
+                comboBoxMoveMode.BorderColorA = palette.Background;
+            }
         }
 
         public void UpdateSelection()
@@ -156,12 +164,12 @@ namespace Re4QuadX.Editor.Controls
 
         private void ObjectMoveControl_Resize(object sender, EventArgs e)
         {
-            int width = this.Width - comboBoxMoveMode.Location.X;
+            int width = this.Width + 200;
             if (width > 800)
             {
                 width = 800;
             }
-            comboBoxMoveMode.Size = new Size(width, comboBoxMoveMode.Size.Height);
+            comboBoxMoveMode.DropDownWidth = width;
         }
 
         private void trackBarMoveSpeed_Scroll(object sender, EventArgs e)

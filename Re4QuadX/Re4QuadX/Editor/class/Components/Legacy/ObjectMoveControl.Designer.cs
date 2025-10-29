@@ -38,13 +38,13 @@ namespace Re4QuadX.Editor.Controls
             this.moveObjHorizontal1 = new System.Windows.Forms.PictureBox();
             this.labelObjSpeed = new System.Windows.Forms.Label();
             this.trackBarMoveSpeed = new System.Windows.Forms.TrackBar();
-            this.comboBoxMoveMode = new System.Windows.Forms.ComboBox();
             this.buttonDropToGround = new System.Windows.Forms.Button();
             this.checkBoxMoveRelativeCam = new System.Windows.Forms.CheckBox();
             this.checkBoxLockMoveSquareHorizontal = new System.Windows.Forms.CheckBox();
             this.checkBoxLockMoveSquareVertical = new System.Windows.Forms.CheckBox();
             this.checkBoxObjKeepOnGround = new System.Windows.Forms.CheckBox();
             this.checkBoxTriggerZoneKeepOnGround = new System.Windows.Forms.CheckBox();
+            this.comboBoxMoveMode = new ReaLTaiizor.Controls.SkyComboBox();
             this.panelMoveObject.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moveObjSquare)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.moveObjVertical)).BeginInit();
@@ -175,19 +175,6 @@ namespace Re4QuadX.Editor.Controls
             this.trackBarMoveSpeed.Value = 50;
             this.trackBarMoveSpeed.Scroll += new System.EventHandler(this.trackBarMoveSpeed_Scroll);
             // 
-            // comboBoxMoveMode
-            // 
-            this.comboBoxMoveMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxMoveMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxMoveMode.Font = new System.Drawing.Font("Corbel", 9F, System.Drawing.FontStyle.Bold);
-            this.comboBoxMoveMode.FormattingEnabled = true;
-            this.comboBoxMoveMode.Location = new System.Drawing.Point(3, 102);
-            this.comboBoxMoveMode.Name = "comboBoxMoveMode";
-            this.comboBoxMoveMode.Size = new System.Drawing.Size(395, 22);
-            this.comboBoxMoveMode.TabIndex = 9;
-            this.comboBoxMoveMode.TabStop = false;
-            this.comboBoxMoveMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxMoveMode_SelectedIndexChanged);
-            // 
             // buttonDropToGround
             // 
             this.buttonDropToGround.Font = new System.Drawing.Font("Corbel", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -265,6 +252,44 @@ namespace Re4QuadX.Editor.Controls
             this.checkBoxTriggerZoneKeepOnGround.UseVisualStyleBackColor = true;
             this.checkBoxTriggerZoneKeepOnGround.CheckedChanged += new System.EventHandler(this.checkBoxTriggerZoneKeepOnGround_CheckedChanged);
             // 
+            // comboBoxMoveMode
+            // 
+            this.comboBoxMoveMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxMoveMode.BackColor = System.Drawing.Color.Transparent;
+            this.comboBoxMoveMode.BGColorA = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
+            this.comboBoxMoveMode.BGColorB = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            this.comboBoxMoveMode.BorderColorA = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
+            this.comboBoxMoveMode.BorderColorB = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(249)))), ((int)(((byte)(249)))));
+            this.comboBoxMoveMode.BorderColorC = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.comboBoxMoveMode.BorderColorD = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.comboBoxMoveMode.Cursor = System.Windows.Forms.Cursors.Default;
+            this.comboBoxMoveMode.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.comboBoxMoveMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxMoveMode.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.comboBoxMoveMode.ForeColor = System.Drawing.Color.Black;
+            this.comboBoxMoveMode.FormattingEnabled = true;
+            this.comboBoxMoveMode.ItemHeight = 16;
+            this.comboBoxMoveMode.ItemHighlightColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.comboBoxMoveMode.LineColorA = System.Drawing.Color.White;
+            this.comboBoxMoveMode.LineColorB = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(189)))), ((int)(((byte)(189)))));
+            this.comboBoxMoveMode.LineColorC = System.Drawing.Color.White;
+            this.comboBoxMoveMode.ListBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.comboBoxMoveMode.ListBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.comboBoxMoveMode.ListDashType = System.Drawing.Drawing2D.DashStyle.Dot;
+            this.comboBoxMoveMode.ListForeColor = System.Drawing.Color.Black;
+            this.comboBoxMoveMode.ListSelectedBackColorA = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.comboBoxMoveMode.ListSelectedBackColorB = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.comboBoxMoveMode.Location = new System.Drawing.Point(3, 102);
+            this.comboBoxMoveMode.Name = "comboBoxMoveMode";
+            this.comboBoxMoveMode.Size = new System.Drawing.Size(400, 22);
+            this.comboBoxMoveMode.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            this.comboBoxMoveMode.StartIndex = 0;
+            this.comboBoxMoveMode.TabIndex = 11;
+            this.comboBoxMoveMode.TriangleColorA = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBoxMoveMode.TriangleColorB = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.comboBoxMoveMode.SelectedIndexChanged += new System.EventHandler(this.comboBoxMoveMode_SelectedIndexChanged);
+            // 
             // ObjectMoveControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -308,12 +333,12 @@ namespace Re4QuadX.Editor.Controls
         private System.Windows.Forms.PictureBox moveObjHorizontal2;
         private System.Windows.Forms.PictureBox moveObjHorizontal1;
         private System.Windows.Forms.TrackBar trackBarMoveSpeed;
-        private System.Windows.Forms.ComboBox comboBoxMoveMode;
         private System.Windows.Forms.Button buttonDropToGround;
         private System.Windows.Forms.CheckBox checkBoxMoveRelativeCam;
         private System.Windows.Forms.CheckBox checkBoxLockMoveSquareHorizontal;
         private System.Windows.Forms.CheckBox checkBoxLockMoveSquareVertical;
         private System.Windows.Forms.CheckBox checkBoxObjKeepOnGround;
         private System.Windows.Forms.CheckBox checkBoxTriggerZoneKeepOnGround;
+        private ReaLTaiizor.Controls.SkyComboBox comboBoxMoveMode;
     }
 }

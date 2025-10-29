@@ -28,6 +28,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -46,11 +47,14 @@ namespace Re4QuadX
     {
         public static MainForm instance { get; private set; }
 
+        //renderer
         private readonly Stopwatch stopwatch = new Stopwatch();
         private float lastFrameTime = 0.0f;
         public bool IsRenderLoopPaused = false;
-
+        public bool ForceRendering = false;
         GLControl glControl;
+
+        //navigation
         Gizmo gizmo;
         ObjectControl objectControl;
         CameraControl cameraControl;
@@ -165,13 +169,15 @@ namespace Re4QuadX
             objectMove.TabStop = false;
             glControls_old.Controls.Add(objectMove);
 
-            cameraMove = new CameraMoveControl(cameraControl, objectControl); //assigning object controll too to keep legacy controls exactly as they were
+            cameraMove = new CameraMoveControl(cameraControl, objectControl);
             cameraMove.Location = new Point(objectMove.Right, objectMove.Top);
             cameraMove.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             cameraMove.Name = "cameraMove";
             cameraMove.TabIndex = 998;
             cameraMove.TabStop = false;
             glControls_old.Controls.Add(cameraMove);
+
+            glControls_old.Resize += utilityPanel_Resize;
 
 
             //setup console
@@ -221,9 +227,42 @@ namespace Re4QuadX
             }
 
         }
+
+        private void utilityPanel_Resize(object sender, EventArgs e)
+        {
+            int newWidth = glControls_old.Width / 2;
+
+            if (objectMove.Width != newWidth)objectMove.Width = newWidth;
+            cameraMove.Location = new Point(objectMove.Right, objectMove.Top);
+
+            glControl.Invalidate();
+        }
         protected override async void OnShown(EventArgs e)
         {
             base.OnShown(e);
+
+            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            if (Globals.checkUpdates)
+            {
+                if(Globals.firstBoot) Editor.Console.Clear();
+
+                Editor.Console.Log("Checking for updates...");
+                await Task.Delay(50);
+                bool updateAvailable = await UpdateManager.CheckForUpdates();
+
+                if (updateAvailable)
+                {
+                    Editor.Console.Warning("You are not using the latest version of RE4QuadX. Check the GitHub repository for updates.");
+                }
+                else
+                {
+                    Editor.Console.Log($"Finished setup. You are running the latest version of RE4QuadX (v{currentVersion.ToString(3)}).");
+                }
+            }
+            else
+            {
+                Editor.Console.Log($"Finished setup. You are running RE4QuadX (v{currentVersion.ToString(3)}).");
+            }
 
             if (Globals.firstBoot)
             {
@@ -236,9 +275,6 @@ namespace Re4QuadX
 
                 Editor.Console.Log("Completed SetupWizard.");
             }
-
-            float gameVer = 1.0f;
-            Editor.Console.Log($"Finished setup, you are running RE4QuadX ver. {gameVer.ToString("F1", CultureInfo.InvariantCulture)}!");
         }
 
         public void RenderLoop(object sender, EventArgs e)
@@ -267,6 +303,7 @@ namespace Re4QuadX
                 glControl.SwapBuffers();
             }
         }
+
 
         private void UpdateCameraMovement(float deltaTime)
         {
@@ -369,6 +406,8 @@ namespace Re4QuadX
 
         private void clearAllObjects()
         {
+            if (isProjectEmpty()) return;
+
             FileManager.ClearESL();
             FileManager.ClearETS();
             FileManager.ClearITA();
@@ -382,6 +421,10 @@ namespace Re4QuadX
             FileManager.ClearLIT();
             FileManager.ClearEFFBLOB();
             FileManager.ClearQuadCustom();
+
+            GC.Collect();
+            UpdateGL();
+            UpdateTreeViewNodes();
         }
 
         private void buildTreeView()
@@ -1126,7 +1169,23 @@ namespace Re4QuadX
 
         private void toolStripMenuItemSearch_Click(object sender, EventArgs e)
         {
-            var selectedObj = propertyGridObjs.SelectedObject;
+            openSearch();
+        }
+        private void treeView_moreButton_Click(object sender, EventArgs e)
+        {
+            openSearch();
+        }
+
+        private void openSearch()
+        {
+            object selectedObj = propertyGridObjs.SelectedObject;
+
+            //unwrap the original object from the filter wrapper
+            if (selectedObj is PropertyFilterDescriptor descriptor)
+            {
+                selectedObj = descriptor.OriginalObject;
+            }
+
             if (selectedObj is EnemyProperty enemy)
             {
                 SearchForm search = new SearchForm(ListBoxProperty.EnemiesList.Values.ToArray(), new UshortObjForListBox(enemy.ReturnUshortFirstSearchSelect(), ""));
@@ -1155,7 +1214,17 @@ namespace Re4QuadX
                 search.Search += quad.Searched;
                 search.ShowDialog();
             }
-
+            else
+            {
+                if (selectedObj is NoneProperty)
+                {
+                    Editor.Console.Warning($"No object selected.");
+                }
+                else
+                {
+                    Editor.Console.Warning($"No valid object selected. ({selectedObj})");
+                }
+            }
         }
 
 
@@ -1833,12 +1902,12 @@ namespace Re4QuadX
             return null;
         }
 
-        private void UpdateGL()
+        public void UpdateGL()
         {
             glControl.Invalidate();
         }
 
-        private void UpdateCameraMatrix()
+        public void UpdateCameraMatrix()
         {
             camMtx = camera.GetViewMatrix();
         }
@@ -2658,6 +2727,7 @@ namespace Re4QuadX
             toolStripMenuItemClearLIT.Enabled = DataBase.FileLIT != null;
             toolStripMenuItemClearEFFBLOB.Enabled = DataBase.FileEFF != null;
             toolStripMenuItemClearQuadCustom.Enabled = DataBase.FileQuadCustom != null;
+            clearEverythingToolStripMenuItem.Enabled = isProjectEmpty() != true;
         }
 
         private void toolStripMenuItemClearESL_Click(object sender, EventArgs e)
@@ -4563,7 +4633,6 @@ namespace Re4QuadX
         private void clearEverythingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             clearAllObjects();
-            UpdateGL();
         }
 
         #region tool buttons
@@ -4580,7 +4649,7 @@ namespace Re4QuadX
             if (result == DialogResult.Yes)
             {
                 ExportAllModifiedRoomFiles();
-                ExternalToolManager.RepackCurrentRoomUdas();
+                ExternalToolManager.RepackRoomUdas(true);
             }
         }
         #endregion
@@ -4663,6 +4732,11 @@ namespace Re4QuadX
             }
 
             ExternalToolManager.UnpackAllRoomsUdas(deleteLFS);
+        }
+
+        private void unpackRoomToolStripMenuItemoolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExternalToolManager.UnpackRoomUdas();
         }
 
 
@@ -4767,6 +4841,26 @@ namespace Re4QuadX
         private void support3ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Utils.OpenLink("https://jaderlink.github.io/Donate/");
+        }
+
+        private void repackRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExternalToolManager.RepackRoomUdas(false);
+        }
+
+        private async void checkUpdateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Editor.Console.Log("Checking for updates...");
+            bool updateAvailable = await UpdateManager.CheckForUpdates();
+
+            if (updateAvailable)
+            {
+                Editor.Console.Warning("You are not using the latest version of RE4QuadX. Check the GitHub repository for updates.");
+            }
+            else
+            {
+                Editor.Console.Log("You are running the latest available version of RE4QuadX.");
+            }
         }
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)

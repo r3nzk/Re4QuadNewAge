@@ -89,6 +89,8 @@ namespace Re4QuadX.Editor.Forms
                 buttonLoadComplete.Enabled = false;
             }
 
+            getInclusionChecks();
+
             ApplyTheme();
 
             if (Lang.LoadedTranslation){
@@ -208,6 +210,7 @@ namespace Re4QuadX.Editor.Forms
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
+            applyInclusionChecks();
             Close();
         }
 
@@ -251,6 +254,33 @@ namespace Re4QuadX.Editor.Forms
                 e.Cancel = true;
             }
         }
+
+        private void getInclusionChecks(){
+            includeAEV.Checked = Globals.includeAEV;
+            includeDSE.Checked = Globals.includeDSE;
+            includeEAR.Checked = Globals.includeEAR;
+            includeEMI.Checked = Globals.includeEMI;
+            includeESE.Checked = Globals.includeESE;
+            includeETS.Checked = Globals.includeETS;
+            includeFSE.Checked = Globals.includeFSE;
+            includeITA.Checked = Globals.includeITA;
+            includeLIT.Checked = Globals.includeLIT;
+            includeSAR.Checked = Globals.includeSAR;
+        }
+
+        private void applyInclusionChecks(){
+            Globals.includeAEV = includeAEV.Checked;
+            Globals.includeDSE = includeDSE.Checked;
+            Globals.includeEAR = includeEAR.Checked;
+            Globals.includeEMI = includeEMI.Checked;
+            Globals.includeESE = includeESE.Checked;
+            Globals.includeETS = includeETS.Checked;
+            Globals.includeFSE = includeFSE.Checked;
+            Globals.includeITA = includeITA.Checked;
+            Globals.includeLIT = includeLIT.Checked;
+            Globals.includeSAR = includeSAR.Checked;
+        }
+
 
 
         public async void LoadRoomModel()
@@ -371,6 +401,8 @@ namespace Re4QuadX.Editor.Forms
             }
 
             LoadAllFilesForRoom(roomDirectory, isUhd, isPs4NsAdapted);
+
+            applyInclusionChecks();
         }
 
         private void LoadAllFilesForRoom(string roomPath, bool isUhd, bool isPs4Ns){
